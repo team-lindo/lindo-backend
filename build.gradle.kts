@@ -1,7 +1,7 @@
 plugins {
     java
-    id("org.springframework.boot") version "3.4.1"
-    id("io.spring.dependency-management") version "1.1.7"
+    id("org.springframework.boot")
+    id("io.spring.dependency-management")
 }
 
 group = "team.lindo"
@@ -15,11 +15,22 @@ java {
 
 repositories {
     mavenCentral()
+    maven("https://jitpack.io")
+    maven("https://plugins.gradle.org/m2/")
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter")
+    // Spring
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-aop")
+    implementation("org.springframework.boot:spring-boot-starter-logging")
+    implementation("org.springframework:spring-tx")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+    // Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
