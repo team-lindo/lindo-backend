@@ -1,6 +1,7 @@
 package team.lindo.backend.presentation.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
@@ -12,12 +13,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 public abstract class SecurityConfigurationContract {
-    protected ObjectMapper objectMapper;
-
-    protected SecurityConfigurationContract(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
+    protected final ObjectMapper objectMapper;
 
     // Security 보안 공통 설정
     protected HttpSecurity configureCommonSecuritySettings(HttpSecurity http) throws Exception {
