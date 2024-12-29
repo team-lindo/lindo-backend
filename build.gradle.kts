@@ -30,8 +30,10 @@ dependencies {
 
     // Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    // Spring Security
+    implementation("org.springframework.boot:spring-boot-starter-security")
 }
 
 tasks.withType<Test> {
