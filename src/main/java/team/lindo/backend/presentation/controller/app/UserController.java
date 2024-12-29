@@ -4,16 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import team.lindo.backend.application.example.service.ExampleService;
+import team.lindo.backend.application.user.service.UserService;
 
 @RestController
-@RequestMapping("/api/v1/app/example")
+@RequestMapping("/api/v1/app/users")
 @RequiredArgsConstructor
-public class ExampleAppController {
-    private final ExampleService exampleService;
+public class UserController {
+    private final UserService userService;
 
-    @GetMapping("")
+    @GetMapping("/example")
     public String example() {
-        return exampleService.example();
+        return userService.example();
     }
 }
