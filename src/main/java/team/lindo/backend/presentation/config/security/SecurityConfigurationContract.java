@@ -41,7 +41,7 @@ public abstract class SecurityConfigurationContract {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOrigins(List.of("https://lindo.co.kr")); // origin 설정
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE")); // 허용할 HTTP method
-        corsConfiguration.setAllowedHeaders(List.of("X-FILENAME", "X-Requested-With", "Content-Type", "BAST", "Authorization", "isFace")); // 허용할 HTTP header
+        corsConfiguration.setAllowedHeaders(List.of("X-FILENAME", "X-Requested-With", "Content-Type", "Authorization")); // 허용할 HTTP header
         corsConfiguration.setAllowCredentials(true); // 쿠키를 주고 받을 수 있도록 설정
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
