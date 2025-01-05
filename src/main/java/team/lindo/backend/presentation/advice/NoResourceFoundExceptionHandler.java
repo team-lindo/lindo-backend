@@ -13,7 +13,7 @@ import team.lindo.backend.presentation.common.response.payload.FailureResponse;
 @Order(2)  // 숫자 낮을수록 우선순위 높음. 더 낮은 우선순위(1)의 핸들러 있을 경우 해당 핸들러 아후 실행.
 public class NoResourceFoundExceptionHandler {
 
-    @ExceptionHandler(NoResourceFoundException.class)
+    @ExceptionHandler(NoResourceFoundException.class)  // 요청 주소가 잘못된 경우 Spring Security가 뱉는 예외
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public FailureResponse.Response handleNoResourceFoundException(NoResourceFoundException exception) {
         exception.printStackTrace();
