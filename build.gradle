@@ -25,7 +25,7 @@ dependencies {
     // JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    runtimeOnly 'mysql:mysql-connector-java:8.0.33' // 최신 버전 확인 및 사용
+    runtimeOnly 'mysql:mysql-connector-java:8.0.33'
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'
