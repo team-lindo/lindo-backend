@@ -33,4 +33,25 @@ public class User extends BaseEntity {  // BaseEntity 필요 없나?
 //    private Closet closet;
 
     // List<Posting>, List<Comment>, List<Like>, List<Follow> 같은 것들은 필드로 두지 말고 query로 해결?
+
+    public User updateName(String name) {
+        if(name != null && !name.isBlank()) {
+            this.name = name;
+        }
+        return this;
+    }
+
+    public User updateNickName(String nickName) {
+        if(nickName != null && !nickName.isBlank()) {
+            this.nickName = nickName;
+        }
+        return this;
+    }
+
+    public User updateEmail(String email) {
+        if(email != null && !email.isBlank()) {
+            this.email = email;
+        }
+        return this;
+    }
 }

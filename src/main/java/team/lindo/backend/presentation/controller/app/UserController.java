@@ -13,9 +13,4 @@ import team.lindo.backend.application.user.service.UserService;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-
-    @GetMapping("/example")
-    public String example() {
-        return userService.example();
-    }
 }

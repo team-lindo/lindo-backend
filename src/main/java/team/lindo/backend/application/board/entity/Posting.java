@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.lindo.backend.application.common.entity.BaseEntity;
 import team.lindo.backend.application.product.entity.Product;
+import team.lindo.backend.application.social.entity.Comment;
+import team.lindo.backend.application.social.entity.Like;
 import team.lindo.backend.application.user.entity.User;
 
 import java.util.ArrayList;
@@ -38,10 +40,11 @@ public class Posting extends BaseEntity {
     @OneToMany(mappedBy = "posting", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PostingProduct> postingProducts = new HashSet<>();  // 게시물에 포함된 제품들 연결
 
-    // 밑에 있는 것들은 필드로 두지 말고 query로 처리?
-//    private List<Comment> comments = new ArrayList<>();
+    @OneToMany(mappedBy = "posting", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
-//    private List<Like> likes = new ArrayList<>();
+    @OneToMany(mappedBy = "posting", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Like> likes = new ArrayList<>();
 
 //    private List<Product> recommendations = new ArrayList<>();
 

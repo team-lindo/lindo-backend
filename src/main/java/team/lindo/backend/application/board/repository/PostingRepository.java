@@ -93,4 +93,40 @@ public interface PostingRepository extends JpaRepository<Posting, Long> {
        OR LOWER(p.content) LIKE LOWER(CONCAT('%', :keyword, '%'))
 """)
     List<Posting> searchByTitleOrContent(@Param("keyword") String keyword);
+
+    // 특정 사용자가 작성한 게시물들 조회
+    @Query("""
+        SELECT p 
+        FROM Posting p 
+        WHERE p.user.id = :userId
+    """)
+    List<Posting> findPostingsByUserId(@Param("userId") Long userId);
+
+    // 특정 사용자가 좋아요를 누른 게시물들 조회
+    @Query("""
+        SELECT DISTINCT p 
+        FROM Posting p 
+        JOIN p.likes l 
+        WHERE l.user.id = :userId
+    """)
+    List<Posting> findLikedPostingsByUserId(@Param("userId") Long userId);
+
+    // 특정 사용자가 댓글을 작성한 게시물들 조회
+    @Query("""
+        SELECT DISTINCT p 
+        FROM Posting p 
+        JOIN p.comments c 
+        WHERE c.user.id = :userId
+    """)
+    List<Posting> findCommentedPostingsByUserId(@Param("userId") Long userId);
+
+    // 특정 사용자가 팔로우하는 사람이 작성한 게시물들 조회
+    @Query("""
+        SELECT DISTINCT p 
+        FROM Posting p 
+        JOIN p.user u
+        JOIN Follow f ON f.following.id = u.id
+        WHERE f.follower.id = :userId
+    """)
+    List<Posting> findFollowingPostingsByUserId(@Param("userId") Long userId);
 }

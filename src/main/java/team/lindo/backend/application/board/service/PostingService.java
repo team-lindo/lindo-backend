@@ -93,4 +93,24 @@ public class PostingService {
     public List<Posting> getPostingsByProduct(Long productId) {
         return postingRepository.findByProductId(productId);
     }
+
+    // 특정 사용자가 작성한 게시물들 조회
+    public List<Posting> getPostingsByUser(Long userId) {
+        return postingRepository.findPostingsByUserId(userId);
+    }
+
+    // 특정 사용자가 좋아요를 누른 게시물들 조회
+    public List<Posting> getLikedPostingsByUser(Long userId) {
+        return postingRepository.findLikedPostingsByUserId(userId);
+    }
+
+    // 특정 사용자가 댓글을 작성한 게시물들 조회
+    public List<Posting> getCommentedPostingsByUser(Long userId) {
+        return postingRepository.findCommentedPostingsByUserId(userId);
+    }
+
+    // 특정 사용자가 팔로우한 사람이 작성한 게시물들 조회
+    public List<Posting> getFollowingPostingsByUser(Long userId) {
+        return postingRepository.findFollowingPostingsByUserId(userId);
+    }
 }
