@@ -14,10 +14,10 @@ public abstract class BaseEntity {
 
     @CreationTimestamp
     @Column(updatable = false, nullable = false)
-    private LocalDateTime created;
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updated;
+    private LocalDateTime updatedAt;
 
     @Column(nullable = true)
     private String createdBy;

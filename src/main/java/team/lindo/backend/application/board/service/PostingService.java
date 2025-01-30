@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team.lindo.backend.application.board.dto.UpdatePostingRequestDto;
 import team.lindo.backend.application.board.entity.Posting;
-import team.lindo.backend.application.board.repository.PostingRepository;
+import team.lindo.backend.application.board.repository.posting.PostingRepository;
 import team.lindo.backend.application.product.entity.Product;
 import team.lindo.backend.application.product.repository.ProductRepository;
 
