@@ -1,4 +1,4 @@
-package team.lindo.backend.application.Repository;
+package team.lindo.backend.application.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import team.lindo.backend.application.entity.Clothing;

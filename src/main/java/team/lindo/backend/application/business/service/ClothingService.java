@@ -1,21 +1,25 @@
 package team.lindo.backend.application.business.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import team.lindo.backend.application.Repository.ClothingRepository;
+import team.lindo.backend.application.repository.ClothingRepository;
 import team.lindo.backend.application.entity.Clothing;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClothingService {
+
     private final ClothingRepository clothingRepository;
 
+    @Autowired
     public ClothingService(ClothingRepository clothingRepository){
         this.clothingRepository = clothingRepository;
     }
 
     // 옷 저장 기능
-    public Clothing saveClothing(Clothing clothing) {
+    public Clothing addClothing(Clothing clothing) {
         return clothingRepository.save(clothing);
     }
 
@@ -29,8 +33,26 @@ public class ClothingService {
         return clothingRepository.findByCategory(category);
     }
 
-    // 특정 옷 상세 조회 기능
-    public Clothing getClothingById(Long id) {
-        return clothingRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("옷을 찾을 수 없습니다."));
+    // id로 옷 조회
+    public Optional<Clothing> getClothingById(Long id) {
+        return clothingRepository.findById(id);
+    }
+
+    // 옷 정보 수정
+    public Clothing updateClothing(Long id, Clothing clothingDetails) {
+        Clothing clothing = clothingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Clothing not found"));
+
+        clothing.setName(clothingDetails.getName());
+        clothing.setImageUrl(clothingDetails.getImageUrl());
+        clothing.setPrice(clothingDetails.getPrice());
+        clothing.setCategory(clothingDetails.getCategory());
+
+        return clothingRepository.save(clothing);
+    }
+
+    // 옷 삭제
+    public void deleteClothing(Long id) {
+        clothingRepository.deleteById(id);
     }
 }
