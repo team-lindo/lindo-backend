@@ -41,7 +41,7 @@ public class ClothingService {
     // 옷 정보 수정
     public Clothing updateClothing(Long id, Clothing clothingDetails) {
         Clothing clothing = clothingRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Clothing not found"));
+                .orElseThrow(() -> new RuntimeException("옷을 찾을 수 없습니다."));
 
         clothing.setName(clothingDetails.getName());
         clothing.setImageUrl(clothingDetails.getImageUrl());
