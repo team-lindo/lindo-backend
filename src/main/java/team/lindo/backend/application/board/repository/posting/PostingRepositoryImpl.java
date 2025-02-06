@@ -2,6 +2,7 @@ package team.lindo.backend.application.board.repository.posting;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import team.lindo.backend.application.board.entity.Posting;
 import team.lindo.backend.application.board.entity.QPosting;
@@ -31,6 +32,17 @@ public class PostingRepositoryImpl implements PostingCustomRepository {
                 .where(qProductCategory.id.categoryId.eq(categoryId))
                 .fetchJoin()
                 .distinct()
+                .fetch();
+    }
+
+    @Override
+    public List<Posting> searchByTitleOrContent(String keyword) {
+        return jpaQueryFactory
+                .selectFrom(qPosting)
+                .where(
+                        qPosting.title.lower().contains(keyword.toLowerCase())
+                                .or(qPosting.content.lower().contains(keyword.toLowerCase()))
+                )
                 .fetch();
     }
 }

@@ -71,7 +71,7 @@ public class PostingService {
 
     // 최신순 게시물 조회
     public List<Posting> getPostingsByLatest() {
-        return postingRepository.findAllByOrderByCreatedDesc();
+        return postingRepository.findAllByOrderByCreatedAtDesc();
     }
 
     // 좋아요 순서 게시물 조회
