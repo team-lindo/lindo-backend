@@ -39,6 +39,9 @@ public class User extends BaseEntity {  // BaseEntity 필요 없나?
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(name = "profileImageUrl")
+    private String profileImageUrl;
+
 //    @OneToOne
 //    @JoinColumn(name = )
 //    private Closet closet;
@@ -62,6 +65,13 @@ public class User extends BaseEntity {  // BaseEntity 필요 없나?
     public User updateEmail(String email) {
         if(email != null && !email.isBlank()) {
             this.email = email;
+        }
+        return this;
+    }
+
+    public User updateProfileImageUrl(String profileImageUrl) {
+        if(profileImageUrl != null && !profileImageUrl.isBlank()) {
+            this.profileImageUrl = profileImageUrl;
         }
         return this;
     }

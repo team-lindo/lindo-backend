@@ -33,6 +33,7 @@ public class UserService {
                 .password(passwordEncoder.encode(request.getRawPassword()))
                 .nickname(request.getNickname())
                 .role(Role.USER)
+                .profileImageUrl(request.getProfileImageUrl())
                 .build()
         );
     }
