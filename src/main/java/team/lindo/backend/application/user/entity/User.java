@@ -30,7 +30,7 @@ public class User extends BaseEntity {  // BaseEntity 필요 없나?
     @Column(name = "nickname", nullable = false)
     private String nickname;  // 사용자명
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "password", nullable = false)
@@ -46,9 +46,9 @@ public class User extends BaseEntity {  // BaseEntity 필요 없나?
 //    @JoinColumn(name = )
 //    private Closet closet;
 
-    // List<Posting>, List<Comment>, List<Like>, List<Follow> 같은 것들은 필드로 두지 말고 query로 해결?
+    //! List<Posting>, List<Comment>, List<Like>, List<Follow> 같은 것들은 필드로 두지 말고 query로 해결?
 
-//    public User updateName(String username) {
+//    public User updateName(String username) {  //! username도 변경 가능???
 //        if(username != null && !username.isBlank()) {
 //            this.username = username;
 //        }

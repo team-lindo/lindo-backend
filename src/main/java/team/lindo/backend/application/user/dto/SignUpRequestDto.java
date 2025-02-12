@@ -2,9 +2,15 @@ package team.lindo.backend.application.user.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor  // Json 데이터 받을 때 기본 생성자 필수
+@AllArgsConstructor
+@Builder
 public class SignUpRequestDto {
 
     @NotBlank(message = "아이디는 필수 입력값입니다.")
