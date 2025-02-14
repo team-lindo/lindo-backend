@@ -5,84 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f70e595a-50c2-47c0-bb54-14776c0bc384" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/lindo-backend/src/main/java/team/lindo/backend/application/wardrobe/dto/ClothingResponseDto.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/lindo-backend/src/main/java/team/lindo/backend/application/wardrobe/entity/Category.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/lindo-backend/src/main/java/team/lindo/backend/application/wardrobe/entity/Clothing.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/lindo-backend/src/main/java/team/lindo/backend/application/wardrobe/repository/ClothingRepository.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/lindo-backend/src/main/java/team/lindo/backend/application/wardrobe/service/ClothingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.dockerignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" afterPath="$PROJECT_DIR$/.gitattributes" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/prod-build.pipeline.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/LindoBackendApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/board/dto/PostRequestDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/board/dto/PostingResponseDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/board/dto/UpdatePostingRequestDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/board/entity/Posting.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/board/entity/PostingProduct.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/board/entity/PostingProductId.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/board/repository/posting/PostingCustomRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/board/repository/posting/PostingRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/board/repository/posting/PostingRepositoryImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/board/service/PostingService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/common/entity/BaseEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/common/exception/BusinessException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/common/exception/PaymentBusinessException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/product/entity/Category.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/product/entity/Product.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/product/entity/ProductCategory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/product/entity/ProductCategoryId.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/product/repository/ProductRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/product/service/ProductService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/social/entity/Comment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/social/entity/Follow.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/social/entity/Like.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/social/repository/comment/CommentRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/social/repository/follow/FollowCustomRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/social/repository/follow/FollowRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/social/repository/follow/FollowRepositoryImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/social/repository/like/LikeCustomRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/social/repository/like/LikeRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/social/repository/like/LikeRepositoryImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/social/service/CommentService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/social/service/FollowService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/social/service/LikeService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/user/dto/SignUpRequestDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/user/dto/UserSummaryDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/user/entity/Role.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/user/entity/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/user/repository/UserRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/user/security/CustomUserDetails.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/user/security/UserDetailService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/application/user/service/UserService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/common/extensions/objectMapper/ObjectMapperExtension.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/presentation/advice/BusinessExceptionHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/presentation/advice/GlobalExceptionHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/presentation/advice/NoResourceFoundExceptionHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/presentation/advice/ValidationExceptionHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/presentation/common/response/ResponseCode.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/presentation/common/response/ResponseGenerator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/presentation/common/response/payload/FailureResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/presentation/common/response/payload/SuccessResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/presentation/config/app/LindoAppConfiguration.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/presentation/config/security/SecurityConfigurationContract.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/presentation/config/security/app/AppSecurityConfiguration.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/presentation/config/security/publics/PublicSecurityConfiguration.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/presentation/controller/HealthCheckController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/presentation/controller/app/PostingController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/team/lindo/backend/presentation/controller/app/UserController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/example.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/team/lindo/backend/LindoBackendApplicationTests.java" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/lindo-backend/src/main/java/team/lindo/backend/presentation/controller/app/ClothingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lindo-backend" beforeDir="false" afterPath="$PROJECT_DIR$/lindo-backend" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +63,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/whddn/capstone/lindo-backend/src/main/java/team/lindo/backend/application/wardrobe",
+    "last_opened_file_path": "C:/Users/whddn/capstone/lindo-backend/src/main/java/team/lindo/backend/presentation/controller/app",
     "project.structure.last.edited": "모듈",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
@@ -143,6 +72,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\whddn\capstone\lindo-backend\src\main\java\team\lindo\backend\presentation\controller\app" />
       <recent name="C:\Users\whddn\capstone\lindo-backend\src\main\java\team\lindo\backend\application\wardrobe" />
       <recent name="C:\Users\whddn\capstone\lindo-backend\src\main\java\team\lindo\backend\application\wardrobe\entity" />
       <recent name="C:\Users\whddn\capstone\lindo-backend\src\main\java\team\lindo\backend\application\wardrobe\dto" />
