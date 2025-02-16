@@ -33,14 +33,6 @@ public class Product {
 
     private String brand;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<PostingProduct> postingProducts = new HashSet<>();
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ProductCategory> productCategories = new HashSet<>();
-
-    // Category는 query로 해결?
-
     // 개별 프로퍼티 변경 메서드
     public Product changeName(String name) {
         if (name != null && !name.isBlank()) {
