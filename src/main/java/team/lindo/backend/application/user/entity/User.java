@@ -24,8 +24,8 @@ public class User extends BaseEntity {  // BaseEntity 필요 없나?
 //    @JoinColumn(name = )
 //    private LogInfo logInfo;  // 반대편에 @OneToOne(mappedBy="logInfo")
 
-    @Column(name = "username", nullable = false, unique = true)
-    private String username;  // 아이디
+//    @Column(name = "username", nullable = false, unique = true)
+//    private String username;  //! 아이디 -> 이메일 로그인 방식이니 필요 X?
 
     @Column(name = "nickname", nullable = false)
     private String nickname;  // 사용자명

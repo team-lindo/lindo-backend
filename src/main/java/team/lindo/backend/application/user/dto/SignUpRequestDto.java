@@ -13,8 +13,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class SignUpRequestDto {
 
-    @NotBlank(message = "아이디는 필수 입력값입니다.")
-    private String username;  //! 기타 제약 추가하기 ex) 길이, 첫 글자 대문자, 필수 조합 등등...
+    // 이메일 로그인 방식 -> 아이디 필요 X?
+//    @NotBlank(message = "아이디는 필수 입력값입니다.")
+//    private String username;  //! 기타 제약 추가하기 ex) 길이, 첫 글자 대문자, 필수 조합 등등...
 
     @NotBlank(message = "사용자명은 필수 입력값입니다.")
     private String nickname;
@@ -25,6 +26,4 @@ public class SignUpRequestDto {
 
     @NotBlank(message = "비밀번호는 필수 입력값입니다.")
     private String rawPassword;
-
-    private String profileImageUrl;
 }

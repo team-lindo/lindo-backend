@@ -40,17 +40,15 @@ public class UserService {
 
     //! createUser 메서드 없애고 이거 사용해야 하나???
     public void registerUser(SignUpRequestDto request) {
-        if(userRepository.existsByUsername(request.getUsername())) {
+        if(userRepository.existsByEmail(request.getEmail())) {
             throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
         }
 
         userRepository.save(User.builder()
-                .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getRawPassword()))
                 .nickname(request.getNickname())
                 .role(Role.USER)
-                .profileImageUrl(request.getProfileImageUrl())
                 .build()
         );
     }

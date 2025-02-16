@@ -45,11 +45,9 @@ class UserControllerTest {
     @DisplayName("회원가입 테스트 - 성공")
     void 회원가입_성공() throws Exception {
         SignUpRequestDto request = SignUpRequestDto.builder()
-                .username("kms123")
                 .nickname("msms")
                 .email("kms@example.com")
                 .rawPassword("expw123")
-                .profileImageUrl("www.testimage.com")
                 .build();
 
         mockMvc.perform(post("/user/signup")
