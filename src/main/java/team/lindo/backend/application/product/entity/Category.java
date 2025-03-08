@@ -31,4 +31,15 @@ public class Category {
     private List<Category> children = new ArrayList<>(); // 자식 카테고리 목록
 
     private int depth; // 카테고리 깊이
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ProductCategory> productCategories = new HashSet<>();
+
+    public Category findTopLevelCategory() {
+        Category current = this;
+        while(current.getParent() != null) {
+            current = current.getParent();
+        }
+        return current;
+    }
 }

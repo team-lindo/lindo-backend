@@ -70,7 +70,6 @@ class UserControllerTest {
                 .id(1L)
                 .email("kms@example.com")
                 .nickname("kms")
-                .posts(Collections.emptyList())
                 .followings(Collections.emptyList())
                 .followers(Collections.emptyList())
                 .build();

@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import team.lindo.backend.application.board.dto.PostRequestDto;
+import team.lindo.backend.application.board.dto.CreatePostingRequestDto;
 import team.lindo.backend.application.board.dto.PostingSummaryDto;
 import team.lindo.backend.application.board.dto.UpdatePostingRequestDto;
 import team.lindo.backend.application.board.entity.Posting;
@@ -22,7 +22,7 @@ public class PostingController {
 //    private final S3Service s3Service;  // AWS S3 사용 -> 나중에 추가 필요 (이미지 업로드)
 
     @PostMapping("/create/posting")
-    public ResponseEntity<PostingSummaryDto> createPosting(@RequestBody PostRequestDto request, @AuthenticationPrincipal User user) {
+    public ResponseEntity<PostingSummaryDto> createPosting(@RequestBody CreatePostingRequestDto request, @AuthenticationPrincipal User user) {
         Posting posting = postingService.createPosting(request, user);  //? @AuthenticationPrincipal 뭔지 알아보기
         return ResponseEntity.ok(new PostingSummaryDto(posting));
     }

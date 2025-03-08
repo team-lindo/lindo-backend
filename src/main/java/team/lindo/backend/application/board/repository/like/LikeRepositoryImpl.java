@@ -1,9 +1,9 @@
-package team.lindo.backend.application.social.repository.like;
+package team.lindo.backend.application.board.repository.like;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import team.lindo.backend.application.social.entity.Like;
+import team.lindo.backend.application.board.entity.Like;
 import team.lindo.backend.application.social.entity.QLike;
 
 import java.util.Optional;

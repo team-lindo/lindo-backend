@@ -21,7 +21,7 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 public class PostingRepositoryImpl implements PostingCustomRepository {
-    private final JPAQueryFactory jpaQueryFactory;
+    private final JPAQueryFactory jpaQueryFactory;  
 
     private final QPosting qPosting = QPosting.posting;
     private final QPostingProduct qPostingProduct = QPostingProduct.postingProduct;

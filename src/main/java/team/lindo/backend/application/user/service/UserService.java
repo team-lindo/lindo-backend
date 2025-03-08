@@ -83,14 +83,12 @@ public class UserService {
         User user = userRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
 
-        List<Posting> userPostings =  postingRepository.findByUserId(user.getId());
-
         List<Follow> followings = followRepository.findByFollowerId(user.getId());
         List<Follow> followers = followRepository.findByFollowingId(user.getId());
 
 //        String token = jwtTokenProvider.generateToken(user);  //! JWT 토큰 발급
 
-        return new LoginResponseDto(user, userPostings, followings, followers);
+        return new LoginResponseDto(user, followings, followers);
     }
 
     public void logout() {  //! JWT 기반 인증으로 수정 시 토큰을 삭제하는 방식으로 바꿔야 함

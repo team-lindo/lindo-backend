@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import team.lindo.backend.application.board.dto.PostRequestDto;
+import team.lindo.backend.application.board.dto.CreatePostingRequestDto;
 import team.lindo.backend.application.board.dto.PostingSummaryDto;
 import team.lindo.backend.application.board.dto.UpdatePostingRequestDto;
 import team.lindo.backend.application.board.entity.Posting;
@@ -24,13 +24,13 @@ public class PostingService {
     private final ProductRepository productRepository;
 
     // CR
-    public Posting createPosting(PostRequestDto request, User user) {
+    public Posting createPosting(CreatePostingRequestDto request, User user) {
         return postingRepository.save(
                 Posting.builder()
                         .user(user)
                         .title(request.getTitle())
                         .content(request.getContent())
-                        .imageUrl(request.getImageUrl())
+                        .imageUrls(request.getImageUrls())
                         .build()
         );  //! Posting의 다른 연관관계 필드들은? 이렇게만 생성하면 게시물에 제품(정보)들 없는 꼴 아닌가?
     }
@@ -53,8 +53,8 @@ public class PostingService {
         }
 
         // 이미지 URL 수정
-        if (request.getImageUrl() != null && !request.getImageUrl().isBlank()) {
-            posting.updateImageUrl(request.getImageUrl());
+        if (request.getImageUrls() != null && !request.getImageUrls().isEmpty()) {
+            posting.updateImageUrls(request.getImageUrls());
         }
 
         // 연결된 제품 수정
