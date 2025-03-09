@@ -32,16 +32,16 @@ phases:
       - echo "PreBuild Phase completed..."
 
       - echo "Resolving IMAGE_TAG..."
-      - export IMAGE_TAG=$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - export IMAGE_TAG=$ECR_REPO_URL:$CODEBUILD_RESOLVED_SOURCE_VERSION
       - echo "image tag is $IMAGE_TAG"
   build:
     commands:
       - echo "Build Phase start..."
       - docker build -t lindo-backend:latest .
       - echo "Retag docker image"
-      - docker tag lindo-backend:latest $ECR_REPO_URL:$IMAGE_TAG
-      # debug
-      - docker images
+      - docker tag lindo-backend:latest $IMAGE_TAG
+      - echo "Docker Push to ECR (Elastic Container Registry)"
+      - docker push $IMAGE_TAG
   post_build:
     commands:
       - echo "Post Build"
