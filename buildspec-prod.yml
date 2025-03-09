@@ -10,6 +10,9 @@ env:
     PROD_YML_SECRET_MANAGER_KEY: lindo-application-prod-yml
     MAIN_YML_SECRET_MANAGER_KEY: lindo-application-yml
 
+    # Image Tag
+    IMAGE_TAG: "${CODEBUILD_RESOLVED_SOURCE_VERSION}"
+
 phases:
   install:
     runtime-versions:
@@ -34,6 +37,9 @@ phases:
     commands:
       - echo "Build Phase start..."
       - docker build -t lindo-backend:latest .
+      - echo "Retag docker image"
+      - docker tag kapi-batch:latest ${{ secrets.BATCH_ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+      - docker tag lindo-backend:latest ${060795912936.dkr.ecr.ap-northeast-2.amazonaws.com/lindo/backend}:${IMAGE_TAG}
       # debug
       - docker images
   post_build:
