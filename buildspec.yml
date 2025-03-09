@@ -1,0 +1,28 @@
+version: 0.2
+
+env:
+  variables:
+    ECR_REPO_URL: 060795912936.dkr.ecr.ap-northeast-2.amazonaws.com/lindo/backend
+    AWS_DEFAULT_REGION: ap-northeast-2
+    AWS_ACCOUNT_ID: 060795912936
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto21
+    commands:
+      - apt-get update -y
+      - apt-get install docker.io -y
+      - aws --version
+  pre_build:
+    commands:
+      - echo "Amazon ECR Login..."
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+  build:
+    commands:
+      - echo "Build"
+  post_build:
+    commands:
+      - echo "Post Build"
+artifacts:
+  files: imagedefinitions.json
