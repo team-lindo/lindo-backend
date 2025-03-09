@@ -1,0 +1,42 @@
+version: 0.2
+
+env:
+  variables:
+    ECR_REPO_URL: 060795912936.dkr.ecr.ap-northeast-2.amazonaws.com/lindo/backend
+    AWS_DEFAULT_REGION: ap-northeast-2
+    AWS_ACCOUNT_ID: 060795912936
+
+    # Secrets Manager
+    PROD_YML_SECRET_MANAGER_KEY: lindo-application-prod-yml
+    MAIN_YML_SECRET_MANAGER_KEY: lindo-application-yml
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto21
+    commands:
+      - apt-get update -y
+      - apt-get install docker.io -y
+      - aws --version
+  pre_build:
+    commands:
+      - echo "Amazon ECR Login..."
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - echo "Setting production environment"
+      - mkdir -p ./src/main/resources
+      - aws secretsmanager get-secret-value --secret-id $MAIN_YML_SECRET_MANAGER_KEY --query 'SecretString' --output text > ./src/main/resources/application.yml
+      - aws secretsmanager get-secret-value --secret-id $PROD_YML_SECRET_MANAGER_KEY --query 'SecretString' --output text > ./src/main/resources/application-prod.yml
+      # application.yml 의 active 정보 수정
+      - | 
+        sed -i "s/active: local/active: dev/" ./src/main/resources/application.yml
+      # debug
+      - cat ./src/main/resources/application-prod.yml
+      - cat ./src/main/resources/application.yml
+  build:
+    commands:
+      - echo "Build"
+  post_build:
+    commands:
+      - echo "Post Build"
+artifacts:
+  files: imagedefinitions.json
