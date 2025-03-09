@@ -28,13 +28,14 @@ phases:
       - aws secretsmanager get-secret-value --secret-id $PROD_YML_SECRET_MANAGER_KEY --query 'SecretString' --output text > ./src/main/resources/application-prod.yml
       # application.yml 의 active 정보 수정
       - | 
-        sed -i "s/active: local/active: dev/" ./src/main/resources/application.yml
-      # debug
-      - cat ./src/main/resources/application-prod.yml
-      - cat ./src/main/resources/application.yml
+        sed -i "s/active: local/active: prod/" ./src/main/resources/application.yml
+      - echo "PreBuild Phase completed..."
   build:
     commands:
-      - echo "Build"
+      - echo "Build Phase start..."
+      - docker build -t lindo-backend:latest .
+      # debug
+      - docker images
   post_build:
     commands:
       - echo "Post Build"
