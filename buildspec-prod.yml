@@ -10,9 +10,6 @@ env:
     PROD_YML_SECRET_MANAGER_KEY: lindo-application-prod-yml
     MAIN_YML_SECRET_MANAGER_KEY: lindo-application-yml
 
-    # Image Tag
-    IMAGE_TAG: "${CODEBUILD_RESOLVED_SOURCE_VERSION}"
-
 phases:
   install:
     runtime-versions:
@@ -33,6 +30,10 @@ phases:
       - | 
         sed -i "s/active: local/active: prod/" ./src/main/resources/application.yml
       - echo "PreBuild Phase completed..."
+
+      - echo "Resolving IMAGE_TAG..."
+      - export IMAGE_TAG=$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - echo "image tag is $IMAGE_TAG"
   build:
     commands:
       - echo "Build Phase start..."
