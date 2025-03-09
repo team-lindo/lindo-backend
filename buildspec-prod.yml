@@ -38,7 +38,6 @@ phases:
       - echo "Build Phase start..."
       - docker build -t lindo-backend:latest .
       - echo "Retag docker image"
-      - docker tag kapi-batch:latest ${{ secrets.BATCH_ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
       - docker tag lindo-backend:latest ${060795912936.dkr.ecr.ap-northeast-2.amazonaws.com/lindo/backend}:${IMAGE_TAG}
       # debug
       - docker images
