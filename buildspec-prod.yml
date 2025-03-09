@@ -65,8 +65,7 @@ phases:
             del(.revision, .status, .compatibilities, .requiresAttributes, .registeredBy, .registeredAt, .taskDefinitionArn)
         ' > modified-task-definition.json
       - echo "Register new task definition"
-      - NEW_TASK_DEF_ARN=$(aws ecs register-task-definition --cli-input-json file://modified-task-definition.json --query 'taskDefinition.taskDefinitionArn' --output text)
-      - export LATEST_TASK_DEF_ARN=$NEW_TASK_DEF_ARN
+      - export NEW_TASK_DEF_ARN=$(aws ecs register-task-definition --cli-input-json file://modified-task-definition.json --query 'taskDefinition.taskDefinitionArn' --output text)
       - echo "ARN for new API task definition: $NEW_TASK_DEF_ARN"
 
   post_build:
