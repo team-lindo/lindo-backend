@@ -10,6 +10,9 @@ env:
     PROD_YML_SECRET_MANAGER_KEY: lindo-application-prod-yml
     MAIN_YML_SECRET_MANAGER_KEY: lindo-application-yml
 
+    # task definition name
+    TASK_DEFINITION_NAME: lindo-backend-prod
+
 phases:
   install:
     runtime-versions:
@@ -36,12 +39,36 @@ phases:
       - echo "image tag is $IMAGE_TAG"
   build:
     commands:
+      # Docker Build
       - echo "Build Phase start..."
       - docker build -t lindo-backend:latest .
+      # Docker Retag
       - echo "Retag docker image"
       - docker tag lindo-backend:latest $IMAGE_TAG
+      # Docker Push
       - echo "Docker Push to ECR (Elastic Container Registry)"
       - docker push $IMAGE_TAG
+      # Fetch Task Definition
+      - echo "Fetch latest ECS Task Definition from AWS"
+      - aws ecs describe-task-definition --task-definition $TASK_DEFINITION_NAME --query 'taskDefinition' > latest-task-definition.json
+      - cat ./latest-task-definition.json
+      - |
+        jq --arg image $IMAGE_TAG '
+            .containerDefinitions |= map(
+            if .name == "api" then
+                .image = $image
+            else
+               .
+            end
+            )
+        ' latest-task-definition.json | jq '
+            del(.revision, .status, .compatibilities, .requiresAttributes, .registeredBy, .registeredAt, .taskDefinitionArn)
+        ' > modified-task-definition.json
+      - echo "Register new task definition"
+      - NEW_TASK_DEF_ARN=$(aws ecs register-task-definition --cli-input-json file://modified-task-definition.json --query 'taskDefinition.taskDefinitionArn' --output text)
+      - export LATEST_TASK_DEF_ARN=$NEW_TASK_DEF_ARN
+      - echo "ARN for new API task definition: $NEW_TASK_DEF_ARN"
+
   post_build:
     commands:
       - echo "Post Build"
