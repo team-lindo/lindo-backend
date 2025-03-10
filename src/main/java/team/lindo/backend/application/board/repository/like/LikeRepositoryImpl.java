@@ -4,7 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import team.lindo.backend.application.board.entity.Like;
-import team.lindo.backend.application.social.entity.QLike;
+import team.lindo.backend.application.board.entity.QLike;
 
 import java.util.Optional;
 
