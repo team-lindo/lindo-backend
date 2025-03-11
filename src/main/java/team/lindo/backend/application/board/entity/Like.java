@@ -1,4 +1,4 @@
-package team.lindo.backend.application.social.entity;
+package team.lindo.backend.application.board.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -35,7 +35,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // Testing
+    testImplementation 'com.tngtech.archunit:archunit:1.1.0'  // 패키지 의존성 검증 위한 ArchUnit 의존성
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
 
     //QueryDsl
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
@@ -50,4 +54,8 @@ tasks.withType(Copy) {
 
 tasks.withType(Jar) {
     setDuplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
 }

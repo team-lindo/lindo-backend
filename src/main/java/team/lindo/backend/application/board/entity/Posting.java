@@ -7,11 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.lindo.backend.application.common.entity.BaseEntity;
 import team.lindo.backend.application.product.entity.Product;
-import team.lindo.backend.application.social.entity.Comment;
-import team.lindo.backend.application.social.entity.Like;
 import team.lindo.backend.application.user.entity.User;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,16 +32,13 @@ public class Posting extends BaseEntity {
     @Lob
     private String content;  // 본문 -> 대용량 데이터 될 수 있으니 @Lob? (CLOB)
 
-    private String imageUrl;  // 이미지 파일 경로. (로컬 서버 디렉토리 혹은 클라우드 스토리지에 이미지 파일 저장, 해당 경로)
+    @ElementCollection
+    @CollectionTable(name = "posting_images", joinColumns = @JoinColumn(name = "posting_id"))
+    @Column(name = "image_url")
+    private List<String> imageUrls;  // 이미지 파일 경로. (로컬 서버 디렉토리 혹은 클라우드 스토리지에 이미지 파일 저장, 해당 경로)
 
     @OneToMany(mappedBy = "posting", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PostingProduct> postingProducts = new HashSet<>();  // 게시물에 포함된 제품들 연결
-
-    @OneToMany(mappedBy = "posting", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "posting", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Like> likes = new ArrayList<>();
 
 //    private List<Product> recommendations = new ArrayList<>();
 
@@ -60,9 +54,10 @@ public class Posting extends BaseEntity {
         }
     }
 
-    public void updateImageUrl(String imageUrl) {
-        if (imageUrl != null && !imageUrl.isBlank()) {
-            this.imageUrl = imageUrl;
+    public void updateImageUrls(List<String> imageUrls) {
+        this.imageUrls.clear();
+        if(imageUrls != null) {
+            this.imageUrls.addAll(imageUrls);
         }
     }
 
