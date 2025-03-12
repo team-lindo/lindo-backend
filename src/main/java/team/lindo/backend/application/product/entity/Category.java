@@ -42,4 +42,12 @@ public class Category {
         }
         return current;
     }
+
+    public Category getRootCategory() {
+        Category current = this;
+        while (current.getParent() != null) {
+            current = current.getParent();
+        }
+        return current;
+    }
 }
