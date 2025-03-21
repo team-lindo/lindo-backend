@@ -23,23 +23,23 @@ public class Category {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id") // 부모 카테고리를 참조
-    private Category parent;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "parent_id") // 부모 카테고리를 참조
+//    private Category parent;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
-    private List<Category> children = new ArrayList<>(); // 자식 카테고리 목록
+//    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+//    private List<Category> children = new ArrayList<>(); // 자식 카테고리 목록
 
-    private int depth; // 카테고리 깊이
+//    private int depth; // 카테고리 깊이
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ProductCategory> productCategories = new HashSet<>();
+//    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private Set<ProductCategory> productCategories = new HashSet<>();
 
-    public Category findTopLevelCategory() {
-        Category current = this;
-        while(current.getParent() != null) {
-            current = current.getParent();
-        }
-        return current;
-    }
+//    public Category findTopLevelCategory() {
+//        Category current = this;
+//        while(current.getParent() != null) {
+//            current = current.getParent();
+//        }
+//        return current;
+//    }
 }
