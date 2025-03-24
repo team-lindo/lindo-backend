@@ -3,6 +3,7 @@ package team.lindo.backend.application.wardrobe.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.lindo.backend.application.product.service.ProductMatchScorer;
 import team.lindo.backend.application.wardrobe.dto.WardrobeProductDto;
 import team.lindo.backend.application.wardrobe.entity.Wardrobe;
 import team.lindo.backend.application.wardrobe.entity.WardrobeProduct;
@@ -34,7 +35,8 @@ public class WardrobeService {
 
         return wardrobeProducts.stream()
                 .collect(Collectors.groupingBy(
-                        wp -> wp.getCategory().getRootCategory().getName(), // ✅ 최상위 카테고리로 그룹화
+//                        wp -> wp.getCategory().getRootCategory().getName(), // ✅ 최상위 카테고리로 그룹화
+                        wp -> wp.getCategory().getName(), // api용 카테고리
                         Collectors.mapping(this::convertToDto, Collectors.toList())
                 ));
     }
@@ -66,12 +68,15 @@ public class WardrobeService {
         }
 
         // 최상위 카테고리 자동 매핑
-        Category rootCategory = category.getRootCategory();
+        //Category rootCategory = category.getRootCategory();
+
+        //api용 카테고리 매핑
 
         WardrobeProduct wardrobeProduct = WardrobeProduct.builder()
                 .wardrobe(wardrobe)
                 .product(product)
-                .category(rootCategory)
+                //.category(rootCategory)
+                .category(category) // api용 카테고리
                 .build();
 
         wardrobeProductRepository.save(wardrobeProduct);
@@ -91,7 +96,9 @@ public class WardrobeService {
                 wardrobeProduct.getProduct().getId(),
                 wardrobeProduct.getProduct().getName(),
                 wardrobeProduct.getProduct().getImageUrl(),
-                wardrobeProduct.getCategory().getRootCategory().getName() //  최상위 카테고리 적용
+               // wardrobeProduct.getCategory().getRootCategory().getName() //  최상위 카테고리 적용
+                wardrobeProduct.getCategory().getName() // api용 카테고리
+
         );
     }
 }

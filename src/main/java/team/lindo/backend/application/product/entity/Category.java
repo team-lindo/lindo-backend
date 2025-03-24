@@ -23,7 +23,7 @@ public class Category {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    /*@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id") // 부모 카테고리를 참조
     private Category parent;
 
@@ -49,5 +49,5 @@ public class Category {
             current = current.getParent();
         }
         return current;
-    }
+    }*/
 }
