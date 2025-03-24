@@ -30,7 +30,7 @@ public class WardrobeService {
     private final CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
-    public Map<String, List<WardrobeProductDto>> getProductsGroupedByRootCategory(Long wardrobeId) {
+    public Map<String, List<WardrobeProductDto>> getProductsGroupedByCategory(Long wardrobeId) {
         List<WardrobeProduct> wardrobeProducts = wardrobeProductRepository.findByWardrobeId(wardrobeId);
 
         return wardrobeProducts.stream()

@@ -21,7 +21,7 @@ public class WardrobeController {
     @GetMapping("/{wardrobeId}/products/grouped")
     public ResponseEntity<Map<String, List<WardrobeProductDto>>> getWardrobeProductsGrouped(
             @PathVariable Long wardrobeId) {
-        return ResponseEntity.ok(wardrobeService.getProductsGroupedByRootCategory(wardrobeId));
+        return ResponseEntity.ok(wardrobeService.getProductsGroupedByCategory(wardrobeId));
     }
 
     //  옷 상세 조회
