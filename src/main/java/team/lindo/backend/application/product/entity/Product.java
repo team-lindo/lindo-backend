@@ -27,9 +27,9 @@ public class Product {
 
     private Double price;
 
-//    private String color;  //! api 제공 X
+  //  private String color;
 
-//    private String size;  //! api 제공 X
+  //  private String size;
 
     private String brand;
 
@@ -43,8 +43,8 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<ProductCategory> productCategories = new HashSet<>(); // 다대다 관계 매핑
+   // @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+   //  private Set<ProductCategory> productCategories = new HashSet<>(); // 다대다 관계 매핑
 
     // 개별 프로퍼티 변경 메서드
     public Product changeName(String name) {
@@ -74,7 +74,7 @@ public class Product {
 //        }
 //        return this;
 //    }
-
+//
 //    public Product changeSize(String size) {
 //        if (size != null && !size.isBlank()) {
 //            this.size = size;
@@ -94,29 +94,6 @@ public class Product {
             this.gender = gender;
         }
         return this;
-    }
-
-    public Product changeSiteUrl(String siteUrl) {
-        if(siteUrl != null && !siteUrl.isBlank()) {
-            this.siteUrl = siteUrl;
-        }
-        return this;
-    }
-
-    public Product changeCategory(Category category) {  //! 이렇게 해도 되나??? 안 될 것 같은데...
-        if(category != null) {
-            this.category = category;
-        }
-        return this;
-    }
-
-//    public Set<Category> getCategories() {
-//        return productCategories.stream()
-//                .map(ProductCategory::getCategory)
-//                .collect(Collectors.toSet());
-//    }
-    public Category getCategory() {
-        return this.category;
     }
 }
 
