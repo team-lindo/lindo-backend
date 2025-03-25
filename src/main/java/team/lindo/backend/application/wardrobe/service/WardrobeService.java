@@ -3,6 +3,8 @@ package team.lindo.backend.application.wardrobe.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.lindo.backend.application.matcher.ProductMatchScorer;
+import team.lindo.backend.application.product.dto.ProductSearchDto;
 import team.lindo.backend.application.wardrobe.dto.WardrobeProductDto;
 import team.lindo.backend.application.wardrobe.entity.Wardrobe;
 import team.lindo.backend.application.wardrobe.entity.WardrobeProduct;
@@ -13,7 +15,7 @@ import team.lindo.backend.application.product.repository.CategoryRepository;
 import team.lindo.backend.application.product.entity.Product;
 import team.lindo.backend.application.product.entity.Category;
 
-
+import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,6 +29,7 @@ public class WardrobeService {
     private final WardrobeProductRepository wardrobeProductRepository;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ProductMatchScorer matchScorer;
 
     @Transactional(readOnly = true)
     public Map<String, List<WardrobeProductDto>> getProductsGroupedByCategory(Long wardrobeId) {
@@ -87,6 +90,19 @@ public class WardrobeService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 옷을 찾을 수 없습니다."));
 
         wardrobeProductRepository.delete(wardrobeProduct);
+    }
+
+    // 옷장에 옷 검색 기능
+    @Transactional(readOnly = true)
+    public List<ProductSearchDto> searchProductsInWardrobe(Long wardrobeId, String query) {
+        List<WardrobeProduct> wardrobeProducts = wardrobeProductRepository.findByWardrobeId(wardrobeId);
+
+        return wardrobeProducts.stream()
+                .map(wp -> new AbstractMap.SimpleEntry<>(wp.getProduct(), matchScorer.calculateMatchScore(wp.getProduct(), query)))
+                .filter(entry -> entry.getValue() > 0)
+                .sorted((a, b) -> b.getValue() - a.getValue()) // 유사도 높은 순 정렬
+                .map(entry -> ProductSearchDto.from(entry.getKey()))
+                .collect(Collectors.toList()); // 전체 결과 반환
     }
 
     private WardrobeProductDto convertToDto(WardrobeProduct wardrobeProduct) {
