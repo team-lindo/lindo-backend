@@ -12,6 +12,7 @@ public class ProductSearchDto {
     private String brand;
     private String category;
     private String imageUrl;
+    private Long categoryId;
 
     public static ProductSearchDto from(Product p) {
         return ProductSearchDto.builder()
@@ -19,6 +20,7 @@ public class ProductSearchDto {
                 .name(p.getName())
                 .brand(p.getBrand())
                 .category(p.getCategory().getName())
+                .categoryId(p.getCategory().getId())
                 .imageUrl(p.getImageUrl())
                 .build();
     }

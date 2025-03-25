@@ -4,6 +4,7 @@ package team.lindo.backend.presentation.controller.app;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import team.lindo.backend.application.product.dto.ProductSearchDto;
 import team.lindo.backend.application.wardrobe.dto.WardrobeProductDto;
 import team.lindo.backend.application.wardrobe.service.WardrobeService;
 
@@ -45,5 +46,13 @@ public class WardrobeController {
     public ResponseEntity<Void> deleteProduct(@PathVariable Long wardrobeId, @PathVariable Long productId) {
         wardrobeService.deleteProductFromWardrobe(wardrobeId, productId);
         return ResponseEntity.ok().build();
+    }
+
+    //  옷장 안 옷 검색
+    @GetMapping("/{wardrobeId}/products/search")
+    public ResponseEntity<List<ProductSearchDto>> searchProductsInWardrobe(
+            @PathVariable Long wardrobeId,
+            @RequestParam String query) {
+        return ResponseEntity.ok(wardrobeService.searchProductsInWardrobe(wardrobeId, query));
     }
 }

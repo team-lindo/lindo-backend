@@ -3,6 +3,7 @@ package team.lindo.backend.application.product.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team.lindo.backend.application.product.dto.ProductSearchDto;
+import team.lindo.backend.application.matcher.ProductMatchScorer;
 import team.lindo.backend.application.product.repository.ProductRepository;
 
 import java.util.AbstractMap;
