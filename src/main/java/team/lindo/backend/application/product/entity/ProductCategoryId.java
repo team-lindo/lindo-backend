@@ -1,4 +1,3 @@
-/*
 package team.lindo.backend.application.product.entity;
 
 import jakarta.persistence.Embeddable;
@@ -31,4 +30,3 @@ public class ProductCategoryId implements Serializable {
         return Objects.hash(getProductId(), getCategoryId());
     }
 }
-*/

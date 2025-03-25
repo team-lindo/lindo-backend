@@ -1,11 +1,11 @@
-package team.lindo.backend.application.product.service;
+package team.lindo.backend.application.matcher;
 
 import org.springframework.stereotype.Component;
 import team.lindo.backend.application.product.entity.Product;
 
 @Component
-public class ProductMatchScorer {
-
+public class ProductMatchScorer implements MatchScorer<Product> {
+    @Override
     public int calculateMatchScore(Product product, String query) {
         int score = 0;
         String lowerQuery = query.toLowerCase();

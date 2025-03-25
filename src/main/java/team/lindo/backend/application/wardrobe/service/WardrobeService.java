@@ -3,7 +3,6 @@ package team.lindo.backend.application.wardrobe.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.lindo.backend.application.product.service.ProductMatchScorer;
 import team.lindo.backend.application.wardrobe.dto.WardrobeProductDto;
 import team.lindo.backend.application.wardrobe.entity.Wardrobe;
 import team.lindo.backend.application.wardrobe.entity.WardrobeProduct;
