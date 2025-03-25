@@ -27,18 +27,24 @@ public class Product {
 
     private Double price;
 
-    private String color;
+  //  private String color;
 
-    private String size;
+  //  private String size;
 
     private String brand;
 
     private String siteUrl;
 
-    private String description;
+    private String gender;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ProductCategory> productCategories = new HashSet<>(); // 다대다 관계 매핑
+  //  private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+   // @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+   //  private Set<ProductCategory> productCategories = new HashSet<>(); // 다대다 관계 매핑
 
     // 개별 프로퍼티 변경 메서드
     public Product changeName(String name) {
@@ -62,19 +68,19 @@ public class Product {
         return this;
     }
 
-    public Product changeColor(String color) {
-        if (color != null && !color.isBlank()) {
-            this.color = color;
-        }
-        return this;
-    }
-
-    public Product changeSize(String size) {
-        if (size != null && !size.isBlank()) {
-            this.size = size;
-        }
-        return this;
-    }
+//    public Product changeColor(String color) {
+//        if (color != null && !color.isBlank()) {
+//            this.color = color;
+//        }
+//        return this;
+//    }
+//
+//    public Product changeSize(String size) {
+//        if (size != null && !size.isBlank()) {
+//            this.size = size;
+//        }
+//        return this;
+//    }
 
     public Product changeBrand(String brand) {
         if (brand != null && !brand.isBlank()) {
@@ -82,12 +88,19 @@ public class Product {
         }
         return this;
     }
-
-    public Set<Category> getCategories() {
-        return productCategories.stream()
-                .map(ProductCategory::getCategory)
-                .collect(Collectors.toSet());
+    
+    public Product changeGender(String gender) {
+        if(gender != null && !gender.isBlank()) {
+            this.gender = gender;
+        }
+        return this;
     }
+
+//    public Set<Category> getCategories() {
+//        return productCategories.stream()
+//                .map(ProductCategory::getCategory)
+//                .collect(Collectors.toSet());
+//    }
 }
 
 /**
