@@ -39,6 +39,5 @@ out/
 # yml files
 application-*.yml
 
-
 # .env
 src/main/resources/db/.env

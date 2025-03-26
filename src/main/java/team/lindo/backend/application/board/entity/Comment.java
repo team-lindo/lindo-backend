@@ -40,6 +40,7 @@ public class Comment extends BaseEntity {
 
     // 답글 리스트 (자식 댓글들)
     @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Comment> childComments = new ArrayList<>();  // GPT
 
     // 댓글 생성 시 부모 댓글을 설정하는 메서드 (편의 메서드)
