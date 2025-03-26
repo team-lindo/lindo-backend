@@ -8,6 +8,7 @@ import team.lindo.backend.application.product.dto.ProductSearchDto;
 import team.lindo.backend.application.wardrobe.dto.WardrobeProductDto;
 import team.lindo.backend.application.wardrobe.entity.Wardrobe;
 import team.lindo.backend.application.wardrobe.entity.WardrobeProduct;
+import team.lindo.backend.application.wardrobe.entity.WardrobeProductId;
 import team.lindo.backend.application.wardrobe.repository.WardrobeProductRepository;
 import team.lindo.backend.application.wardrobe.repository.WardrobeRepository;
 import team.lindo.backend.application.product.repository.ProductRepository;
@@ -31,6 +32,8 @@ public class WardrobeService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductMatchScorer matchScorer;
+
+
 
     @Transactional(readOnly = true)
     public Map<String, List<WardrobeProductDto>> getProductsGroupedByCategory(Long wardrobeId) {
@@ -75,11 +78,13 @@ public class WardrobeService {
 
         //api용 카테고리 매핑
 
+        WardrobeProductId id = new WardrobeProductId(wardrobe.getId(), product.getId());
+
         WardrobeProduct wardrobeProduct = WardrobeProduct.builder()
+                .id(id)  //   id를 명시적으로 표현
                 .wardrobe(wardrobe)
                 .product(product)
-                //.category(rootCategory)
-                .category(category) // api용 카테고리
+                .category(category)
                 .build();
 
         wardrobeProductRepository.save(wardrobeProduct);
