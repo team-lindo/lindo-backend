@@ -21,6 +21,7 @@ public class ProductRequestDto {  //! 이 DTO 내용들로는 Product Entity 못
     private String siteUrl;
     //private String description;
     private String imageUrl;
+    private String gender;
 
     public ProductRequestDto(Product product) {
         this.name = product.getName();
@@ -29,6 +30,7 @@ public class ProductRequestDto {  //! 이 DTO 내용들로는 Product Entity 못
        // this.size = product.getSize();
         this.brand = product.getBrand();
         this.category = product.getCategory().getName();
+        this.gender = product.getGender();
 
         /*this.category = product.getCategories().stream()
                 .findFirst()  // 해당 제품이 속한 여러 카테고리 중 맨 처음 것 뽑는 형식 (특별한 기준 X)

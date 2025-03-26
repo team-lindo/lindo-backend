@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import team.lindo.backend.application.board.entity.*;
 import team.lindo.backend.application.product.entity.QProduct;
-import team.lindo.backend.application.product.entity.QProductCategory;
+import team.lindo.backend.application.product.entity.QCategory;
 import team.lindo.backend.application.social.entity.QFollow;
 import team.lindo.backend.application.user.entity.QUser;
 
@@ -22,7 +22,7 @@ public class PostingRepositoryImpl implements PostingCustomRepository {
     private final QPosting qPosting = QPosting.posting;
     private final QPostingProduct qPostingProduct = QPostingProduct.postingProduct;
     private final QProduct qProduct = QProduct.product;
-    private final QProductCategory qProductCategory = QProductCategory.productCategory;
+    private final QCategory qCategory = QCategory.category;
 
     private final QLike qLike = QLike.like;
     private final QComment qComment = QComment.comment;
@@ -32,14 +32,11 @@ public class PostingRepositoryImpl implements PostingCustomRepository {
 
     @Override
     public List<Posting> findPostingByCategoryId(Long categoryId) {
-        return jpaQueryFactory.select(qPosting)
-                .from(qPosting)
-                .join(qPosting.postingProducts)
-                .join(qPostingProduct.product)
-                .join(qProduct.productCategories)
-                .where(qProductCategory.id.categoryId.eq(categoryId))
-                .fetchJoin()
-                .distinct()
+        return jpaQueryFactory.selectDistinct(qPosting)
+                .join(qPosting.postingProducts, qPostingProduct)
+                .join(qPostingProduct.product, qProduct)
+                .join(qProduct.category, qCategory)
+                .where(qCategory.id.eq(categoryId))
                 .fetch();
     }
 
@@ -61,8 +58,8 @@ public class PostingRepositoryImpl implements PostingCustomRepository {
                 .from(qPosting)
                 .join(qPosting.postingProducts, qPostingProduct)
                 .join(qPostingProduct.product, qProduct)
-                .join(qProduct.productCategories, qProductCategory)
-                .where(qProductCategory.id.categoryId.eq(categoryId))
+                .join(qProduct.category, qCategory)
+                .where(qCategory.id.eq(categoryId))
                 .fetch();
     }
 
