@@ -16,6 +16,7 @@ import team.lindo.backend.application.product.repository.CategoryRepository;
 import team.lindo.backend.application.product.entity.Product;
 import team.lindo.backend.application.product.entity.Category;
 
+
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +41,7 @@ public class WardrobeService {
 
         return wardrobeProducts.stream()
                 .collect(Collectors.groupingBy(
-//                        wp -> wp.getCategory().getRootCategory().getName(), // ✅ 최상위 카테고리로 그룹화
+//                        wp -> wp.getCategory().getRootCategory().getName(), // 최상위 카테고리로 그룹화
                         wp -> wp.getCategory().getName(), // api용 카테고리
                         Collectors.mapping(this::convertToDto, Collectors.toList())
                 ));

@@ -45,18 +45,10 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
 
     //QueryDsl
-    implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
-    annotationProcessor 'com.querydsl:querydsl-apt:5.1.0:jakarta'
-    annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
-    annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
-}
-
-sourceSets {
-    main.java.srcDirs += 'build/generated/sources/annotationProcessor/java/main'
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.generatedSourceOutputDirectory = file('build/generated/sources/annotationProcessor/java/main')
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 }
 
 tasks.withType(Copy) {
@@ -70,4 +62,3 @@ tasks.withType(Jar) {
 tasks.named('test') {
     useJUnitPlatform()
 }
-
