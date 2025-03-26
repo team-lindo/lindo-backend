@@ -22,6 +22,7 @@ public class Wardrobe {
     private User user; // 옷장을 소유한 사용자
 
     @OneToMany(mappedBy = "wardrobe", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private Set<WardrobeProduct> wardrobeProducts = new HashSet<>(); // 옷장에 있는 제품들
 
     public Set<WardrobeProduct> getProductsByCategory(String categoryName) {

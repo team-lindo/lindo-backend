@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import team.lindo.backend.application.board.entity.*;
 import team.lindo.backend.application.product.entity.QCategory;
 import team.lindo.backend.application.product.entity.QProduct;
+import team.lindo.backend.application.product.entity.QCategory;
 import team.lindo.backend.application.social.entity.QFollow;
 import team.lindo.backend.application.user.entity.QUser;
 

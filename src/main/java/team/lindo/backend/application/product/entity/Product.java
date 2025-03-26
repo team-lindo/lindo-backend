@@ -95,6 +95,26 @@ public class Product {
         }
         return this;
     }
+
+    public Product changeSiteUrl(String siteUrl) {
+        if(siteUrl != null && !siteUrl.isBlank()) {
+            this.siteUrl = siteUrl;
+        }
+        return this;
+    }
+
+    public Product changeCategory(Category category) {  //! 이렇게 해도 되나??? 안 될 것 같은데...
+        if(category != null) {
+            this.category = category;
+        }
+        return this;
+    }
+
+//    public Set<Category> getCategories() {
+//        return productCategories.stream()
+//                .map(ProductCategory::getCategory)
+//                .collect(Collectors.toSet());
+//    }
 }
 
 /**

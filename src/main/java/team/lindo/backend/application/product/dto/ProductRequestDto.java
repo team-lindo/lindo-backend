@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.lindo.backend.application.product.entity.Category;
 import team.lindo.backend.application.product.entity.Product;
-import team.lindo.backend.application.product.entity.ProductCategory;
 
 @Getter
 @NoArgsConstructor
