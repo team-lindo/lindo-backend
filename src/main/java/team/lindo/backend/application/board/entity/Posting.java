@@ -38,6 +38,7 @@ public class Posting extends BaseEntity {
     private List<String> imageUrls;  // 이미지 파일 경로. (로컬 서버 디렉토리 혹은 클라우드 스토리지에 이미지 파일 저장, 해당 경로)
 
     @OneToMany(mappedBy = "posting", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private Set<PostingProduct> postingProducts = new HashSet<>();  // 게시물에 포함된 제품들 연결
 
 //    private List<Product> recommendations = new ArrayList<>();
