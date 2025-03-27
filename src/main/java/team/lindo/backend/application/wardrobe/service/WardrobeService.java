@@ -41,7 +41,7 @@ public class WardrobeService {
 
         return wardrobeProducts.stream()
                 .collect(Collectors.groupingBy(
-//                        wp -> wp.getCategory().getRootCategory().getName(), // ✅ 최상위 카테고리로 그룹화
+//                        wp -> wp.getCategory().getRootCategory().getName(), // 최상위 카테고리로 그룹화
                         wp -> wp.getCategory().getName(), // api용 카테고리
                         Collectors.mapping(this::convertToDto, Collectors.toList())
                 ));

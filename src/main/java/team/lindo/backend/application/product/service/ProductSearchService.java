@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team.lindo.backend.application.product.dto.ProductSearchDto;
 import team.lindo.backend.application.matcher.ProductMatchScorer;
+import team.lindo.backend.application.product.entity.Product;
 import team.lindo.backend.application.product.repository.ProductRepository;
 
 import java.util.AbstractMap;
@@ -17,7 +18,9 @@ public class ProductSearchService {
     private final ProductMatchScorer matchScorer;
 
     public List<ProductSearchDto> search(String query) {
-        return productRepository.findAll().stream()
+        List<Product> products = productRepository.searchByQuery(query);
+
+        return products.stream()
                 .map(p -> new AbstractMap.SimpleEntry<>(p, matchScorer.calculateMatchScore(p, query)))
                 .filter(entry -> entry.getValue() > 0)
                 .sorted((a, b) -> b.getValue() - a.getValue())
