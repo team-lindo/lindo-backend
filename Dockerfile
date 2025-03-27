@@ -8,8 +8,8 @@ FROM gradle:8.7.0-jdk21 as build
 WORKDIR /app
 
 # 먼저 gradle 의존성을 모두 설치
-COPY build.gradle.kts .
-COPY settings.gradle.kts .
+COPY build.gradle .
+COPY settings.gradle .
 RUN gradle dependencies --no-daemon
 
 # 루트 디렉토리 복사
