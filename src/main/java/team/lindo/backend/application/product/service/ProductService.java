@@ -27,8 +27,8 @@ public class ProductService {
                 .changeName(updatedProduct.getName())
                 .changePrice(updatedProduct.getPrice())
                 .changeImageUrl(updatedProduct.getImageUrl())
-                .changeSize(updatedProduct.getSize())
-                .changeColor(updatedProduct.getColor())
+//                .changeSize(updatedProduct.getSize())
+//                .changeColor(updatedProduct.getColor())
                 .changeBrand(updatedProduct.getBrand());
     }
 

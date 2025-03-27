@@ -27,18 +27,24 @@ public class Product {
 
     private Double price;
 
-    private String color;
+//    private String color;  //! api 제공 X
 
-    private String size;
+//    private String size;  //! api 제공 X
 
     private String brand;
 
     private String siteUrl;
 
-    private String description;
+    private String gender;  // 남성, 여성, 공용
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ProductCategory> productCategories = new HashSet<>(); // 다대다 관계 매핑
+//    private String description;  //! api 제공 X
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private Set<ProductCategory> productCategories = new HashSet<>(); // 다대다 관계 매핑
 
     // 개별 프로퍼티 변경 메서드
     public Product changeName(String name) {
@@ -62,19 +68,19 @@ public class Product {
         return this;
     }
 
-    public Product changeColor(String color) {
-        if (color != null && !color.isBlank()) {
-            this.color = color;
-        }
-        return this;
-    }
+//    public Product changeColor(String color) {
+//        if (color != null && !color.isBlank()) {
+//            this.color = color;
+//        }
+//        return this;
+//    }
 
-    public Product changeSize(String size) {
-        if (size != null && !size.isBlank()) {
-            this.size = size;
-        }
-        return this;
-    }
+//    public Product changeSize(String size) {
+//        if (size != null && !size.isBlank()) {
+//            this.size = size;
+//        }
+//        return this;
+//    }
 
     public Product changeBrand(String brand) {
         if (brand != null && !brand.isBlank()) {
@@ -83,10 +89,34 @@ public class Product {
         return this;
     }
 
-    public Set<Category> getCategories() {
-        return productCategories.stream()
-                .map(ProductCategory::getCategory)
-                .collect(Collectors.toSet());
+    public Product changeGender(String gender) {
+        if(gender != null && !gender.isBlank()) {
+            this.gender = gender;
+        }
+        return this;
+    }
+
+    public Product changeSiteUrl(String siteUrl) {
+        if(siteUrl != null && !siteUrl.isBlank()) {
+            this.siteUrl = siteUrl;
+        }
+        return this;
+    }
+
+    public Product changeCategory(Category category) {  //! 이렇게 해도 되나??? 안 될 것 같은데...
+        if(category != null) {
+            this.category = category;
+        }
+        return this;
+    }
+
+//    public Set<Category> getCategories() {
+//        return productCategories.stream()
+//                .map(ProductCategory::getCategory)
+//                .collect(Collectors.toSet());
+//    }
+    public Category getCategory() {
+        return this.category;
     }
 }
 
