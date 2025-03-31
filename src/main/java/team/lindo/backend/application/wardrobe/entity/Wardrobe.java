@@ -43,16 +43,7 @@ public class Wardrobe {
             throw new IllegalArgumentException("이미 이 옷장에 추가된 제품입니다.");
         }
 
-        WardrobeProductId id = new WardrobeProductId(this.id, product.getId());
-
-        WardrobeProduct wardrobeProduct = WardrobeProduct.builder()
-                .id(id)
-                .wardrobe(this)
-                .product(product)
-                .category(category)
-                .build();
-
-        wardrobeProducts.add(wardrobeProduct);
+        wardrobeProducts.add(WardrobeProduct.create(this, product, category));
     }
 
     public void deleteProduct(Product product) {
@@ -68,14 +59,4 @@ public class Wardrobe {
                 .anyMatch(wp -> wp.getProduct().equals(product));
     }
 
-
-
-
-    // 데이터 베이스에서 옷을 가져오기 때문에 옷 정보를 수정 할 필요가 없음
-    /*public void updateWardrobeProducts(Set<WardrobeProduct> products) {
-        this.wardrobeProducts.clear();
-        if (products != null) {
-            this.wardrobeProducts.addAll(products);
-        }
-    }*/
 }
