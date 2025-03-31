@@ -12,7 +12,7 @@ import team.lindo.backend.application.product.entity.Category;
 public class WardrobeProduct {
 
     @EmbeddedId
-    private WardrobeProductId id; // ✅ 복합 키 적용
+    private WardrobeProductId id; //  복합 키 적용
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("wardrobeId")
