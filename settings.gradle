@@ -1,0 +1,14 @@
+pluginManagement {
+    def springBootVersion = '3.4.1'
+    def springBootDependencyManagerVersion = '1.1.7'
+    def lombokVersion = '8.11'
+
+    plugins {
+        id 'java'
+        id 'org.springframework.boot' version springBootVersion
+        id 'io.spring.dependency-management' version springBootDependencyManagerVersion
+        id 'io.freefair.lombok' version lombokVersion
+    }
+}
+
+rootProject.name = 'backend'
