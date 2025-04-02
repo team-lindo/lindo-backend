@@ -12,7 +12,7 @@ import team.lindo.backend.application.product.entity.Category;
 public class WardrobeProduct {
 
     @EmbeddedId
-    private WardrobeProductId id; // ✅ 복합 키 적용
+    private WardrobeProductId id; //  복합 키 적용
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("wardrobeId")
@@ -27,5 +27,16 @@ public class WardrobeProduct {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+
+    public static WardrobeProduct create(Wardrobe wardrobe, Product product, Category category) {
+        WardrobeProductId id = new WardrobeProductId(wardrobe.getId(), product.getId());
+
+        return WardrobeProduct.builder()
+                .id(id)
+                .wardrobe(wardrobe)
+                .product(product)
+                .category(category)
+                .build();
+    }
 }
 
