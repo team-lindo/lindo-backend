@@ -68,34 +68,22 @@ public class WardrobeService {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 카테고리를 찾을 수 없습니다."));
 
-        boolean exists = wardrobeProductRepository.findByWardrobeIdAndProductId(wardrobeId, productId).isPresent();
-        if (exists) {
-            throw new IllegalArgumentException("이미 해당 옷장에 추가된 제품입니다.");
-        }
+        wardrobe.addProduct(product, category);
 
-        // 최상위 카테고리 자동 매핑
-        //Category rootCategory = category.getRootCategory();
-
-        //api용 카테고리 매핑
-
-        WardrobeProductId id = new WardrobeProductId(wardrobe.getId(), product.getId());
-
-        WardrobeProduct wardrobeProduct = WardrobeProduct.builder()
-                .id(id)  //   id를 명시적으로 표현
-                .wardrobe(wardrobe)
-                .product(product)
-                .category(category)
-                .build();
-
-        wardrobeProductRepository.save(wardrobeProduct);
+        wardrobeRepository.save(wardrobe); // 변경 감지로 저장됨
     }
 
     //  옷 삭제
     public void deleteProductFromWardrobe(Long wardrobeId, Long productId) {
-        WardrobeProduct wardrobeProduct = wardrobeProductRepository.findByWardrobeIdAndProductId(wardrobeId, productId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 옷을 찾을 수 없습니다."));
+        Wardrobe wardrobe = wardrobeRepository.findById(wardrobeId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 옷장을 찾을 수 없습니다."));
 
-        wardrobeProductRepository.delete(wardrobeProduct);
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 제품을 찾을 수 없습니다."));
+
+        wardrobe.deleteProduct(product);
+
+        wardrobeRepository.save(wardrobe);
     }
 
     // 옷장에 옷 검색 기능
