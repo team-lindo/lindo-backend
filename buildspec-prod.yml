@@ -13,6 +13,10 @@ env:
     # task definition name
     TASK_DEFINITION_NAME: lindo-backend-prod
 
+    # ECS
+    ECS_CLUSTER_NAME: LINDO-PRODUCTION
+    API_SERVICE_NAME: api
+
 phases:
   install:
     runtime-versions:
@@ -66,6 +70,7 @@ phases:
         ' > modified-task-definition.json
       - echo "Register new task definition"
       - export NEW_TASK_DEF_ARN=$(aws ecs register-task-definition --cli-input-json file://modified-task-definition.json --query 'taskDefinition.taskDefinitionArn' --output text)
+      - aws ecs update-service --cluster $ECS_CLUSTER_NAME --service $API_SERVICE_NAME --task-definition $NEW_TASK_DEF_ARN
 
   post_build:
     commands:
