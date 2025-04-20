@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,7 +38,7 @@ public class LindoAppConfiguration {
 
     private final UserDetailService userDetailService;
 
-    @Bean  // 왠지는 몰라도 이거 안 붙여도 객체 주입 잘 되는 것 같았음. 그래도 일단 명시적으로 붙여줬음.
+    @Bean
     public JPAQueryFactory jpaQueryFactory() {
         return new JPAQueryFactory(entityManager);
     }
@@ -51,34 +52,41 @@ public class LindoAppConfiguration {
     }
 
     // 특정 HTTP 요청에 대한 웹 기반 보안 구성
-    @Bean  // 두 글 구현 다름 + 메서드 현재는 못 쓰게 해놓은 걸로 코딩된 듯
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         return http
-                .authorizeRequests() // 인증, 인가 설정
-                .requestMatchers("/login", "/signup", "/user").permitAll()  // 인증 없이 접근 가능
-                .anyRequest().authenticated()  // 그 외에는 인증 필요하다는 뜻...?
-                .and()
-                .formLogin() // 폼 기반 로그인 설정 (JWT 사용할 거면 제거해야 한다? 왜..?)
-                .loginPage("/login")
-                .defaultSuccessUrl("/articles")
-                .and()
-                .logout() // 로그아웃 설정
-                .logoutSuccessUrl("/login")
-                .invalidateHttpSession(true)
-                .and()
-                .csrf().disable() // csrf 보안 비활성화 -> 실습을 위해 잠깐 비활성화!!
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/user/signup", "/user/login").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")  // 커스텀 로그인 페이지 url 설정
+                        .defaultSuccessUrl("/home", true)
+                )
+//                .logout(logout -> logout
+//                        .logoutUrl("/user/logout") // 로그아웃 요청 URL 지정 (기본값: "/logout")
+//                        .logoutSuccessUrl("/login") // 로그아웃 성공 시 이동할 URL
+//                        .invalidateHttpSession(true) // 세션 무효화
+//                )
+                .logout(logout -> logout  // 위는 로그아웃시 로그인 화면으로 리디렉트. 이건 리디렉트 X 로그아웃시 200 ok 반환
+                        .logoutUrl("/user.logout")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            response.setStatus(HttpServletResponse.SC_OK);  // 200 반환
+                        })
+                )
                 .build();
     }
 
     // 인증 관리자 관련 설정
-    @Bean  // 두 글 구현 다름
+    @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http
-            , BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception{
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(userDetailService) // 사용자 정보 서비스 설정
-                .passwordEncoder(bCryptPasswordEncoder)
-                .and()
-                .build();
+            , BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
+        AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        builder.userDetailsService(userDetailService).passwordEncoder(bCryptPasswordEncoder);
+        return builder.build();
     }
 
     // 패스워드 인코더로 사용할 빈 등록

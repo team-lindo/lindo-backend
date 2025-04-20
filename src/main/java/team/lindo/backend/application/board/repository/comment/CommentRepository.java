@@ -1,9 +1,9 @@
-package team.lindo.backend.application.social.repository.comment;
+package team.lindo.backend.application.board.repository.comment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import team.lindo.backend.application.social.entity.Comment;
+import team.lindo.backend.application.board.entity.Comment;
 
 import java.util.List;
 
