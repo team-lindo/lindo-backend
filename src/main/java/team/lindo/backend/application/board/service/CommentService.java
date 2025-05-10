@@ -1,12 +1,12 @@
-package team.lindo.backend.application.social.service;
+package team.lindo.backend.application.board.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team.lindo.backend.application.board.entity.Posting;
 import team.lindo.backend.application.board.repository.posting.PostingRepository;
-import team.lindo.backend.application.social.entity.Comment;
-import team.lindo.backend.application.social.repository.comment.CommentRepository;
+import team.lindo.backend.application.board.entity.Comment;
+import team.lindo.backend.application.board.repository.comment.CommentRepository;
 import team.lindo.backend.application.user.entity.User;
 import team.lindo.backend.application.user.repository.UserRepository;
 

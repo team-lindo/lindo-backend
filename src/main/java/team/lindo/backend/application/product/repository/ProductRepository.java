@@ -5,7 +5,7 @@ import team.lindo.backend.application.product.entity.Product;
 
 import java.util.Optional;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>, ProductRepositoryCustom {
     Optional<Product> findById(Long productId);
 
     Optional<Product> findByName(String productName);
