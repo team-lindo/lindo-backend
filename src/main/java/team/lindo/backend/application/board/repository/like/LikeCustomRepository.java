@@ -1,6 +1,6 @@
-package team.lindo.backend.application.social.repository.like;
+package team.lindo.backend.application.board.repository.like;
 
-import team.lindo.backend.application.social.entity.Like;
+import team.lindo.backend.application.board.entity.Like;
 
 import java.util.Optional;
 

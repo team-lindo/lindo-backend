@@ -45,4 +45,16 @@ public class ResponseGenerator {
     public static FailureResponse.Response getValidationErrorResponse(BindingResult bindingResult) {
         return FailureResponse.Response.withValidationError(bindingResult);
     }
+
+    public static FailureResponse.Response getAuthenticationFailureResponse() {
+        return FailureResponse.Response.withBusinessError("AUTH_INVALID_CREDENTIALS", "아이디 또는 비밀번호가 잘못되었습니다.");
+    }
+
+    public static FailureResponse.Response getAuthorizationFailureResponse() {
+        return FailureResponse.Response.withBusinessError("AUTH_FORBIDDEN", "접근 권한이 없습니다.");
+    }
+
+    public static FailureResponse.Response getSecurityFailureResponse() {
+        return FailureResponse.Response.withBusinessError("SECURITY_ERROR", "보안 관련 오류가 발생했습니다.");
+    }
 }

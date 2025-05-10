@@ -6,8 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import team.lindo.backend.application.board.dto.PostRequestDto;
-import team.lindo.backend.application.board.dto.PostingResponseDto;
+import team.lindo.backend.application.board.dto.CreatePostingRequestDto;
+import team.lindo.backend.application.board.dto.PostingSummaryDto;
 import team.lindo.backend.application.board.dto.UpdatePostingRequestDto;
 import team.lindo.backend.application.board.entity.Posting;
 import team.lindo.backend.application.board.repository.posting.PostingRepository;
@@ -24,20 +24,20 @@ public class PostingService {
     private final ProductRepository productRepository;
 
     // CR
-    public Posting createPosting(PostRequestDto request, User user) {
+    public Posting createPosting(CreatePostingRequestDto request, User user) {
         return postingRepository.save(
                 Posting.builder()
                         .user(user)
                         .title(request.getTitle())
                         .content(request.getContent())
-                        .imageUrl(request.getImageUrl())
+                        .imageUrls(request.getImageUrls())
                         .build()
         );  //! Posting의 다른 연관관계 필드들은? 이렇게만 생성하면 게시물에 제품(정보)들 없는 꼴 아닌가?
     }
 
     // U
     @Transactional
-    public PostingResponseDto updatePosting(Long postingId, UpdatePostingRequestDto request) {
+    public PostingSummaryDto updatePosting(Long postingId, UpdatePostingRequestDto request) {
         // 게시물 조회
         Posting posting = postingRepository.findById(postingId)
                 .orElseThrow(() -> new IllegalArgumentException("게시물이 존재하지 않습니다."));
@@ -53,8 +53,8 @@ public class PostingService {
         }
 
         // 이미지 URL 수정
-        if (request.getImageUrl() != null && !request.getImageUrl().isBlank()) {
-            posting.updateImageUrl(request.getImageUrl());
+        if (request.getImageUrls() != null && !request.getImageUrls().isEmpty()) {
+            posting.updateImageUrls(request.getImageUrls());
         }
 
         // 연결된 제품 수정
@@ -63,7 +63,7 @@ public class PostingService {
             posting.updatePostingProducts(products);
         }
 
-        return new PostingResponseDto(posting);
+        return new PostingSummaryDto(posting);
     }
 
     // D
@@ -72,18 +72,18 @@ public class PostingService {
     }
 
     // 게시물 목록 조회
-    public Page<PostingResponseDto> getAllPostings(int page, int size) {
+    public Page<PostingSummaryDto> getAllPostings(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         Page<Posting> postings = postingRepository.findAll(pageRequest);
 
-        return postings.map(PostingResponseDto::new);
+        return postings.map(PostingSummaryDto::new);
     }
 
     // 특정 게시물 조회
-    public PostingResponseDto getPostingById(Long postingId) {
+    public PostingSummaryDto getPostingById(Long postingId) {
         Posting posting = postingRepository.findById(postingId)
                 .orElseThrow(() -> new IllegalArgumentException("게시물이 존재하지 않습니다."));
-        return new PostingResponseDto(posting);
+        return new PostingSummaryDto(posting);
     }
 
     //! 리턴 타입 싹 다 entity가 아닌 DTO로 수정???
@@ -103,9 +103,9 @@ public class PostingService {
     }
 
     // 제목 혹은 내용으로 게시물 검색
-    public List<PostingResponseDto> searchPostingsByKeyword(String keyword) {
+    public List<PostingSummaryDto> searchPostingsByKeyword(String keyword) {
         List<Posting> postings = postingRepository.searchByTitleOrContent(keyword);
-        return postings.stream().map(PostingResponseDto::new).toList();
+        return postings.stream().map(PostingSummaryDto::new).toList();
     }
 
     // 특정 카테고리 제품을 포함하는 게시물 조회
