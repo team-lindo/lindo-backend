@@ -10,11 +10,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.lindo.backend.application.board.entity.Posting;
 import team.lindo.backend.application.board.repository.posting.PostingRepository;
+import team.lindo.backend.application.common.exception.UserAlreadyExistsException;
 import team.lindo.backend.application.social.entity.Follow;
 import team.lindo.backend.application.social.repository.follow.FollowRepository;
 import team.lindo.backend.application.user.dto.LoginRequestDto;
 import team.lindo.backend.application.user.dto.LoginResponseDto;
 import team.lindo.backend.application.user.dto.SignUpRequestDto;
+import team.lindo.backend.application.user.dto.UserSummaryDto;
 import team.lindo.backend.application.user.entity.Role;
 import team.lindo.backend.application.user.entity.User;
 import team.lindo.backend.application.user.repository.UserRepository;
@@ -41,7 +43,7 @@ public class UserService {
     //! createUser 메서드 없애고 이거 사용해야 하나???
     public void registerUser(SignUpRequestDto request) {
         if(userRepository.existsByEmail(request.getEmail())) {
-            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
+            throw new UserAlreadyExistsException("이미 존재하는 아이디입니다.");
         }
 
         userRepository.save(User.builder()
@@ -93,5 +95,11 @@ public class UserService {
 
     public void logout() {  //! JWT 기반 인증으로 수정 시 토큰을 삭제하는 방식으로 바꿔야 함
         SecurityContextHolder.clearContext();
+    }
+
+    public UserSummaryDto loadUserInfo(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+        return new UserSummaryDto(user);  //! UserMapper 같은 거 만들어서 .toDTO() 메서드 같은 걸로 처리?? (생성 책임 분리?)
     }
 }

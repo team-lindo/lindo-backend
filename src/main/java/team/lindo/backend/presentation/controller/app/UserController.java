@@ -4,16 +4,15 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import team.lindo.backend.application.user.dto.LoginRequestDto;
-import team.lindo.backend.application.user.dto.LoginResponseDto;
-import team.lindo.backend.application.user.dto.SignUpRequestDto;
+import team.lindo.backend.application.user.dto.*;
 import team.lindo.backend.application.user.service.UserService;
+import team.lindo.backend.common.util.SecurityUtil;
 
 import java.util.Collections;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/user")  //! 원래 "/api/v1/app/users" 였는데 이런 주소로 한 이유 있는지 형한테 물어보기
+@RequestMapping("/api/v1/app/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -31,8 +30,19 @@ public class UserController {
     }
 
     @PostMapping("/logout")  // GET으로 하면 그냥 url 입력했는데 로그아웃될 수 있으니 위험 + 로그아웃 -> 서버의 상태 변경하는 행동
-    public ResponseEntity<Map<String, String>> logout() {
+    public ResponseEntity<LogoutResponseDto> logout() {
         userService.logout();
-        return ResponseEntity.ok(Collections.singletonMap("message", "Logged out successfully"));
+        return ResponseEntity.ok(new LogoutResponseDto("Logged out successfully"));
+    }
+
+    @GetMapping("/load")
+    public ResponseEntity<UserSummaryDto> loadMyInfo() {
+        long myId = SecurityUtil.getCurrentUserId();
+        return ResponseEntity.ok(userService.loadUserInfo(myId));
+    }
+
+    @GetMapping("/load/{id}")
+    public ResponseEntity<UserSummaryDto> loadUserInfo(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.loadUserInfo(id));
     }
 }
