@@ -8,6 +8,6 @@ import java.util.List;
 public class UpdatePostingRequestDto {
     private String title;
     private String content;
-    private String imageUrl;
+    private List<String> imageUrls;
     private List<Long> productIds;
 }

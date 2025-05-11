@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import team.lindo.backend.presentation.common.response.ResponseGenerator;
+import team.lindo.backend.presentation.common.response.payload.ErrorResponseDto;
 import team.lindo.backend.presentation.common.response.payload.FailureResponse;
 
 @RestControllerAdvice  // 전역적으로 발생하는 예외들 처리 (모든 Controller에서 발생하는 예외 한 곳에서 처리)
@@ -15,8 +16,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)  // 반환되는 HTTP 응답 상태의 코드
-    public FailureResponse.Response handleGlobalException(Exception exception) {
+    public ErrorResponseDto handleGlobalException(Exception exception) {
+        // 원래는 FailureResponse.Response 반환하다 프론트엔드 연결 위해 수정
         exception.printStackTrace();
-        return ResponseGenerator.getUnknownErrorResponse();
+        FailureResponse.Response original = ResponseGenerator.getUnknownErrorResponse();
+        return ErrorResponseDto.from(original, HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 }

@@ -38,3 +38,6 @@ out/
 
 # yml files
 application-*.yml
+
+# .gitignore
+src/main/resources/db/.envsrc/main/resources/db/.env
