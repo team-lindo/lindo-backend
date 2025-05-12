@@ -5,22 +5,17 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 import team.lindo.backend.application.common.exception.LoginBusinessException;
 import team.lindo.backend.application.user.dto.LoginRequestDto;
-import team.lindo.backend.application.user.dto.LoginResponseDto;
 import team.lindo.backend.application.user.dto.SignUpRequestDto;
+import team.lindo.backend.application.user.dto.UserSummaryDto;
 import team.lindo.backend.application.user.service.UserService;
 
-import java.util.Collections;
-
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
@@ -66,12 +61,10 @@ class UserControllerTest {
                 .password("expw123")
                 .build();
 
-        LoginResponseDto response = LoginResponseDto.builder()
+        UserSummaryDto response = UserSummaryDto.builder()
                 .id(1L)
                 .email("kms@example.com")
                 .nickname("kms")
-                .followings(Collections.emptyList())
-                .followers(Collections.emptyList())
                 .build();
 
         // 아무 LoginRequestDto 요청이 userService의 login메서드로 들어오면 위에서 정의한 response를 반환하도록 설정
