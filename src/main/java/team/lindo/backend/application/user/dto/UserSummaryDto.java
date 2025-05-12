@@ -12,5 +12,6 @@ public class UserSummaryDto {  // UserDto?
     public UserSummaryDto(User user) {
         this.id = user.getId();
         this.nickname = user.getNickname();
+        this.email = user.getEmail();
     }
 }

@@ -1,5 +1,6 @@
 package team.lindo.backend.application.user.service;
 
+import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,18 +42,20 @@ public class UserService {
     }
 
     //! createUser 메서드 없애고 이거 사용해야 하나???
-    public void registerUser(SignUpRequestDto request) {
+    public UserSummaryDto registerUser(SignUpRequestDto request) {  //! return void로 하는 게 낫나?
         if(userRepository.existsByEmail(request.getEmail())) {
             throw new UserAlreadyExistsException("이미 존재하는 아이디입니다.");
         }
 
-        userRepository.save(User.builder()
+        User registeredUser = userRepository.save(User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getRawPassword()))
                 .nickname(request.getNickname())
                 .role(Role.USER)
                 .build()
         );
+
+        return new UserSummaryDto(registeredUser);
     }
 
     // 사용자 조회
