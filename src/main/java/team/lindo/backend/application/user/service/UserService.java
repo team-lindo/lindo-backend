@@ -1,6 +1,7 @@
 package team.lindo.backend.application.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,6 +13,7 @@ import team.lindo.backend.application.board.repository.posting.PostingRepository
 import team.lindo.backend.application.common.exception.UserAlreadyExistsException;
 import team.lindo.backend.application.social.repository.follow.FollowRepository;
 import team.lindo.backend.application.user.dto.LoginRequestDto;
+import team.lindo.backend.application.user.dto.LogoutResponseDto;
 import team.lindo.backend.application.user.dto.SignUpRequestDto;
 import team.lindo.backend.application.user.dto.UserSummaryDto;
 import team.lindo.backend.application.user.entity.Role;
@@ -87,8 +89,9 @@ public class UserService {
         return new UserSummaryDto(user);
     }
 
-    public void logout() {  //! JWT 기반 인증으로 수정 시 토큰을 삭제하는 방식으로 바꿔야 함
+    public LogoutResponseDto logout() {  //! JWT 기반 인증으로 수정 시 토큰을 삭제하는 방식으로 바꿔야 함
         SecurityContextHolder.clearContext();
+        return new LogoutResponseDto("로그아웃 되었습니다.");
     }
 
     public UserSummaryDto loadUserInfo(Long id) {
