@@ -24,9 +24,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto request) {
-        LoginResponseDto response = userService.login(request);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<UserSummaryDto> login(@RequestBody LoginRequestDto request) {
+        UserSummaryDto loginUserInfo = userService.login(request);
+        return ResponseEntity.ok(loginUserInfo);
     }
 
     @PostMapping("/logout")  // GET으로 하면 그냥 url 입력했는데 로그아웃될 수 있으니 위험 + 로그아웃 -> 서버의 상태 변경하는 행동
