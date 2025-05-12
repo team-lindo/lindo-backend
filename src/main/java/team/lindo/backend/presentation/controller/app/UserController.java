@@ -31,8 +31,7 @@ public class UserController {
 
     @PostMapping("/logout")  // GET으로 하면 그냥 url 입력했는데 로그아웃될 수 있으니 위험 + 로그아웃 -> 서버의 상태 변경하는 행동
     public ResponseEntity<LogoutResponseDto> logout() {
-        userService.logout();
-        return ResponseEntity.ok(new LogoutResponseDto("Logged out successfully"));
+        return ResponseEntity.ok(userService.logout());
     }
 
     @GetMapping("/load")
