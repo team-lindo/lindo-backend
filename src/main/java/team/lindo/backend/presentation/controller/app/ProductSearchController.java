@@ -12,7 +12,7 @@ import team.lindo.backend.application.product.service.ProductSearchService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/v1/app/products")
 @RequiredArgsConstructor
 public class ProductSearchController {
 

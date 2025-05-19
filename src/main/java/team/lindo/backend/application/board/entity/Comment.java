@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 import team.lindo.backend.application.common.entity.BaseEntity;
 import team.lindo.backend.application.user.entity.User;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,11 +31,15 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "posting_id")
     private Posting posting;
 
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    // 부모 댓글 (자기 참조 관계)
+   /* // 부모 댓글 (자기 참조 관계)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;  // GPT
@@ -47,5 +53,5 @@ public class Comment extends BaseEntity {
     public void addChildComment(Comment child) {  // GPT 시킨 거라서 쓸 수 있는 건지 검증 필요
         childComments.add(child);
         child.parentComment = this;
-    }
+    }*/
 }

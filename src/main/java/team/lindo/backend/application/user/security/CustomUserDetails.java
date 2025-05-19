@@ -28,6 +28,9 @@ public class CustomUserDetails implements UserDetails {  // 사용자 정보를 
         return user.getEmail();
     }
 
+    public Long getId() {
+        return user.getId();
+    }
     @Override
     public boolean isAccountNonExpired() {
         return true;

@@ -18,6 +18,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     """)
     List<Comment> findParentCommentsByPostingId(@Param("postingId") Long postingId);
 
+    List<Comment> findByPostingId(@Param("postingId") Long postingId);
     // 특정 부모 댓글의 답글들 조회
     @Query("""
         SELECT c

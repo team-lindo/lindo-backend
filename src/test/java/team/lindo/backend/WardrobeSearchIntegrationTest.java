@@ -94,8 +94,7 @@ public class WardrobeSearchIntegrationTest {
 
         wardrobeService.addProductToWardrobe(
                 wardrobeId,
-                topProduct.getId(),
-                topProduct.getCategoryId()
+                topProduct.getId()
         );
 
         WardrobeProductDto result = wardrobeService.getWardrobeProductDetail(wardrobeId, topProduct.getId());

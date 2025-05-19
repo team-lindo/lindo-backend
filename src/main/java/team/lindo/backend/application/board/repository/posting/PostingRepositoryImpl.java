@@ -40,16 +40,6 @@ public class PostingRepositoryImpl implements PostingCustomRepository {
                 .fetch();
     }
 
-    @Override
-    public List<Posting> searchByTitleOrContent(String keyword) {
-        return jpaQueryFactory
-                .selectFrom(qPosting)
-                .where(
-                        qPosting.title.lower().contains(keyword.toLowerCase())
-                                .or(qPosting.content.lower().contains(keyword.toLowerCase()))
-                )
-                .fetch();
-    }
 
     @Override
     public List<Posting> findByCategoryId(Long categoryId) {

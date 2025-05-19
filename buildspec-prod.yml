@@ -1,0 +1,79 @@
+version: 0.2
+
+env:
+  variables:
+    ECR_REPO_URL: 060795912936.dkr.ecr.ap-northeast-2.amazonaws.com/lindo/backend
+    AWS_DEFAULT_REGION: ap-northeast-2
+    AWS_ACCOUNT_ID: 060795912936
+
+    # Secrets Manager
+    PROD_YML_SECRET_MANAGER_KEY: lindo-application-prod-yml
+    MAIN_YML_SECRET_MANAGER_KEY: lindo-application-yml
+
+    # task definition name
+    TASK_DEFINITION_NAME: lindo-backend-prod
+
+    # ECS
+    ECS_CLUSTER_NAME: LINDO-PRODUCTION
+    API_SERVICE_NAME: api
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto21
+    commands:
+      - apt-get update -y
+      - apt-get install docker.io -y
+      - aws --version
+  pre_build:
+    commands:
+      - echo "Amazon ECR Login..."
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - echo "Setting production environment"
+      - mkdir -p ./src/main/resources
+      - aws secretsmanager get-secret-value --secret-id $MAIN_YML_SECRET_MANAGER_KEY --query 'SecretString' --output text > ./src/main/resources/application.yml
+      - aws secretsmanager get-secret-value --secret-id $PROD_YML_SECRET_MANAGER_KEY --query 'SecretString' --output text > ./src/main/resources/application-prod.yml
+      # application.yml 의 active 정보 수정
+      - |
+        sed -i "s/active: local/active: prod/" ./src/main/resources/application.yml
+      - echo "PreBuild Phase completed..."
+
+      - echo "Resolving IMAGE_TAG..."
+      - export IMAGE_TAG=$ECR_REPO_URL:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - echo "image tag is $IMAGE_TAG"
+  build:
+    commands:
+      # Docker Build
+      - echo "Build Phase start..."
+      - docker build -t lindo-backend:latest .
+      # Docker Retag
+      - echo "Retag docker image"
+      - docker tag lindo-backend:latest $IMAGE_TAG
+      # Docker Push
+      - echo "Docker Push to ECR (Elastic Container Registry)"
+      - docker push $IMAGE_TAG
+      # Fetch Task Definition
+      - echo "Fetch latest ECS Task Definition from AWS"
+      - aws ecs describe-task-definition --task-definition $TASK_DEFINITION_NAME --query 'taskDefinition' > latest-task-definition.json
+      - cat ./latest-task-definition.json
+      - |
+        jq --arg image $IMAGE_TAG '
+            .containerDefinitions |= map(
+            if .name == "api" then
+                .image = $image
+            else
+               .
+            end
+            )
+        ' latest-task-definition.json | jq '
+            del(.revision, .status, .compatibilities, .requiresAttributes, .registeredBy, .registeredAt, .taskDefinitionArn)
+        ' > modified-task-definition.json
+      - echo "Register new task definition"
+      - export NEW_TASK_DEF_ARN=$(aws ecs register-task-definition --cli-input-json file://modified-task-definition.json --query 'taskDefinition.taskDefinitionArn' --output text)
+      - aws ecs update-service --cluster $ECS_CLUSTER_NAME --service $API_SERVICE_NAME --task-definition $NEW_TASK_DEF_ARN
+
+  post_build:
+    commands:
+      - echo "Post Build"
+artifacts:
+  files: imagedefinitions.json

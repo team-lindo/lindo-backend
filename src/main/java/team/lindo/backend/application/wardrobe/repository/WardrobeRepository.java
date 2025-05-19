@@ -7,5 +7,5 @@ import java.util.Optional;
 
 
 public interface  WardrobeRepository extends JpaRepository<Wardrobe, Long>{
-    Optional<Wardrobe> findById(Long id); // 특정 옷장 조회
+    Optional<Wardrobe> findByUserId(Long userId); // 특정 옷장 조회
 }
