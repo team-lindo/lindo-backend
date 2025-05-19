@@ -58,15 +58,14 @@ public class WardrobeService {
 
 
     //  옷 추가
-    public void addProductToWardrobe(Long wardrobeId, Long productId, Long categoryId) {
-        Wardrobe wardrobe = wardrobeRepository.findById(wardrobeId)
+    public void addProductToWardrobe(Long userId, Long productId) {
+        Wardrobe wardrobe = wardrobeRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 옷장을 찾을 수 없습니다."));
 
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 제품을 찾을 수 없습니다."));
 
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 카테고리를 찾을 수 없습니다."));
+        Category category = product.getCategory();
 
         wardrobe.addProduct(product, category);
 

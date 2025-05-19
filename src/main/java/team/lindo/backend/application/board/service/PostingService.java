@@ -4,35 +4,53 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import team.lindo.backend.application.board.dto.CreatePostingRequestDto;
-import team.lindo.backend.application.board.dto.PostingSummaryDto;
-import team.lindo.backend.application.board.dto.UpdatePostingRequestDto;
+import team.lindo.backend.application.board.dto.*;
+import team.lindo.backend.application.board.entity.Comment;
 import team.lindo.backend.application.board.entity.Posting;
+import team.lindo.backend.application.board.entity.PostingProduct;
 import team.lindo.backend.application.board.repository.posting.PostingRepository;
+import team.lindo.backend.application.board.repository.comment.CommentRepository;
 import team.lindo.backend.application.product.entity.Product;
 import team.lindo.backend.application.product.repository.ProductRepository;
+import team.lindo.backend.application.user.dto.UserSummaryDto;
 import team.lindo.backend.application.user.entity.User;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class PostingService {
     private final PostingRepository postingRepository;
     private final ProductRepository productRepository;
-
+    private final CommentRepository commentRepository;
     // CR
     public Posting createPosting(CreatePostingRequestDto request, User user) {
-        return postingRepository.save(
-                Posting.builder()
-                        .user(user)
-                        .title(request.getTitle())
-                        .content(request.getContent())
-                        .imageUrls(request.getImageUrls())
-                        .build()
-        );  //! Posting의 다른 연관관계 필드들은? 이렇게만 생성하면 게시물에 제품(정보)들 없는 꼴 아닌가?
+        Posting posting = Posting.builder()
+                .user(user)
+                .content(request.getContent())
+                .imageUrls(request.getImageUrls())
+                .hashtags(request.getHashtags() != null ? request.getHashtags() : Set.of())
+                .build();
+
+        if (request.getTaggedProducts() != null) {
+            for (TaggedProductDto tag : request.getTaggedProducts()) {
+                Product product = productRepository.findById(tag.getProductId())
+                        .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다: " + tag.getProductId()));
+
+                PostingProduct postingProduct = PostingProduct.builder()
+                        .posting(posting)
+                        .product(product)
+                        .x(tag.getX())
+                        .y(tag.getY())
+                        .build();
+
+                posting.getPostingProducts().add(postingProduct);
+            }
+        }
+        return postingRepository.save(posting);  //! Posting의 다른 연관관계 필드들은? 이렇게만 생성하면 게시물에 제품(정보)들 없는 꼴 아닌가?
     }
 
     // U
@@ -42,10 +60,6 @@ public class PostingService {
         Posting posting = postingRepository.findById(postingId)
                 .orElseThrow(() -> new IllegalArgumentException("게시물이 존재하지 않습니다."));
 
-        // 제목 수정
-        if (request.getTitle() != null && !request.getTitle().isBlank()) {
-            posting.updateTitle(request.getTitle());
-        }
 
         // 본문 수정
         if (request.getContent() != null && !request.getContent().isBlank()) {
@@ -103,10 +117,10 @@ public class PostingService {
     }
 
     // 제목 혹은 내용으로 게시물 검색
-    public List<PostingSummaryDto> searchPostingsByKeyword(String keyword) {
-        List<Posting> postings = postingRepository.searchByTitleOrContent(keyword);
-        return postings.stream().map(PostingSummaryDto::new).toList();
-    }
+//    public List<PostingSummaryDto> searchPostingsByKeyword(String keyword) {
+//        List<Posting> postings = postingRepository.searchByTitleOrContent(keyword);
+//        return postings.stream().map(PostingSummaryDto::new).toList();
+//    }
 
     // 특정 카테고리 제품을 포함하는 게시물 조회
     public List<Posting> getPostingsByCategory(Long categoryId) {  // Pageable 추가해서 페이징 지원?
@@ -136,5 +150,55 @@ public class PostingService {
     // 특정 사용자가 팔로우한 사람이 작성한 게시물들 조회
     public List<Posting> getFollowingPostingsByUser(Long userId) {
         return postingRepository.findFollowingPostingsByUserId(userId);
+    }
+    // 프론트엔드 맞춤 다음 페이지가 있는지 확인하고 무한 스크롤
+    public PostPageResponseDto getPostPreviews(Pageable pageable) {
+        Page<Posting> page = postingRepository.findAll(pageable);
+
+        List<PostDto> posts = page.getContent().stream()
+                .map(PostDto::new)
+                .toList();
+        return PostPageResponseDto.builder()
+                .posts(posts)
+                .hasNext(page.hasNext())  // 다음 페이지가 있는지
+                .build();
+    }
+
+    // 프론트 요청  특정 포스트를 조회할때 정보 가져오기
+    @Transactional
+    public LoadPostResponseDto loadPost(Long postId) {
+        Posting post = postingRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("게시물이 존재하지 않습니다."));
+
+        // 댓글 조회
+        List<Comment> comments = commentRepository.findByPostingId(postId);
+        List<CommentDto> commentDtos = comments.stream()
+                .map(CommentDto::new)
+                .toList();
+
+        // 태깅된 상품들: (imageKey -> TaggedProductDto 리스트)
+        Map<Long, List<TaggedProductDto>> taggedMap = new HashMap<>();
+
+        for (PostingProduct pp : post.getPostingProducts()) {
+            // 여기서 imageId 또는 이미지 index를 key로 사용한다면 조정 필요 (예시는 고정값 0L로 단순화)
+            Long imageKey = 0L; // 실제 로직에 맞게 이미지별 ID 또는 순번으로 조정
+            TaggedProductDto tagged = new TaggedProductDto(
+                    pp.getProduct().getId(),
+                    pp.getProduct().getName(),
+                    pp.getProduct().getPrice(),
+                    pp.getX(),
+                    pp.getY()
+            );
+            taggedMap.computeIfAbsent(imageKey, k -> new ArrayList<>()).add(tagged);
+        }
+
+        return LoadPostResponseDto.builder()
+                .id(post.getId())
+                .user(new UserSummaryDto(post.getUser()))
+                .content(post.getContent())
+                .images(post.getImageUrls())
+                .comments(commentDtos)
+                .taggedProducts(taggedMap)
+                .build();
     }
 }

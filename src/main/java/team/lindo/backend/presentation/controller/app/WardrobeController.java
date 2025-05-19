@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/wardrobe")
+@RequestMapping("/api/v1/app/wardrobe")
 @RequiredArgsConstructor
 public class WardrobeController {
 
@@ -35,9 +35,9 @@ public class WardrobeController {
     //  옷 추가
     @PostMapping("/{wardrobeId}/products/{productId}")
     public ResponseEntity<Void> addProductToWardrobe(
-            @PathVariable Long wardrobeId, @PathVariable Long productId,
-            @RequestParam Long categoryId) { // categoryId를 받고 서비스에서 최상위 카테고리로 자동 변환
-        wardrobeService.addProductToWardrobe(wardrobeId, productId, categoryId);
+            @PathVariable Long wardrobeId,
+            @PathVariable Long productId) {
+        wardrobeService.addProductToWardrobe(wardrobeId, productId);
         return ResponseEntity.ok().build();
     }
 

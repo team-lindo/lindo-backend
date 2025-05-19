@@ -3,6 +3,7 @@ package team.lindo.backend.application.board.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.lindo.backend.application.board.dto.PostDto;
 import team.lindo.backend.application.board.entity.Posting;
 import team.lindo.backend.application.board.repository.posting.PostingRepository;
 import team.lindo.backend.application.board.entity.Like;
@@ -19,7 +20,7 @@ public class LikeService {
 
     // 좋아요 추가
     @Transactional
-    public Like addLike(Long userId, Long postingId) {
+    public PostDto addLike(Long userId, Long postingId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
         Posting posting = postingRepository.findById(postingId)
@@ -30,10 +31,11 @@ public class LikeService {
                     throw new IllegalArgumentException("이미 좋아요를 누른 게시물입니다.");
                 });
 
-        return likeRepository.save(Like.builder()
+        likeRepository.save(Like.builder()
                 .user(user)
                 .posting(posting)
                 .build());
+        return new PostDto(posting);
     }
 
     // 좋아요 취소

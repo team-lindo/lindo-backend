@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import team.lindo.backend.application.common.entity.BaseEntity;
+import team.lindo.backend.application.wardrobe.entity.Wardrobe;
 
 @Entity
 @Getter
@@ -39,12 +40,11 @@ public class User extends BaseEntity {  // BaseEntity 필요 없나?
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(name = "profileImageUrl")
-    private String profileImageUrl;
+    /*@Column(name = "profileImageUrl")
+    private String profileImageUrl;*/
 
-//    @OneToOne
-//    @JoinColumn(name = )
-//    private Closet closet;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    private Wardrobe wardrobe;
 
     //! List<Posting>, List<Comment>, List<Like>, List<Follow> 같은 것들은 필드로 두지 말고 query로 해결?
 
@@ -69,12 +69,12 @@ public class User extends BaseEntity {  // BaseEntity 필요 없나?
         return this;
     }
 
-    public User updateProfileImageUrl(String profileImageUrl) {
+    /*public User updateProfileImageUrl(String profileImageUrl) {
         if(profileImageUrl != null && !profileImageUrl.isBlank()) {
             this.profileImageUrl = profileImageUrl;
         }
         return this;
-    }
+    }*/
 
     public void encodePassword(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);

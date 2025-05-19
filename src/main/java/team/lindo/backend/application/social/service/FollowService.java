@@ -4,6 +4,11 @@ package team.lindo.backend.application.social.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.lindo.backend.application.board.entity.Posting;
+import team.lindo.backend.application.social.dto.FollowerDto;
+import team.lindo.backend.application.social.dto.FollowingDto;
+import team.lindo.backend.application.social.dto.LoadFollowersResponseDto;
+import team.lindo.backend.application.social.dto.LoadFollowingsResponseDto;
 import team.lindo.backend.application.social.entity.Follow;
 import team.lindo.backend.application.social.repository.follow.FollowRepository;
 import team.lindo.backend.application.user.entity.User;
@@ -82,5 +87,38 @@ public class FollowService {
     @Transactional(readOnly = true)
     public Long getFollowerCount(Long followingId) {
         return followRepository.countByFollowingId(followingId);
+    }
+
+    // 프론트 맞춤 팔로워 리스트와 팔로워 수
+    @Transactional(readOnly = true)
+    public LoadFollowersResponseDto loadFollowers(Long userId) {
+        List<Follow> followers = followRepository.findByFollowerId(userId);
+
+        List<FollowerDto> followerList = followers.stream()
+                .map(f -> new FollowerDto(f.getFollower().getId(), f.getFollower().getNickname()))
+                .toList();
+
+        Long followerCount = getFollowerCount(userId); //
+
+        return LoadFollowersResponseDto.builder()
+                .followerList(followerList)
+                .followerCount(followerCount)
+                .build();
+    }
+    // 프론트 맞춤 팔로잉 리스트와 팔로잉 수
+    @Transactional(readOnly = true)
+    public LoadFollowingsResponseDto loadFollowings(Long userId) {
+        List<Follow> followings = followRepository.findByFollowingId(userId);
+
+        List<FollowingDto> followingList = followings.stream()
+                .map(f -> new FollowingDto(f.getFollowing().getId(), f.getFollowing().getNickname()))
+                .toList();
+
+        Long followingCount = getFollowingCount(userId); //
+
+        return LoadFollowingsResponseDto.builder()
+                .followingList(followingList)
+                .followingCount(followingCount)
+                .build();
     }
 }
