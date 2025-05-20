@@ -13,6 +13,7 @@ import team.lindo.backend.application.user.entity.User;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "follow")
 public class Follow extends BaseEntity {
 
     @Id

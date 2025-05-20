@@ -2,6 +2,7 @@ package team.lindo.backend.application.wardrobe.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import team.lindo.backend.application.common.entity.BaseEntity;
 import team.lindo.backend.application.product.entity.Category;
 import team.lindo.backend.application.product.entity.Product;
 import team.lindo.backend.application.user.entity.User;
@@ -14,7 +15,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Wardrobe {
+@Table(name = "wardrobe")
+public class Wardrobe extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
