@@ -1,4 +1,4 @@
-package team.lindo.backend.application.matcher;
+package team.lindo.backend.application.search.service;
 
 import org.springframework.stereotype.Component;
 import team.lindo.backend.application.product.entity.Product;
