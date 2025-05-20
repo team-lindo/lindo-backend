@@ -3,8 +3,13 @@ package team.lindo.backend.presentation.controller.app;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import team.lindo.backend.application.product.dto.ProductDto;
 import team.lindo.backend.application.product.dto.ProductSearchDto;
+import team.lindo.backend.application.user.security.CustomUserDetails;
+import team.lindo.backend.application.wardrobe.dto.AddProductRequestDto;
+import team.lindo.backend.application.wardrobe.dto.FetchClosetResponseDto;
 import team.lindo.backend.application.wardrobe.dto.WardrobeProductDto;
 import team.lindo.backend.application.wardrobe.service.WardrobeService;
 
@@ -12,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/app/wardrobe")
+@RequestMapping("/api/v1/app/closet")
 @RequiredArgsConstructor
 public class WardrobeController {
 
@@ -25,27 +30,42 @@ public class WardrobeController {
         return ResponseEntity.ok(wardrobeService.getProductsGroupedByCategory(wardrobeId));
     }
 
-    //  옷 상세 조회
-    @GetMapping("/{wardrobeId}/products/{productId}")
-    public ResponseEntity<WardrobeProductDto> getWardrobeProductDetail(
-            @PathVariable Long wardrobeId, @PathVariable Long productId) {
-        return ResponseEntity.ok(wardrobeService.getWardrobeProductDetail(wardrobeId, productId));
+    //옷장 옷 모두 보기 (옷장 기본)
+    @GetMapping("/closet/me")
+    public ResponseEntity<FetchClosetResponseDto> getMyCloset(
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        FetchClosetResponseDto response = wardrobeService.fetchMyCloset(userDetails.getId());
+        return ResponseEntity.ok(response);
     }
 
     //  옷 추가
-    @PostMapping("/{wardrobeId}/products/{productId}")
-    public ResponseEntity<Void> addProductToWardrobe(
-            @PathVariable Long wardrobeId,
-            @PathVariable Long productId) {
-        wardrobeService.addProductToWardrobe(wardrobeId, productId);
-        return ResponseEntity.ok().build();
+    @PostMapping("/me/product")
+    public ResponseEntity<ProductDto> addProductToMyWardrobe(
+            @RequestBody AddProductRequestDto requestDto,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        ProductDto response = wardrobeService.addProductByInfo(userDetails.getId(), requestDto);
+        return ResponseEntity.ok(response);
     }
 
     //  옷 삭제
-    @DeleteMapping("/{wardrobeId}/products/{productId}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long wardrobeId, @PathVariable Long productId) {
-        wardrobeService.deleteProductFromWardrobe(wardrobeId, productId);
-        return ResponseEntity.ok().build();
+    @DeleteMapping("/me/product/{productId}")
+    public ResponseEntity<String> deleteProductFromMyWardrobe(
+            @PathVariable Long productId,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        String deletedId = wardrobeService.deleteProduct(userDetails.getId(), productId);
+        return ResponseEntity.ok(deletedId);
+    }
+
+    //  옷 상세 조회
+    @GetMapping("/me/product/{productId}")
+    public ResponseEntity<ProductDto> getMyWardrobeProductDetail(
+            @PathVariable Long productId,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        ProductDto response = wardrobeService.getProductDetail(userDetails.getId(), productId);
+        return ResponseEntity.ok(response);
     }
 
     //  옷장 안 옷 검색
