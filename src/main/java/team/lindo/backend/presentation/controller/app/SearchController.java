@@ -8,18 +8,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import team.lindo.backend.application.product.dto.ProductSearchDto;
 import team.lindo.backend.application.product.service.ProductSearchService;
+import team.lindo.backend.application.search.dto.SearchResponseDto;
+import team.lindo.backend.application.search.service.SearchService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/app/products")
+@RequestMapping("/api/v1/app")
 @RequiredArgsConstructor
-public class ProductSearchController {
+public class SearchController {
 
-    private final ProductSearchService productSearchService;
+    private final SearchService searchService;
 
     @GetMapping("/search")
-    public ResponseEntity<List<ProductSearchDto>> searchProducts(@RequestParam String query) {
-        return ResponseEntity.ok(productSearchService.search(query));
+    public ResponseEntity<SearchResponseDto> search(@RequestParam String keyword) {
+        return ResponseEntity.ok(searchService.search(keyword));
     }
 }
