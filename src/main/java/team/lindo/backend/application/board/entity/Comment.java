@@ -9,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import team.lindo.backend.application.common.entity.BaseEntity;
 import team.lindo.backend.application.user.entity.User;
 
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "comment")
 public class Comment extends BaseEntity {
 
     @Id
@@ -30,10 +32,6 @@ public class Comment extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "posting_id")
     private Posting posting;
-
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

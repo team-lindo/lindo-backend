@@ -1,6 +1,7 @@
 package team.lindo.backend.application.wardrobe.entity;
 
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "wardrobe_product_id")
 public class WardrobeProductId implements Serializable {
     private Long wardrobeId;
     private Long productId;

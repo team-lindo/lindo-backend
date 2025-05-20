@@ -9,6 +9,7 @@ import team.lindo.backend.application.product.entity.Category;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "wardrobe_product")
 public class WardrobeProduct {
 
     @EmbeddedId

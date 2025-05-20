@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import team.lindo.backend.application.common.entity.BaseEntity;
 import team.lindo.backend.application.product.entity.Product;
 import team.lindo.backend.application.user.entity.User;
@@ -21,6 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "posting")
 public class Posting extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,12 +48,6 @@ public class Posting extends BaseEntity {
     @Builder.Default
     private Set<String> hashtags = new HashSet<>();
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
 //    private List<Product> recommendations = new ArrayList<>();
 
 

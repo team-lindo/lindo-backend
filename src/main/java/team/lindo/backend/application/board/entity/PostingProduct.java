@@ -12,6 +12,7 @@ import team.lindo.backend.application.product.entity.Product;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "posting_product")
 public class PostingProduct {
     @EmbeddedId
     private PostingProductId id;

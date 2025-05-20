@@ -14,6 +14,7 @@ import team.lindo.backend.application.wardrobe.entity.Wardrobe;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "user")
 public class User extends BaseEntity {  // BaseEntity 필요 없나?
 
     @Id
