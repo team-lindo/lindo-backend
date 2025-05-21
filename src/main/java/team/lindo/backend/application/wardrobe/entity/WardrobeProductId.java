@@ -15,7 +15,6 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "wardrobe_product_id")
 public class WardrobeProductId implements Serializable {
     private Long wardrobeId;
     private Long productId;

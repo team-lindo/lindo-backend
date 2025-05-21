@@ -2,6 +2,7 @@ package team.lindo.backend.application.wardrobe.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import team.lindo.backend.application.common.entity.BaseEntity;
 import team.lindo.backend.application.product.entity.Product;
 import team.lindo.backend.application.product.entity.Category;
 @Entity
@@ -9,8 +10,8 @@ import team.lindo.backend.application.product.entity.Category;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "wardrobe_product")
-public class WardrobeProduct {
+@Table(name = "WardrobeProduct")
+public class WardrobeProduct extends BaseEntity {
 
     @EmbeddedId
     private WardrobeProductId id; //  복합 키 적용

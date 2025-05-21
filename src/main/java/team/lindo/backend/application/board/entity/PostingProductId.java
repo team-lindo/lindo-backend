@@ -13,7 +13,6 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "posting_product_id")
 public class PostingProductId implements Serializable { // JPA에서 복합 키 클래스는 반드시 구현해야함.
     private Long postingId;
     private Long productId;
