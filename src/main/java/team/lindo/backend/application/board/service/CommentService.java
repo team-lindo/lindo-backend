@@ -49,8 +49,6 @@ public class CommentService {
                     .posting(comment.getPosting())
                     .user(comment.getUser())
                     .content(newContent)
-                    /*.parentComment(comment.getParentComment())
-                    .childComments(comment.getChildComments())*/
                     .build();
         }
         return commentRepository.save(comment);
@@ -64,13 +62,5 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
-    // 특정 게시물의 최상위(부모) 댓글들 조회
-    public List<Comment> getParentCommentsByPosting(Long postingId) {
-        return commentRepository.findParentCommentsByPostingId(postingId);
-    }
 
-    // 특정 부모 댓글의 답글들 조회
-    public List<Comment> getChildCommentsByParentComment(Long parentCommentId) {
-        return commentRepository.findChildCommentsByParentCommentId(parentCommentId);
-    }
 }

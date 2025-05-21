@@ -4,6 +4,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import team.lindo.backend.application.social.dto.LoadFollowersResponseDto;
+import team.lindo.backend.application.social.dto.LoadFollowingsResponseDto;
+import team.lindo.backend.application.social.service.FollowService;
 import team.lindo.backend.application.user.dto.*;
 import team.lindo.backend.application.user.service.UserService;
 import team.lindo.backend.util.SecurityUtil;
@@ -35,16 +38,6 @@ public class UserController {
         return ResponseEntity.ok(userService.logout());
     }
 
-    @GetMapping("/load")
-    public ResponseEntity<UserSummaryDto> loadMyInfo() {
-        long myId = SecurityUtil.getCurrentUserId();
-        return ResponseEntity.ok(userService.loadUserInfo(myId));
-    }
-
-    @GetMapping("/load/{id}")
-    public ResponseEntity<UserSummaryDto> loadUserInfo(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.loadUserInfo(id));
-    }
 
     @GetMapping("/me")
     public ResponseEntity<UserProfileDto> loadMyInfo() {

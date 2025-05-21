@@ -3,6 +3,7 @@ package team.lindo.backend.presentation.controller.app;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import team.lindo.backend.application.social.dto.FollowResponseDto;
 import team.lindo.backend.application.social.dto.UnfollowResponseDto;
 import team.lindo.backend.application.social.service.FollowService;
 import team.lindo.backend.application.user.dto.UserSummaryDto;
@@ -17,11 +18,11 @@ public class FollowController {
     private final UserService userService;
 
     @PatchMapping("/{id}")
-    public ResponseEntity<UserSummaryDto> follow(@PathVariable Long id) {
+    public ResponseEntity<FollowResponseDto> follow(@PathVariable Long id) {
         Long followerId = SecurityUtil.getCurrentUserId();  // 구현 필요
         followService.followUser(followerId, id);
 
-        return ResponseEntity.ok(userService.loadUserInfo(id));
+        return ResponseEntity.ok(new FollowResponseDto(id));
     }
 
     @DeleteMapping("/{id}")

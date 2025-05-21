@@ -1,10 +1,14 @@
 package team.lindo.backend.application.product.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import team.lindo.backend.application.product.entity.Product;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class ProductDto {
     private String uid;           // = product.getId().toString()

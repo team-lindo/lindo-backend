@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Id;
 import team.lindo.backend.application.common.entity.BaseEntity;
 
 @Entity
@@ -16,7 +16,7 @@ import team.lindo.backend.application.common.entity.BaseEntity;
 @Table(name = "PostImage")
 public class PostImage extends BaseEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
