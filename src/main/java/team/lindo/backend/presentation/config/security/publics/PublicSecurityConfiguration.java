@@ -18,26 +18,14 @@ public class PublicSecurityConfiguration extends SecurityConfigurationContract {
         super(objectMapper);
     }
 
-    // 모두에게 허용하는 보안 정책(테스트에서 로그인 인증 없이 열기 위해 주석 처리)
-    /*@Bean
+    // 모두에게 허용하는 보안 정책
+    @Bean
     @Order(1)
     public SecurityFilterChain publicSecurityFilterChain(HttpSecurity http) throws Exception {
         return this.configureCommonSecuritySettings(http) // 보안 공통 설정
                 .securityMatchers(matchers -> matchers.requestMatchers(getRequestMatchers())) // health check endpoint에 대해서
                 .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll()) // 모두에게 접근 허용
                 .build();
-    }*/
-
-    @Bean
-    @Order(1)
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable()) // CSRF 비활성화
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() // 모든 요청 허용
-                );
-
-        return http.build();
     }
 
     // 앱에서 관리하지 않는 엔드포인트에 대한 보안 정책
