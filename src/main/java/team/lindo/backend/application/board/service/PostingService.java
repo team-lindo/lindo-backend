@@ -9,8 +9,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import team.lindo.backend.application.board.dto.*;
 import team.lindo.backend.application.board.entity.Comment;
+import team.lindo.backend.application.board.entity.PostImage;
 import team.lindo.backend.application.board.entity.Posting;
 import team.lindo.backend.application.board.entity.PostingProduct;
+import team.lindo.backend.application.board.repository.PostImage.PostImageRepository;
 import team.lindo.backend.application.board.repository.posting.PostingRepository;
 import team.lindo.backend.application.board.repository.comment.CommentRepository;
 import team.lindo.backend.application.product.entity.Product;
@@ -19,6 +21,7 @@ import team.lindo.backend.application.user.dto.UserSummaryDto;
 import team.lindo.backend.application.user.entity.User;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +29,23 @@ public class PostingService {
     private final PostingRepository postingRepository;
     private final ProductRepository productRepository;
     private final CommentRepository commentRepository;
-    // CR
+    private final PostImageRepository postImageRepository;
+    // 이미지 업로드
+    public List<UploadImageResponseDto> savePostImages(List<String> imageUrls, Long postId) {
+        Posting posting = postingRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다."));
+
+        return imageUrls.stream()
+                .map(url -> {
+                    PostImage postImage = PostImage.builder()
+                            .imageUrl(url)
+                            .posting(posting)
+                            .build();
+                    postImageRepository.save(postImage);
+                    return new UploadImageResponseDto(postImage.getId().toString(), postImage.getImageUrl());
+                })
+                .collect(Collectors.toList());
+    }
     public Posting createPosting(CreatePostingRequestDto request, User user) {
         Posting posting = Posting.builder()
                 .user(user)
