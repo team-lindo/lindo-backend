@@ -9,16 +9,23 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.lindo.backend.application.board.dto.PostDto;
+import team.lindo.backend.application.board.entity.Posting;
 import team.lindo.backend.application.board.repository.posting.PostingRepository;
 import team.lindo.backend.application.common.exception.UserAlreadyExistsException;
 import team.lindo.backend.application.social.repository.follow.FollowRepository;
-import team.lindo.backend.application.user.dto.LoginRequestDto;
-import team.lindo.backend.application.user.dto.LogoutResponseDto;
-import team.lindo.backend.application.user.dto.SignUpRequestDto;
-import team.lindo.backend.application.user.dto.UserSummaryDto;
+import team.lindo.backend.application.social.service.FollowService;
+import team.lindo.backend.application.user.dto.*;
+import team.lindo.backend.application.user.entity.QUser;
 import team.lindo.backend.application.user.entity.Role;
 import team.lindo.backend.application.user.entity.User;
 import team.lindo.backend.application.user.repository.UserRepository;
+import team.lindo.backend.application.wardrobe.entity.Wardrobe;
+import team.lindo.backend.application.wardrobe.repository.WardrobeRepository;
+
+import java.util.List;
+
+import static team.lindo.backend.application.user.entity.QUser.user;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +57,12 @@ public class UserService {
                 .role(Role.USER)
                 .build()
         );
+
+        wardrobeRepository.save(Wardrobe.builder()
+                .user(registeredUser)
+                .build()
+        );
+
 
         return new UserSummaryDto(registeredUser);
     }
@@ -84,6 +97,9 @@ public class UserService {
         User user = userRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
 
+        List<Follow> followings = followRepository.findByFollowerId(user.getId());
+        List<Follow> followers = followRepository.findByFollowingId(user.getId());
+
 //        String token = jwtTokenProvider.generateToken(user);  //! JWT 토큰 발급
 
         return new UserSummaryDto(user);
@@ -94,9 +110,44 @@ public class UserService {
         return new LogoutResponseDto("로그아웃 되었습니다.");
     }
 
-    public UserSummaryDto loadUserInfo(Long id) {
+    public UserProfileDto loadMyUserInfo(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
-        return new UserSummaryDto(user);  //! UserMapper 같은 거 만들어서 .toDTO() 메서드 같은 걸로 처리?? (생성 책임 분리?)
+
+        Long followingsCount = followService.getFollowingCount(id);
+        Long followersCount = followService.getFollowerCount(id);
+        Long postsCount = postingRepository.countByUserId(id);
+
+        List<PostDto> posts = postingRepository.findByUserId(id).stream()
+                .map(PostDto::new)
+                .toList();
+
+        return UserProfileDto.builder()
+                .id(user.getId())
+                .nickname(user.getNickname())
+                .email(user.getEmail())
+                .followingsCount(followingsCount)
+                .followersCount(followersCount)
+                .postsCount(postsCount)
+                .posts(posts)
+                .build();
+    }
+
+    public FetchUserProfileDto loadUserInfo(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+
+        Long postsCount = postingRepository.countByUserId(id);
+
+        List<PostDto> posts = postingRepository.findByUserId(id).stream()
+                .map(PostDto::new)
+                .toList();
+
+        return FetchUserProfileDto.builder()
+                .id(user.getId())
+                .nickname(user.getNickname())
+                .postsCount(postsCount)
+                .posts(posts)
+                .build();
     }
 }

@@ -1,6 +1,7 @@
 package team.lindo.backend.application.board.entity;
 
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

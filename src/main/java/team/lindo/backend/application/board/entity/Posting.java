@@ -9,6 +9,7 @@ import team.lindo.backend.application.common.entity.BaseEntity;
 import team.lindo.backend.application.product.entity.Product;
 import team.lindo.backend.application.user.entity.User;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,6 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "Posting")
 public class Posting extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +28,6 @@ public class Posting extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;  // 게시물 작성한 회원
-
-    private String title;
 
     @Lob
     private String content;  // 본문 -> 대용량 데이터 될 수 있으니 @Lob? (CLOB)
@@ -38,15 +38,18 @@ public class Posting extends BaseEntity {
     private List<String> imageUrls;  // 이미지 파일 경로. (로컬 서버 디렉토리 혹은 클라우드 스토리지에 이미지 파일 저장, 해당 경로)
 
     @OneToMany(mappedBy = "posting", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private Set<PostingProduct> postingProducts = new HashSet<>();  // 게시물에 포함된 제품들 연결
+
+
+    @ElementCollection
+    @CollectionTable(name = "posting_hashtags", joinColumns = @JoinColumn(name = "posting_id"))
+    @Column(name = "hashtag")
+    @Builder.Default
+    private Set<String> hashtags = new HashSet<>();
 
 //    private List<Product> recommendations = new ArrayList<>();
 
-    public void updateTitle(String title) {
-        if (title != null && !title.isBlank()) {
-            this.title = title;
-        }
-    }
 
     public void updateContent(String content) {
         if (content != null && !content.isBlank()) {

@@ -28,22 +28,12 @@ public class CommentService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
 
-        Comment parentComment = null;
-        if(parentCommentId != null) {
-            parentComment = commentRepository.findById(parentCommentId)
-                    .orElseThrow(() -> new IllegalArgumentException("부모 댓글이 존재하지 않습니다."));
-        }
 
         Comment comment = Comment.builder()
                 .posting(posting)
                 .user(user)
                 .content(content)
-                .parentComment(parentComment)
                 .build();
-
-        if(parentComment != null) {
-            parentComment.addChildComment(comment);
-        }
 
         return commentRepository.save(comment);
     }
@@ -59,8 +49,8 @@ public class CommentService {
                     .posting(comment.getPosting())
                     .user(comment.getUser())
                     .content(newContent)
-                    .parentComment(comment.getParentComment())
-                    .childComments(comment.getChildComments())
+                    /*.parentComment(comment.getParentComment())
+                    .childComments(comment.getChildComments())*/
                     .build();
         }
         return commentRepository.save(comment);

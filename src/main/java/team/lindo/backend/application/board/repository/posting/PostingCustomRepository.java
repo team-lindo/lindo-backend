@@ -10,9 +10,6 @@ import java.util.List;
 public interface PostingCustomRepository {
     List<Posting> findPostingByCategoryId(Long categoryId);
 
-    // 제목이나 내용에서 키워드가 포함되는 게시물 검색
-    List<Posting> searchByTitleOrContent(@Param("keyword") String keyword);
-
     // 특정 카테고리 제품을 포함하는 게시물 검색
     List<Posting> findByCategoryId(@Param("categoryId") Long categoryId);
 

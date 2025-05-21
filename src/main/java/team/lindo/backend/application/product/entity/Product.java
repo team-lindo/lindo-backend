@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.lindo.backend.application.common.entity.BaseEntity;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,7 +16,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Product {
+@Table(name = "Product")
+public class Product extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +29,9 @@ public class Product {
 
     private Double price;
 
-//    private String color;  //! api 제공 X
+  //  private String color;
 
-//    private String size;  //! api 제공 X
+  //  private String size;
 
     private String brand;
 
@@ -43,8 +45,8 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<ProductCategory> productCategories = new HashSet<>(); // 다대다 관계 매핑
+   // @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+   //  private Set<ProductCategory> productCategories = new HashSet<>(); // 다대다 관계 매핑
 
     // 개별 프로퍼티 변경 메서드
     public Product changeName(String name) {
@@ -74,7 +76,7 @@ public class Product {
 //        }
 //        return this;
 //    }
-
+//
 //    public Product changeSize(String size) {
 //        if (size != null && !size.isBlank()) {
 //            this.size = size;
@@ -115,9 +117,6 @@ public class Product {
 //                .map(ProductCategory::getCategory)
 //                .collect(Collectors.toSet());
 //    }
-    public Category getCategory() {
-        return this.category;
-    }
 }
 
 /**
