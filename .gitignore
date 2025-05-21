@@ -37,7 +37,10 @@ out/
 .vscode/
 
 # yml files
-application-*.yml
+src/main/resources/application-*.yml
+
+# 기본 application.yml은 포함 (profile 설정만 들어 있음)
+!src/main/resources/application.yml
 
 
 # .env
