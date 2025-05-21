@@ -19,9 +19,15 @@ public class PostImage extends BaseEntity {
     @GeneratedValue
     private Long id;
 
+    @Column(unique = true)
     private String imageUrl;  // S3 or 서버 경로
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "post_id", nullable = true)
     private Posting posting;
+
+    public void setPosting(Posting posting) {
+        this.posting = posting;
+    }
+
 }
