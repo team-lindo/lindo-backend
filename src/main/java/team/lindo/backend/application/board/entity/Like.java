@@ -7,7 +7,7 @@ import team.lindo.backend.application.common.entity.BaseEntity;
 import team.lindo.backend.application.user.entity.User;
 
 @Entity
-@Table(name = "like")  // Like는 MySQL 예약어여서 그대로 사용 불가
+@Table(name = "Like")  // Like는 MySQL 예약어여서 그대로 사용 불가
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor

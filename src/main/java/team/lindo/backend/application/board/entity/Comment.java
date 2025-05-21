@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "comment")
+@Table(name = "Comment")
 public class Comment extends BaseEntity {
 
     @Id

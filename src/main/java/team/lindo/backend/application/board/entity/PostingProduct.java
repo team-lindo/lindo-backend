@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.lindo.backend.application.common.entity.BaseEntity;
 import team.lindo.backend.application.product.entity.Product;
 
 @Entity
@@ -12,8 +13,8 @@ import team.lindo.backend.application.product.entity.Product;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "posting_product")
-public class PostingProduct {
+@Table(name = "PostingProduct")
+public class PostingProduct extends BaseEntity {
     @EmbeddedId
     private PostingProductId id;
 

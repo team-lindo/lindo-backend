@@ -11,7 +11,7 @@ import team.lindo.backend.application.common.entity.BaseEntity;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "bookmark")
+@Table(name = "Bookmark")
 public class Bookmark extends BaseEntity{
 
     @Id

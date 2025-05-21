@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "wardrobe")
+@Table(name = "Wardrobe")
 public class Wardrobe extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
