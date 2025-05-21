@@ -21,7 +21,7 @@ import team.lindo.backend.application.user.security.CustomUserDetails;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/app/api")
+@RequestMapping("/api/v1/app")
 @RequiredArgsConstructor
 public class PostingController {
     private final PostingService postingService;
@@ -40,6 +40,12 @@ public class PostingController {
     public ResponseEntity<PostingSummaryDto> updatePosting(@PathVariable Long postingId, @RequestBody UpdatePostingRequestDto request) {
         PostingSummaryDto updatedPosting = postingService.updatePosting(postingId, request);
         return ResponseEntity.ok(updatedPosting);
+    }
+
+    @PostMapping ("/post/upload/images")
+    public ResponseEntity<List<UploadImageResponseDto>> uploadImages(
+            @RequestBody List<String> imageUrls, @RequestParam Long postId) {
+        return ResponseEntity.ok(postingService.savePostImages(imageUrls, postId));
     }
 
     @DeleteMapping("/post/{postingId}")
