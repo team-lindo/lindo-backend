@@ -13,6 +13,7 @@ import team.lindo.backend.application.board.dto.PostDto;
 import team.lindo.backend.application.board.entity.Posting;
 import team.lindo.backend.application.board.repository.posting.PostingRepository;
 import team.lindo.backend.application.common.exception.UserAlreadyExistsException;
+import team.lindo.backend.application.social.entity.Follow;
 import team.lindo.backend.application.social.repository.follow.FollowRepository;
 import team.lindo.backend.application.social.service.FollowService;
 import team.lindo.backend.application.user.dto.*;
@@ -34,6 +35,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final PostingRepository postingRepository;
     private final FollowRepository followRepository;
+    private final WardrobeRepository wardrobeRepository;
+    private final FollowService followService;
 
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
