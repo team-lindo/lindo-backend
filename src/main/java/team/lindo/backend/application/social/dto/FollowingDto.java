@@ -9,6 +9,7 @@ import team.lindo.backend.application.user.entity.User;
 @Getter
 @AllArgsConstructor
 public class FollowingDto {
-    private Long followingId;
-    private String followingNickname;
+    private Long id;
+    private String nickname;
+
 }

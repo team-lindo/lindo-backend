@@ -15,6 +15,4 @@ public class CreatePostingRequestDto {
     private List<String> imageUrls;
     private List<TaggedProductDto> taggedProducts;
     private Set<String> hashtags;
-
-//    private List<Image> images;  // 꼭 이미지를 객체로 다뤄야 하나? 이미지 url 외에 다른 정보와 함께 객체로서 다뤄야??
 }

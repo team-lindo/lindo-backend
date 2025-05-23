@@ -4,9 +4,14 @@ import lombok.Getter;
 
 @Getter
 public class UnfollowResponseDto {
-    Long id;
+    private Long  unfollowedUserId;
+    private Long followingsCount;
+    private Long followersCount;
 
-    public UnfollowResponseDto(Long id) {
-        this.id = id;
+
+    public UnfollowResponseDto(Long unfollowedUserId, Long followingsCount, Long followersCount) {
+        this.unfollowedUserId = unfollowedUserId;
+        this.followingsCount = followingsCount;
+        this.followersCount = followersCount;
     }
 }

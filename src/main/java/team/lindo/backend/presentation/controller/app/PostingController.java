@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import team.lindo.backend.application.board.dto.*;
 import team.lindo.backend.application.board.entity.Comment;
 import team.lindo.backend.application.board.entity.Posting;
@@ -15,6 +15,7 @@ import team.lindo.backend.application.board.service.BookmarkService;
 import team.lindo.backend.application.board.service.CommentService;
 import team.lindo.backend.application.board.service.LikeService;
 import team.lindo.backend.application.board.service.PostingService;
+import team.lindo.backend.application.board.dto.DeletePostResponseDto;
 import team.lindo.backend.application.user.entity.User;
 import team.lindo.backend.application.user.security.CustomUserDetails;
 
@@ -36,22 +37,26 @@ public class PostingController {
         return ResponseEntity.ok(new PostingSummaryDto(posting));
     }
 
-    @PostMapping("/post/{postingId}")
-    public ResponseEntity<PostingSummaryDto> updatePosting(@PathVariable Long postingId, @RequestBody UpdatePostingRequestDto request) {
-        PostingSummaryDto updatedPosting = postingService.updatePosting(postingId, request);
-        return ResponseEntity.ok(updatedPosting);
+    @PatchMapping("/post/{postingId}")
+    public ResponseEntity<UpdatePostResponseDto> updatePost(
+            @PathVariable Long postId,
+            @RequestBody UpdatePostingRequestDto request) {
+        Posting updated = postingService.update(postId, request.getContent());
+        return ResponseEntity.ok(new UpdatePostResponseDto(updated));
     }
 
-    @PostMapping ("/post/upload/images")
+    @PostMapping ("/post/{postId}/upload/images")
     public ResponseEntity<List<UploadImageResponseDto>> uploadImages(
-            @RequestBody List<String> imageUrls, @RequestParam Long postId) {
-        return ResponseEntity.ok(postingService.savePostImages(imageUrls, postId));
+            @RequestParam("images") MultipartFile[] images) {
+
+        List<UploadImageResponseDto> uploaded = postingService.uploadImages(images);
+        return ResponseEntity.ok(uploaded);
     }
 
-    @DeleteMapping("/post/{postingId}")
-    public ResponseEntity<String> deletePosting(@PathVariable Long postingId) {
+    @DeleteMapping("/post/{postId}")
+    public ResponseEntity<DeletePostResponseDto> deletePosting(@PathVariable Long postingId) {
         postingService.deletePosting(postingId);
-        String response = postingId.toString();
+        DeletePostResponseDto response = new DeletePostResponseDto(postingId.toString());
         return ResponseEntity.ok(response);
     }
 

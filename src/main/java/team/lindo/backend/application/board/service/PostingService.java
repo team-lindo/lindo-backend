@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import team.lindo.backend.application.board.dto.*;
 import team.lindo.backend.application.board.entity.Comment;
 import team.lindo.backend.application.board.entity.PostImage;
@@ -19,7 +20,7 @@ import team.lindo.backend.application.product.entity.Product;
 import team.lindo.backend.application.product.repository.ProductRepository;
 import team.lindo.backend.application.user.dto.UserSummaryDto;
 import team.lindo.backend.application.user.entity.User;
-
+import team.lindo.backend.util.StorageUtil;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,7 @@ public class PostingService {
     private final ProductRepository productRepository;
     private final CommentRepository commentRepository;
     private final PostImageRepository postImageRepository;
+    private final StorageUtil storageUtil;
     // 이미지 업로드
     public List<UploadImageResponseDto> savePostImages(List<String> imageUrls, Long postId) {
         Posting posting = postingRepository.findById(postId)
@@ -56,8 +58,8 @@ public class PostingService {
 
         if (request.getTaggedProducts() != null) {
             for (TaggedProductDto tag : request.getTaggedProducts()) {
-                Product product = productRepository.findById(tag.getProductId())
-                        .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다: " + tag.getProductId()));
+                Product product = productRepository.findById(tag.getUid())
+                        .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다: " + tag.getUid()));
 
                 PostingProduct postingProduct = PostingProduct.builder()
                         .posting(posting)
@@ -82,29 +84,11 @@ public class PostingService {
 
     // U
     @Transactional
-    public PostingSummaryDto updatePosting(Long postingId, UpdatePostingRequestDto request) {
-        // 게시물 조회
-        Posting posting = postingRepository.findById(postingId)
-                .orElseThrow(() -> new IllegalArgumentException("게시물이 존재하지 않습니다."));
-
-
-        // 본문 수정
-        if (request.getContent() != null && !request.getContent().isBlank()) {
-            posting.updateContent(request.getContent());
-        }
-
-        // 이미지 URL 수정
-        if (request.getImageUrls() != null && !request.getImageUrls().isEmpty()) {
-            posting.updateImageUrls(request.getImageUrls());
-        }
-
-        // 연결된 제품 수정
-        if (request.getProductIds() != null && !request.getProductIds().isEmpty()) {
-            List<Product> products = productRepository.findAllById(request.getProductIds());
-            posting.updatePostingProducts(products);
-        }
-
-        return new PostingSummaryDto(posting);
+    public Posting update(Long postId, String newContent) {
+        Posting posting = postingRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
+        posting.updateContent(newContent);
+        return posting;
     }
 
     // D
@@ -227,5 +211,16 @@ public class PostingService {
                 .comments(commentDtos)
                 .taggedProducts(taggedMap)
                 .build();
+    }
+
+    public List<UploadImageResponseDto> uploadImages(MultipartFile[] images) {
+        List<UploadImageResponseDto> result = new ArrayList<>();
+        for (MultipartFile image : images) {
+            // 1. 로컬/클라우드 스토리지에 저장
+            String storedUrl = storageUtil.save(image); // 예: S3 또는 로컬 디렉토리
+            String uuid = UUID.randomUUID().toString();
+            result.add(new UploadImageResponseDto(uuid, storedUrl));
+        }
+        return result;
     }
 }

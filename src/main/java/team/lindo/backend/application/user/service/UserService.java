@@ -55,7 +55,7 @@ public class UserService {
 
         User registeredUser = userRepository.save(User.builder()
                 .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getRawPassword()))
+                .password(passwordEncoder.encode(request.getPassword()))
                 .nickname(request.getNickname())
                 .role(Role.USER)
                 .build()
@@ -140,7 +140,7 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
 
-        Long postsCount = postingRepository.countByUserId(id);
+        Long postCount = postingRepository.countByUserId(id);
 
         List<PostDto> posts = postingRepository.findByUserId(id).stream()
                 .map(PostDto::new)
@@ -149,7 +149,7 @@ public class UserService {
         return FetchUserProfileDto.builder()
                 .id(user.getId())
                 .nickname(user.getNickname())
-                .postsCount(postsCount)
+                .postCount(postCount)
                 .posts(posts)
                 .build();
     }

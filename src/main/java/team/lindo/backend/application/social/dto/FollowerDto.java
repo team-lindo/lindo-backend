@@ -12,7 +12,7 @@ import team.lindo.backend.application.user.entity.User;
 @NoArgsConstructor
 @Builder
 public class FollowerDto {
-    private Long followerId;
-    private String followerNickname;
+    private Long id;
+    private String nickname;
 
 }
