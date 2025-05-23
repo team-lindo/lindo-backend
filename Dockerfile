@@ -25,5 +25,8 @@ WORKDIR /app
 # 빌드 단계에서 생성된 JAR 파일을 복사
 COPY --from=build /app/build/libs/backend-0.0.1.jar app.jar
 
+# Python 파일 복사
+COPY --from=build /app/src/main/resources/db/initial_product_loader.py scripts/initial_product_loader.py
+
 # 컨테이너가 시작될 때 애플리케이션 실행
 CMD ["java", "-jar", "-Duser.timezone=Asia/Seoul", "app.jar"]
