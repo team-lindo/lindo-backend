@@ -11,5 +11,5 @@ import java.util.List;
 @AllArgsConstructor
 public class SearchResponseDto {
     private List<ProductSummaryDto> products;
-    private List<PostDto> posts;
+    private List<PostDto> hashtags;
 }

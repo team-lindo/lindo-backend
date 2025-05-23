@@ -22,14 +22,14 @@ public class FollowController {
         Long followerId = SecurityUtil.getCurrentUserId();  // 구현 필요
         followService.followUser(followerId, id);
 
-        return ResponseEntity.ok(new FollowResponseDto(id));
+        return ResponseEntity.ok(followService.followInfo(followerId,id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<UnfollowResponseDto> unfollow(@PathVariable Long id) {
         Long followerId = SecurityUtil.getCurrentUserId();
         followService.unfollowUser(followerId, id);
-
-        return ResponseEntity.ok(new UnfollowResponseDto(id));
+        UnfollowResponseDto response = followService.unfollowUserAndReturnInfo(followerId, id);
+        return ResponseEntity.ok(response);
     }
 }

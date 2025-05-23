@@ -4,11 +4,7 @@ package team.lindo.backend.application.social.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.lindo.backend.application.board.entity.Posting;
-import team.lindo.backend.application.social.dto.FollowerDto;
-import team.lindo.backend.application.social.dto.FollowingDto;
-import team.lindo.backend.application.social.dto.LoadFollowersResponseDto;
-import team.lindo.backend.application.social.dto.LoadFollowingsResponseDto;
+import team.lindo.backend.application.social.dto.*;
 import team.lindo.backend.application.social.entity.Follow;
 import team.lindo.backend.application.social.repository.follow.FollowRepository;
 import team.lindo.backend.application.user.entity.User;
@@ -25,7 +21,7 @@ public class FollowService {
 
     // 팔로우 추가
     @Transactional
-    public Follow followUser(Long followerId, Long followingId) {
+    public void followUser(Long followerId, Long followingId) {
         if(followerId.equals(followingId)) {
             throw new IllegalArgumentException("자기 자신을 팔로우할 수 없습니다.");
         }
@@ -44,8 +40,23 @@ public class FollowService {
                 .follower(follower)
                 .following(following)
                 .build();
+        followRepository.save(follow);
+    }
 
-        return followRepository.save(follow);
+    @Transactional(readOnly = true)
+    public FollowResponseDto followInfo(Long myId, Long followingId) {
+        // 1. 팔로우한 유저 정보 (내가 팔로우한 대상)
+        User followedUser = userRepository.findById(followingId)
+                .orElseThrow(() -> new IllegalArgumentException("팔로우한 사용자가 존재하지 않습니다."));
+
+        // 2. 나의 팔로잉/팔로워 수
+        Long followingCount = followRepository.countByFollowerId(myId);
+        Long followerCount = followRepository.countByFollowingId(myId);
+
+        // 3. 응답 DTO 생성
+        FollowingDto followedDto = new FollowingDto(followedUser.getId(), followedUser.getNickname());
+
+        return new FollowResponseDto(myId, followedDto, followingCount, followerCount);
     }
 
     // 팔로우 취소
@@ -55,6 +66,18 @@ public class FollowService {
                         .orElseThrow(() -> new IllegalArgumentException("팔로우 관계가 존재하지 않습니다."));
 
         followRepository.delete(follow);
+    }
+
+    @Transactional
+    public UnfollowResponseDto unfollowUserAndReturnInfo(Long followerId, Long followingId) {
+        // 언팔로우 수행
+        unfollowUser(followerId, followingId);
+
+        // 현재 상태 가져오기
+        Long followingCount = getFollowingCount(followerId);
+        Long followerCount = getFollowerCount(followerId);
+
+        return new UnfollowResponseDto(followingId, followingCount, followerCount);
     }
 
     // 특정 사용자의 팔로우 목록 조회
@@ -101,8 +124,8 @@ public class FollowService {
         Long followerCount = getFollowerCount(userId); //
 
         return LoadFollowersResponseDto.builder()
-                .followerList(followerList)
-                .followerCount(followerCount)
+                .users(followerList)
+                .totalCount(followerCount)
                 .build();
     }
     // 프론트 맞춤 팔로잉 리스트와 팔로잉 수
@@ -117,8 +140,8 @@ public class FollowService {
         Long followingCount = getFollowingCount(userId); //
 
         return LoadFollowingsResponseDto.builder()
-                .followingList(followingList)
-                .followingCount(followingCount)
+                .users(followingList)
+                .totalCount(followingCount)
                 .build();
     }
 }

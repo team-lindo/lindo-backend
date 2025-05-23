@@ -10,4 +10,5 @@ import team.lindo.backend.application.user.entity.User;
 import java.util.List;
 
 public interface FollowRepository extends JpaRepository<Follow, Long>, FollowCustomRepository {
+
 }

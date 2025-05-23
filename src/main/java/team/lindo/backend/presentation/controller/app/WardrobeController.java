@@ -9,6 +9,7 @@ import team.lindo.backend.application.product.dto.ProductDto;
 import team.lindo.backend.application.product.dto.ProductSearchDto;
 import team.lindo.backend.application.user.security.CustomUserDetails;
 import team.lindo.backend.application.wardrobe.dto.AddProductRequestDto;
+import team.lindo.backend.application.wardrobe.dto.DeleteProductResponseDto;
 import team.lindo.backend.application.wardrobe.dto.FetchClosetResponseDto;
 import team.lindo.backend.application.wardrobe.dto.WardrobeProductDto;
 import team.lindo.backend.application.wardrobe.service.WardrobeService;
@@ -51,11 +52,13 @@ public class WardrobeController {
 
     //  옷 삭제
     @DeleteMapping("/me/product/{productId}")
-    public ResponseEntity<String> deleteProductFromMyWardrobe(
+    public ResponseEntity<DeleteProductResponseDto> deleteProductFromMyWardrobe(
             @PathVariable Long productId,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
+
         String deletedId = wardrobeService.deleteProduct(userDetails.getId(), productId);
-        return ResponseEntity.ok(deletedId);
+        DeleteProductResponseDto response = new DeleteProductResponseDto(deletedId);
+        return ResponseEntity.ok(response);
     }
 
     //  옷 상세 조회

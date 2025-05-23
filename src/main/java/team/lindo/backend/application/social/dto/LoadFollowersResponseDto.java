@@ -11,6 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class LoadFollowersResponseDto {
-    private List<FollowerDto> followerList;
-    private Long followerCount;
+    private List<FollowerDto> users;
+    private Long totalCount;
     }

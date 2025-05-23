@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TaggedProductDto {
-    private Long productId;
+    private Long uid;
     private String name;     // 상품 이름
     private Double price;// 상품 가격
     private double x;

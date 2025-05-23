@@ -8,6 +8,7 @@ import team.lindo.backend.application.board.dto.PostDto;
 
 import java.util.List;
 
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,6 +16,6 @@ import java.util.List;
 public class FetchUserProfileDto {
     private Long id;
     private String nickname;
-    private Long postsCount;
+    private Long postCount;
     private List<PostDto> posts;
 }
