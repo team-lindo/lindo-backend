@@ -61,24 +61,18 @@ public class FollowService {
 
     // 팔로우 취소
     @Transactional
-    public void unfollowUser(Long followerId, Long followingId) {
+    public UnfollowResponseDto unfollowUser(Long followerId, Long followingId) {
         Follow follow = followRepository.findByFollowerIdAndFollowingId(followerId, followingId)
                         .orElseThrow(() -> new IllegalArgumentException("팔로우 관계가 존재하지 않습니다."));
 
         followRepository.delete(follow);
-    }
 
-    @Transactional
-    public UnfollowResponseDto unfollowUserAndReturnInfo(Long followerId, Long followingId) {
-        // 언팔로우 수행
-        unfollowUser(followerId, followingId);
-
-        // 현재 상태 가져오기
         Long followingCount = getFollowingCount(followerId);
         Long followerCount = getFollowerCount(followerId);
 
         return new UnfollowResponseDto(followingId, followingCount, followerCount);
     }
+
 
     // 특정 사용자의 팔로우 목록 조회
     // GPT는 org.springframework.transaction.annotation.Transactional 사용해서 readOnly=true 걸어줬던데

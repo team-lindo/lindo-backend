@@ -11,7 +11,7 @@ import team.lindo.backend.application.user.service.UserService;
 import team.lindo.backend.common.util.SecurityUtil;
 
 @RestController
-@RequestMapping("/follow")
+@RequestMapping("/api/v1/app/follow")
 @RequiredArgsConstructor
 public class FollowController {
     private final FollowService followService;
@@ -28,8 +28,6 @@ public class FollowController {
     @DeleteMapping("/{id}")
     public ResponseEntity<UnfollowResponseDto> unfollow(@PathVariable Long id) {
         Long followerId = SecurityUtil.getCurrentUserId();
-        followService.unfollowUser(followerId, id);
-        UnfollowResponseDto response = followService.unfollowUserAndReturnInfo(followerId, id);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(followService.unfollowUser(followerId, id));
     }
 }
