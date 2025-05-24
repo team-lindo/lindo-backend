@@ -88,9 +88,11 @@ public class WardrobeService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저의 옷장을 찾을 수 없습니다."));
 
         Optional<Product> optionalProduct = productRepository.findAll().stream()
-                .filter(p -> p.getName().equalsIgnoreCase(dto.getProductName()) &&
-                        p.getBrand().equalsIgnoreCase(dto.getBrand()) &&
-                        p.getCategory().getName().equalsIgnoreCase(dto.getCategory()))
+                .filter(p ->
+                        p.getName().toLowerCase().contains(dto.getProductName().toLowerCase()) &&  // 🔍 이름 일부 포함
+                                p.getBrand().equalsIgnoreCase(dto.getBrand()) &&                          // ✅ 브랜드 정확히 일치
+                                p.getCategory().getName().equalsIgnoreCase(dto.getCategory())             // ✅ 카테고리 정확히 일치
+                )
                 .findFirst();
 
         if (optionalProduct.isEmpty()) {
