@@ -24,15 +24,15 @@ public class WardrobeController {
 
     private final WardrobeService wardrobeService;
 
-    // 카테고리별 옷 목록 조회
+   /* // 카테고리별 옷 목록 조회
     @GetMapping("/{wardrobeId}/products/grouped")
     public ResponseEntity<Map<String, List<WardrobeProductDto>>> getWardrobeProductsGrouped(
             @PathVariable Long wardrobeId) {
         return ResponseEntity.ok(wardrobeService.getProductsGroupedByCategory(wardrobeId));
-    }
+    }*/
 
     //옷장 옷 모두 보기 (옷장 기본)
-    @GetMapping("/closet/me")
+    @GetMapping("/me")
     public ResponseEntity<FetchClosetResponseDto> getMyCloset(
             @AuthenticationPrincipal CustomUserDetails userDetails) {
 
@@ -71,11 +71,11 @@ public class WardrobeController {
         return ResponseEntity.ok(response);
     }
 
-    //  옷장 안 옷 검색
+    /*//  옷장 안 옷 검색
     @GetMapping("/{wardrobeId}/products/search")
     public ResponseEntity<List<ProductSearchDto>> searchProductsInWardrobe(
             @PathVariable Long wardrobeId,
             @RequestParam String query) {
         return ResponseEntity.ok(wardrobeService.searchProductsInWardrobe(wardrobeId, query));
-    }
+    }*/
 }
