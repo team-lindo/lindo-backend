@@ -109,7 +109,7 @@ public class FollowService {
     // 프론트 맞춤 팔로워 리스트와 팔로워 수
     @Transactional(readOnly = true)
     public LoadFollowersResponseDto loadFollowers(Long userId) {
-        List<Follow> followers = followRepository.findByFollowerId(userId);
+        List<Follow> followers = followRepository.findByFollowingId(userId);
 
         List<FollowerDto> followerList = followers.stream()
                 .map(f -> new FollowerDto(f.getFollower().getId(), f.getFollower().getNickname()))
@@ -125,7 +125,7 @@ public class FollowService {
     // 프론트 맞춤 팔로잉 리스트와 팔로잉 수
     @Transactional(readOnly = true)
     public LoadFollowingsResponseDto loadFollowings(Long userId) {
-        List<Follow> followings = followRepository.findByFollowingId(userId);
+        List<Follow> followings = followRepository.findByFollowerId(userId);
 
         List<FollowingDto> followingList = followings.stream()
                 .map(f -> new FollowingDto(f.getFollowing().getId(), f.getFollowing().getNickname()))
