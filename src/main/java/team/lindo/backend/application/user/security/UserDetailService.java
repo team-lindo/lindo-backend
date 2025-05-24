@@ -21,4 +21,10 @@ public class UserDetailService implements UserDetailsService {  // spring securi
 
         return new CustomUserDetails(user);
     }
+
+    public CustomUserDetails loadUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+        return new CustomUserDetails(user);
+    }
 }
