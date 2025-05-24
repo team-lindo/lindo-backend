@@ -23,6 +23,7 @@ import team.lindo.backend.application.user.entity.User;
 import team.lindo.backend.application.user.repository.UserRepository;
 import team.lindo.backend.application.wardrobe.entity.Wardrobe;
 import team.lindo.backend.application.wardrobe.repository.WardrobeRepository;
+import team.lindo.backend.util.JwtUtil;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class UserService {
     private final FollowRepository followRepository;
     private final WardrobeRepository wardrobeRepository;
     private final FollowService followService;
+    private final JwtUtil jwtUtil;
 
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
@@ -91,21 +93,18 @@ public class UserService {
         userRepository.deleteById(userId);
     }
 
-    public UserSummaryDto login(LoginRequestDto loginRequest) {
-        // 사용자 인증 (인증 성공시 Authentication 객체 return, 인증된 사용자 정보 Security Context에 저장됨)
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
-        );
+    public LoginResponseDto login(LoginRequestDto request) {
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("이메일이 존재하지 않습니다."));
 
-        User user = userRepository.findByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
 
-        List<Follow> followings = followRepository.findByFollowerId(user.getId());
-        List<Follow> followers = followRepository.findByFollowingId(user.getId());
+        String token = jwtUtil.createToken(user.getId(), user.getEmail()); // ✅ 사용자 ID, 이메일 기반 토큰 생성
 
-//        String token = jwtTokenProvider.generateToken(user);  //! JWT 토큰 발급
-
-        return new UserSummaryDto(user);
+        UserSummaryDto userDto = new UserSummaryDto(user);
+        return new LoginResponseDto(userDto, token);
     }
 
     public LogoutResponseDto logout() {  //! JWT 기반 인증으로 수정 시 토큰을 삭제하는 방식으로 바꿔야 함
