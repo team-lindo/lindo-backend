@@ -37,20 +37,20 @@ public class PostingController {
         return ResponseEntity.ok(new PostingSummaryDto(posting));
     }
 
+    @PostMapping ("/post/upload/images")
+    public ResponseEntity<List<UploadImageResponseDto>> uploadImages(
+            @RequestParam("images") MultipartFile[] images) {
+
+        List<UploadImageResponseDto> uploaded = postingService.uploadImages(images);
+        return ResponseEntity.ok(uploaded);
+    }
+
     @PatchMapping("/post/{postingId}")
     public ResponseEntity<UpdatePostResponseDto> updatePost(
             @PathVariable Long postId,
             @RequestBody UpdatePostingRequestDto request) {
         Posting updated = postingService.update(postId, request.getContent());
         return ResponseEntity.ok(new UpdatePostResponseDto(updated));
-    }
-
-    @PostMapping ("/post/{postId}/upload/images")
-    public ResponseEntity<List<UploadImageResponseDto>> uploadImages(
-            @RequestParam("images") MultipartFile[] images) {
-
-        List<UploadImageResponseDto> uploaded = postingService.uploadImages(images);
-        return ResponseEntity.ok(uploaded);
     }
 
     @DeleteMapping("/post/{postId}")
