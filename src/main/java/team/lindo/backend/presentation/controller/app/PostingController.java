@@ -34,8 +34,7 @@ public class PostingController {
 
     @PostMapping("/post")
     public ResponseEntity<PostingSummaryDto> createPosting(@RequestBody CreatePostingRequestDto request) {
-        Posting saved = postingService.createPosting(request);
-        return ResponseEntity.ok(new PostingSummaryDto(saved));
+        return ResponseEntity.ok(postingService.createPosting(request));
     }
 
     @PostMapping ("/post/upload/images")

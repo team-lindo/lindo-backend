@@ -37,7 +37,7 @@ public class PostingService {
     private final StorageUtil storageUtil;
 
     @Transactional
-    public Posting createPosting(CreatePostingRequestDto request) {
+    public PostingSummaryDto createPosting(CreatePostingRequestDto request) {
         Long userId = SecurityUtil.getCurrentUserId(); // 현재 로그인된 사용자 ID
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
@@ -72,7 +72,9 @@ public class PostingService {
                 posting.addPostImage(image); // 연관관계 설정
             }
         }
-        return postingRepository.save(posting);  //! Posting의 다른 연관관계 필드들은? 이렇게만 생성하면 게시물에 제품(정보)들 없는 꼴 아닌가?
+        Posting saved = postingRepository.save(posting);
+
+        return new PostingSummaryDto(saved);  //! Posting의 다른 연관관계 필드들은? 이렇게만 생성하면 게시물에 제품(정보)들 없는 꼴 아닌가?
     }
 
     // U
