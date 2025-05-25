@@ -25,6 +25,8 @@ public class StorageUtil {
         try {
             String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
             File dest = new File(uploadDir, fileName);
+
+            System.out.println("파일 저장 경로: " + dest.getAbsolutePath());
             file.transferTo(dest);
             return "/uploads/" + fileName;
         } catch (IOException e) {
