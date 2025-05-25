@@ -8,17 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import team.lindo.backend.application.product.dto.ProductDto;
-import team.lindo.backend.application.product.dto.ProductSearchDto;
+import team.lindo.backend.application.wardrobe.dto.ProductDto;
 import team.lindo.backend.application.user.security.CustomUserDetails;
 import team.lindo.backend.application.wardrobe.dto.AddProductRequestDto;
 import team.lindo.backend.application.wardrobe.dto.DeleteProductResponseDto;
 import team.lindo.backend.application.wardrobe.dto.FetchClosetResponseDto;
-import team.lindo.backend.application.wardrobe.dto.WardrobeProductDto;
 import team.lindo.backend.application.wardrobe.service.WardrobeService;
-
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/app/closet")
