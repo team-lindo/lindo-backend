@@ -22,7 +22,7 @@ import team.lindo.backend.application.user.dto.UserSummaryDto;
 import team.lindo.backend.application.user.entity.User;
 import team.lindo.backend.application.user.repository.UserRepository;
 import team.lindo.backend.common.util.SecurityUtil;
-import team.lindo.backend.util.StorageUtil;
+import team.lindo.backend.util.S3Uploader;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,7 +34,7 @@ public class PostingService {
     private final CommentRepository commentRepository;
     private final PostImageRepository postImageRepository;
     private final UserRepository userRepository;
-    private final StorageUtil storageUtil;
+    private final S3Uploader s3Uploader;
 
     @Transactional
     public PostingSummaryDto createPosting(CreatePostingRequestDto request) {
@@ -190,7 +190,7 @@ public class PostingService {
     public List<UploadImageResponseDto> uploadImages(MultipartFile[] images) {
         return Arrays.stream(images)
                 .map(image -> {
-                    String url = storageUtil.save(image); // 서버/S3에 저장
+                    String url = s3Uploader.upload(image, "post-images"); // 서버/S3에 저장
                     PostImage postImage = PostImage.builder()
                             .imageUrl(url)
                             .build(); // 현재는 posting 없이 저장

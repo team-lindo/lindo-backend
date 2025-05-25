@@ -52,7 +52,6 @@ public class PostingController {
         Posting updated = postingService.update(postId, request.getContent());
         return ResponseEntity.ok(new UpdatePostResponseDto(updated));
     }
-
     @DeleteMapping("/post/{postId}")
     public ResponseEntity<DeletePostResponseDto> deletePosting(@PathVariable Long postId) {
         postingService.deletePosting(postId);
