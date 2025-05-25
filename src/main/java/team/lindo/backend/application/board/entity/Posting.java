@@ -41,6 +41,9 @@ public class Posting extends BaseEntity {
     @Builder.Default
     private Set<PostingProduct> postingProducts = new HashSet<>();  // 게시물에 포함된 제품들 연결
 
+    @OneToMany(mappedBy = "posting", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private Set<PostImage> postImages = new HashSet<>();
 
     @ElementCollection
     @CollectionTable(name = "posting_hashtags", joinColumns = @JoinColumn(name = "posting_id"))
@@ -50,7 +53,10 @@ public class Posting extends BaseEntity {
 
 //    private List<Product> recommendations = new ArrayList<>();
 
-
+    public void addPostImage(PostImage image) {
+        this.postImages.add(image);
+        image.setPosting(this); // 양방향 연결
+    }
     public void updateContent(String content) {
         if (content != null && !content.isBlank()) {
             this.content = content;

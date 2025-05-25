@@ -68,7 +68,7 @@ public class PostingService {
             for (String imageUrl : request.getImageUrls()) {
                 PostImage image = postImageRepository.findByImageUrl(imageUrl)
                         .orElseThrow(() -> new IllegalArgumentException("해당 이미지 URL에 대한 이미지를 찾을 수 없습니다: " + imageUrl));
-                image.setPosting(posting); // 연관관계 설정
+                posting.addPostImage(image); // 연관관계 설정
             }
         }
         return postingRepository.save(posting);  //! Posting의 다른 연관관계 필드들은? 이렇게만 생성하면 게시물에 제품(정보)들 없는 꼴 아닌가?
