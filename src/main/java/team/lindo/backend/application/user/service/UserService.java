@@ -111,7 +111,7 @@ public class UserService {
         SecurityContextHolder.clearContext();
         return new LogoutResponseDto("로그아웃 되었습니다.");
     }
-
+    @Transactional
     public UserProfileDto loadMyUserInfo(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
@@ -134,7 +134,7 @@ public class UserService {
                 .posts(posts)
                 .build();
     }
-
+    @Transactional
     public FetchUserProfileDto loadUserInfo(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
