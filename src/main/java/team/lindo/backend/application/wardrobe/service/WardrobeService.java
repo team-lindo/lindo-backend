@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.lindo.backend.application.search.service.ProductMatchScorer;
-import team.lindo.backend.application.product.dto.ProductDto;
+import team.lindo.backend.application.wardrobe.dto.ProductDto;
 import team.lindo.backend.application.product.dto.ProductSearchDto;
 import team.lindo.backend.application.wardrobe.dto.AddProductRequestDto;
 import team.lindo.backend.application.wardrobe.dto.FetchClosetResponseDto;
@@ -56,7 +56,7 @@ public class WardrobeService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저의 옷장을 찾을 수 없습니다."));
 
         List<ProductDto> items = wardrobe.getWardrobeProducts().stream()
-                .map(wp -> new ProductDto(wp.getProduct()))
+                .map(ProductDto::new)
                 .toList();
 
         return new FetchClosetResponseDto(items);
@@ -76,10 +76,12 @@ public class WardrobeService {
             throw new IllegalArgumentException("해당 옷은 옷장에 존재하지 않습니다.");
         }
 
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException("제품 정보를 찾을 수 없습니다."));
+        WardrobeProduct wardrobeProduct = wardrobe.getWardrobeProducts().stream()
+                .filter(wp -> wp.getProduct().getId().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("해당 옷은 옷장에 존재하지 않습니다."));
 
-        return new ProductDto(product);
+        return new ProductDto(wardrobeProduct);
     }
     // 옷 정보로 옷장에 옷 추가
     @Transactional
@@ -105,7 +107,12 @@ public class WardrobeService {
         wardrobe.addProduct(product, category);
         wardrobeRepository.save(wardrobe);
 
-        return new ProductDto(product);
+        WardrobeProduct wardrobeProduct = wardrobe.getWardrobeProducts().stream()
+                .filter(wp -> wp.getProduct().equals(product))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("방금 추가한 옷장 제품을 찾을 수 없습니다."));
+
+        return new ProductDto(wardrobeProduct);
     }
 
 

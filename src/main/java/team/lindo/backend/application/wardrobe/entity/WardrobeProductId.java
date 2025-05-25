@@ -31,4 +31,9 @@ public class WardrobeProductId implements Serializable {
     public int hashCode() {
         return Objects.hash(wardrobeId, productId);
     }
+
+    @Override
+    public String toString() {
+        return wardrobeId + "_" + productId;  // ✅ 고유 UID용 문자열
+    }
 }
