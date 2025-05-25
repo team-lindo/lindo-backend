@@ -10,12 +10,14 @@ import java.util.UUID;
 @Component
 public class StorageUtil {
 
-    private final String uploadDir = "./uploads";  // 상대 경로 또는 절대 경로 가능
+    private final String uploadDir;  // 상대 경로 또는 절대 경로 가능
 
     public StorageUtil() {
+        this.uploadDir = new File("src/main/resources/static/uploads").getAbsolutePath();
+
         File dir = new File(uploadDir);
         if (!dir.exists()) {
-            dir.mkdirs();  // 경로가 없으면 자동 생성
+            dir.mkdirs();
         }
     }
 
