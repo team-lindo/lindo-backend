@@ -35,22 +35,7 @@ public class PostingService {
     private final PostImageRepository postImageRepository;
     private final UserRepository userRepository;
     private final StorageUtil storageUtil;
-    // 이미지 업로드
-    public List<UploadImageResponseDto> savePostImages(List<String> imageUrls, Long postId) {
-        Posting posting = postingRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다."));
 
-        return imageUrls.stream()
-                .map(url -> {
-                    PostImage postImage = PostImage.builder()
-                            .imageUrl(url)
-                            .posting(posting)
-                            .build();
-                    postImageRepository.save(postImage);
-                    return new UploadImageResponseDto(postImage.getId().toString(), postImage.getImageUrl());
-                })
-                .collect(Collectors.toList());
-    }
     public Posting createPosting(CreatePostingRequestDto request) {
         Long userId = SecurityUtil.getCurrentUserId(); // 현재 로그인된 사용자 ID
         User user = userRepository.findById(userId)
@@ -118,27 +103,6 @@ public class PostingService {
         return new PostingSummaryDto(posting);
     }
 
-    //! 리턴 타입 싹 다 entity가 아닌 DTO로 수정???
-    // 댓글 많은 순서 게시물 조회
-    public List<Posting> getPostingsByComments() {
-        return postingRepository.findAllByComments();
-    }
-
-    // 최신순 게시물 조회
-    public List<Posting> getPostingsByLatest() {
-        return postingRepository.findAllByOrderByCreatedAtDesc();
-    }
-
-    // 좋아요 순서 게시물 조회
-    public List<Posting> getPostingsByLikes() {
-        return postingRepository.findAllByLikes();
-    }
-
-    // 제목 혹은 내용으로 게시물 검색
-//    public List<PostingSummaryDto> searchPostingsByKeyword(String keyword) {
-//        List<Posting> postings = postingRepository.searchByTitleOrContent(keyword);
-//        return postings.stream().map(PostingSummaryDto::new).toList();
-//    }
 
     // 특정 카테고리 제품을 포함하는 게시물 조회
     public List<Posting> getPostingsByCategory(Long categoryId) {  // Pageable 추가해서 페이징 지원?
@@ -221,13 +185,19 @@ public class PostingService {
     }
 
     public List<UploadImageResponseDto> uploadImages(MultipartFile[] images) {
-        List<UploadImageResponseDto> result = new ArrayList<>();
-        for (MultipartFile image : images) {
-            // 1. 로컬/클라우드 스토리지에 저장
-            String storedUrl = storageUtil.save(image); // 예: S3 또는 로컬 디렉토리
-            String uuid = UUID.randomUUID().toString();
-            result.add(new UploadImageResponseDto(uuid, storedUrl));
-        }
-        return result;
+        return Arrays.stream(images)
+                .map(image -> {
+                    String url = storageUtil.save(image); // 서버/S3에 저장
+                    PostImage postImage = PostImage.builder()
+                            .imageUrl(url)
+                            .build(); // 현재는 posting 없이 저장
+                    postImageRepository.save(postImage);
+
+                    return new UploadImageResponseDto(
+                            postImage.getId().toString(),
+                            postImage.getImageUrl()
+                    );
+                })
+                .collect(Collectors.toList());
     }
 }
