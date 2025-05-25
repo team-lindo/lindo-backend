@@ -18,6 +18,7 @@ import team.lindo.backend.application.board.service.PostingService;
 import team.lindo.backend.application.board.dto.DeletePostResponseDto;
 import team.lindo.backend.application.user.entity.User;
 import team.lindo.backend.application.user.security.CustomUserDetails;
+import team.lindo.backend.common.util.SecurityUtil;
 
 import java.util.List;
 
@@ -32,9 +33,9 @@ public class PostingController {
 //    private final S3Service s3Service;  // AWS S3 사용 -> 나중에 추가 필요 (이미지 업로드)
 
     @PostMapping("/post")
-    public ResponseEntity<PostingSummaryDto> createPosting(@RequestBody CreatePostingRequestDto request, @AuthenticationPrincipal User user) {
-        Posting posting = postingService.createPosting(request, user);  //? @AuthenticationPrincipal 뭔지 알아보기
-        return ResponseEntity.ok(new PostingSummaryDto(posting));
+    public ResponseEntity<PostingSummaryDto> createPosting(@RequestBody CreatePostingRequestDto request) {
+        Posting saved = postingService.createPosting(request);
+        return ResponseEntity.ok(new PostingSummaryDto(saved));
     }
 
     @PostMapping ("/post/upload/images")

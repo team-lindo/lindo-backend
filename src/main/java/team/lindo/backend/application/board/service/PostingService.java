@@ -20,6 +20,8 @@ import team.lindo.backend.application.product.entity.Product;
 import team.lindo.backend.application.product.repository.ProductRepository;
 import team.lindo.backend.application.user.dto.UserSummaryDto;
 import team.lindo.backend.application.user.entity.User;
+import team.lindo.backend.application.user.repository.UserRepository;
+import team.lindo.backend.common.util.SecurityUtil;
 import team.lindo.backend.util.StorageUtil;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -31,6 +33,7 @@ public class PostingService {
     private final ProductRepository productRepository;
     private final CommentRepository commentRepository;
     private final PostImageRepository postImageRepository;
+    private final UserRepository userRepository;
     private final StorageUtil storageUtil;
     // 이미지 업로드
     public List<UploadImageResponseDto> savePostImages(List<String> imageUrls, Long postId) {
@@ -48,7 +51,11 @@ public class PostingService {
                 })
                 .collect(Collectors.toList());
     }
-    public Posting createPosting(CreatePostingRequestDto request, User user) {
+    public Posting createPosting(CreatePostingRequestDto request) {
+        Long userId = SecurityUtil.getCurrentUserId(); // 현재 로그인된 사용자 ID
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+
         Posting posting = Posting.builder()
                 .user(user)
                 .content(request.getContent())
