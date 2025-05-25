@@ -45,7 +45,7 @@ public class PostingController {
         return ResponseEntity.ok(uploaded);
     }
 
-    @PatchMapping("/post/{postingId}")
+    @PatchMapping("/post/{postId}")
     public ResponseEntity<UpdatePostResponseDto> updatePost(
             @PathVariable Long postId,
             @RequestBody UpdatePostingRequestDto request) {
@@ -54,16 +54,16 @@ public class PostingController {
     }
 
     @DeleteMapping("/post/{postId}")
-    public ResponseEntity<DeletePostResponseDto> deletePosting(@PathVariable Long postingId) {
-        postingService.deletePosting(postingId);
-        DeletePostResponseDto response = new DeletePostResponseDto(postingId.toString());
+    public ResponseEntity<DeletePostResponseDto> deletePosting(@PathVariable Long postId) {
+        postingService.deletePosting(postId);
+        DeletePostResponseDto response = new DeletePostResponseDto(postId.toString());
         return ResponseEntity.ok(response);
     }
 
     //특정 개시물 상세 조회
     @GetMapping("post/{postId}")
-    public ResponseEntity<LoadPostResponseDto> loadPost(@PathVariable Long id) {
-        LoadPostResponseDto response = postingService.loadPost(id);
+    public ResponseEntity<LoadPostResponseDto> loadPost(@PathVariable Long postId) {
+        LoadPostResponseDto response = postingService.loadPost(postId);
         return ResponseEntity.ok(response);
     }
     // 게시물에 댓글 추가
