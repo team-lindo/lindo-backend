@@ -36,6 +36,7 @@ public class PostingService {
     private final UserRepository userRepository;
     private final StorageUtil storageUtil;
 
+    @Transactional
     public Posting createPosting(CreatePostingRequestDto request) {
         Long userId = SecurityUtil.getCurrentUserId(); // 현재 로그인된 사용자 ID
         User user = userRepository.findById(userId)

@@ -1,10 +1,7 @@
 package team.lindo.backend.application.board.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import jakarta.persistence.Id;
 import team.lindo.backend.application.common.entity.BaseEntity;
 
@@ -22,12 +19,9 @@ public class PostImage extends BaseEntity {
     @Column(unique = true)
     private String imageUrl;  // S3 or 서버 경로
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = true)
     private Posting posting;
-
-    public void setPosting(Posting posting) {
-        this.posting = posting;
-    }
 
 }
