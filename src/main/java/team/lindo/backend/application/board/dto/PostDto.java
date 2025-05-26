@@ -7,6 +7,7 @@ import team.lindo.backend.application.board.entity.Posting;
 import team.lindo.backend.application.board.entity.PostingProduct;
 import team.lindo.backend.application.user.dto.UserSummaryDto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -24,9 +25,8 @@ public class PostDto {
     public PostDto(Posting posting) {
         this.id = posting.getId();
         // imageUrls가 null이 아니고 비어있지 않으면 첫 번째 이미지 사용
-        this.thumbnail = (posting.getImageUrls() != null && !posting.getImageUrls().isEmpty())
-                ? posting.getImageUrls().get(0)
-                : null;
+        List<String> imageUrls = new ArrayList<>(posting.getImageUrls()); // Lazy 초기화
+        this.thumbnail = imageUrls.isEmpty() ? null : imageUrls.get(0);
         this.user = new UserSummaryDto(posting.getUser());
     }
 }
