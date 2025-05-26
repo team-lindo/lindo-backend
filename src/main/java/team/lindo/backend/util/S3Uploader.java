@@ -57,6 +57,7 @@ public class S3Uploader {
 
             return "https://" + bucket + ".s3." + region + ".amazonaws.com/" + fileName;
         } catch (IOException e) {
+            e.printStackTrace(); // ✅ 반드시 로그 찍기
             throw new RuntimeException("S3 파일 업로드 실패", e);
         }
     }
