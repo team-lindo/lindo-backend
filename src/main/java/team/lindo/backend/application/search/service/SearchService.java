@@ -2,6 +2,7 @@ package team.lindo.backend.application.search.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import team.lindo.backend.application.board.dto.PostDto;
 import team.lindo.backend.application.board.entity.Posting;
 import team.lindo.backend.application.board.entity.PostingProduct;
@@ -22,7 +23,7 @@ public class SearchService {
 
     private final PostingRepository postingRepository;
     private final PostMatchScorer matchScorer;
-
+    @Transactional(readOnly = true)
     public SearchResponseDto search(String keyword) {
         List<Posting> matchedPosts = postingRepository.findAll().stream()
                 .map(post -> new AbstractMap.SimpleEntry<>(post, matchScorer.calculateMatchScore(post, keyword)))
