@@ -160,6 +160,7 @@ public class PostingService {
         Posting post = postingRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시물이 존재하지 않습니다."));
 
+        List<String> imageUrls = new ArrayList<>(post.getImageUrls());
         // 댓글 조회
         List<Comment> comments = commentRepository.findByPostingId(postId);
         List<CommentDto> commentDtos = comments.stream()
@@ -190,7 +191,7 @@ public class PostingService {
                 .id(post.getId())
                 .user(new UserSummaryDto(post.getUser()))
                 .content(post.getContent())
-                .images(post.getImageUrls())
+                .images(imageUrls)
                 .comments(commentDtos)
                 .taggedProducts(grouped)
                 .build();
