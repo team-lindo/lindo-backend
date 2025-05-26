@@ -9,10 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import team.lindo.backend.application.board.dto.*;
-import team.lindo.backend.application.board.entity.Comment;
-import team.lindo.backend.application.board.entity.PostImage;
-import team.lindo.backend.application.board.entity.Posting;
-import team.lindo.backend.application.board.entity.PostingProduct;
+import team.lindo.backend.application.board.entity.*;
 import team.lindo.backend.application.board.repository.PostImage.PostImageRepository;
 import team.lindo.backend.application.board.repository.posting.PostingRepository;
 import team.lindo.backend.application.board.repository.comment.CommentRepository;
@@ -49,6 +46,8 @@ public class PostingService {
                 .hashtags(request.getHashtags() != null ? request.getHashtags() : Set.of())
                 .build();
 
+        Posting saved = postingRepository.save(posting);
+
         if (request.getTaggedProducts() != null) {
             for (TaggedProductGroupDto group : request.getTaggedProducts()) {
                 Long imageId = Long.parseLong(group.getImageId());
@@ -58,14 +57,15 @@ public class PostingService {
                             .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다: " + tag.getUid()));
 
                     PostingProduct postingProduct = PostingProduct.builder()
-                            .posting(posting)
+                            .id(new PostingProductId(saved.getId(), product.getId()))
+                            .posting(saved)
                             .product(product)
                             .x(tag.getX())
                             .y(tag.getY())
                             .imageId(imageId) // 중요!
                             .build();
 
-                    posting.getPostingProducts().add(postingProduct);
+                    saved.getPostingProducts().add(postingProduct);
                 }
             }
         }
@@ -74,10 +74,9 @@ public class PostingService {
             for (String imageUrl : request.getImageUrls()) {
                 PostImage image = postImageRepository.findByImageUrl(imageUrl)
                         .orElseThrow(() -> new IllegalArgumentException("해당 이미지 URL에 대한 이미지를 찾을 수 없습니다: " + imageUrl));
-                posting.addPostImage(image); // 연관관계 설정
+                saved.addPostImage(image); // 연관관계 설정
             }
         }
-        Posting saved = postingRepository.save(posting);
 
         return new PostingSummaryDto(saved);  //! Posting의 다른 연관관계 필드들은? 이렇게만 생성하면 게시물에 제품(정보)들 없는 꼴 아닌가?
     }
