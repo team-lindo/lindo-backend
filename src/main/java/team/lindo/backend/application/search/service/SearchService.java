@@ -30,6 +30,7 @@ public class SearchService {
                 .filter(entry -> entry.getValue() > 0)
                 .sorted((a, b) -> b.getValue() - a.getValue())  // 점수 높은 순
                 .map(Map.Entry::getKey)
+                .limit(20)
                 .toList();
 
         Set<Product> relatedProducts = matchedPosts.stream()
