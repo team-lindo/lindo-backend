@@ -10,9 +10,13 @@ public class ProductMatchScorer implements MatchScorer<Product> {
         int score = 0;
         String lowerQuery = query.toLowerCase();
 
-        if (product.getName().toLowerCase().contains(lowerQuery)) {
+        String name = product.getName().toLowerCase();
+        if (name.startsWith(lowerQuery)) {
             score += 100;
+        } else if (name.contains(lowerQuery)) {
+            score += 50;
         }
+
         if (product.getBrand() != null && product.getBrand().toLowerCase().contains(lowerQuery)) {
             score += 50;
         }

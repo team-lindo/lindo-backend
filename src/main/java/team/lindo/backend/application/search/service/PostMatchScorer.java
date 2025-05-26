@@ -19,8 +19,11 @@ public class PostMatchScorer {
         //  포함된 제품들
         for (PostingProduct pp : post.getPostingProducts()) {
             Product product = pp.getProduct();
-            if (product.getName().toLowerCase().contains(lowerQuery)) {
+            String name = product.getName().toLowerCase();
+            if (name.startsWith(lowerQuery)) {
                 score += 100;
+            } else if (name.contains(lowerQuery)) {
+                score += 50;
             }
             if (product.getBrand() != null && product.getBrand().toLowerCase().contains(lowerQuery)) {
                 score += 50;
