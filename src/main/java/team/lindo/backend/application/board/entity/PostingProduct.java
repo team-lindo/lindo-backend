@@ -34,6 +34,9 @@ public class PostingProduct extends BaseEntity {
     @Column(name = "y", nullable = false)
     private double y;
 
+    @Column(name = "image_id")
+    private Long imageId;
+
     @Builder
     public PostingProduct(Posting posting, Product product ,double x, double y) {
         if(posting == null || product == null) {
