@@ -50,18 +50,23 @@ public class PostingService {
                 .build();
 
         if (request.getTaggedProducts() != null) {
-            for (TaggedProductDto tag : request.getTaggedProducts()) {
-                Product product = productRepository.findById(tag.getUid())
-                        .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다: " + tag.getUid()));
+            for (TaggedProductGroupDto group : request.getTaggedProducts()) {
+                Long imageId = Long.parseLong(group.getImageId());
 
-                PostingProduct postingProduct = PostingProduct.builder()
-                        .posting(posting)
-                        .product(product)
-                        .x(tag.getX())
-                        .y(tag.getY())
-                        .build();
+                for (TaggedProductDto tag : group.getTags()) {
+                    Product product = productRepository.findById(tag.getUid())
+                            .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다: " + tag.getUid()));
 
-                posting.getPostingProducts().add(postingProduct);
+                    PostingProduct postingProduct = PostingProduct.builder()
+                            .posting(posting)
+                            .product(product)
+                            .x(tag.getX())
+                            .y(tag.getY())
+                            .imageId(imageId) // 중요!
+                            .build();
+
+                    posting.getPostingProducts().add(postingProduct);
+                }
             }
         }
 
@@ -136,7 +141,6 @@ public class PostingService {
     public List<Posting> getFollowingPostingsByUser(Long userId) {
         return postingRepository.findFollowingPostingsByUserId(userId);
     }
-    @Transactional
     // 프론트엔드 맞춤 다음 페이지가 있는지 확인하고 무한 스크롤
     public PostPageResponseDto getPostPreviews(Pageable pageable) {
         Page<Posting> page = postingRepository.findAll(pageable);
@@ -178,16 +182,20 @@ public class PostingService {
             taggedMap.computeIfAbsent(imageKey, k -> new ArrayList<>()).add(tagged);
         }
 
+        List<TaggedProductGroupDto> grouped = taggedMap.entrySet().stream()
+                .map(e -> new TaggedProductGroupDto(e.getKey().toString(), e.getValue()))
+                .toList();
+
         return LoadPostResponseDto.builder()
                 .id(post.getId())
                 .user(new UserSummaryDto(post.getUser()))
                 .content(post.getContent())
-                .images(new ArrayList<>(post.getImageUrls()))
+                .images(post.getImageUrls())
                 .comments(commentDtos)
-                .taggedProducts(taggedMap)
+                .taggedProducts(grouped)
                 .build();
     }
-    @Transactional
+
     public List<UploadImageResponseDto> uploadImages(MultipartFile[] images) {
         return Arrays.stream(images)
                 .map(image -> {

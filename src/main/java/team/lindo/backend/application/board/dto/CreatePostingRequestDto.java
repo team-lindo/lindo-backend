@@ -13,6 +13,6 @@ public class CreatePostingRequestDto {
      */
     private String content;
     private List<String> imageUrls;
-    private List<TaggedProductDto> taggedProducts;
+    private List<TaggedProductGroupDto> taggedProducts;
     private Set<String> hashtags;
 }

@@ -1,16 +1,17 @@
 package team.lindo.backend.application.board.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaggedProductDto {
-    private Long uid;
-    private String name;     // 상품 이름
-    private Double price;// 상품 가격
-    private Double x;
-    private Double y;
+@Builder
+public class TaggedProductGroupDto {
+    private String imageId;
+    private List<TaggedProductDto> tags;
 }

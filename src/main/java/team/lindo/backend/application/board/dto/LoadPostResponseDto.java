@@ -19,5 +19,5 @@ public class LoadPostResponseDto {
     private String content;
     private List<String> images;
     private List<CommentDto> comments;  // 선택 사항
-    private Map<Long, List<TaggedProductDto>> taggedProducts;
+    private List<TaggedProductGroupDto> taggedProducts;
 }
