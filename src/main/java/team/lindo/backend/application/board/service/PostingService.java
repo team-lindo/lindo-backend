@@ -182,7 +182,7 @@ public class PostingService {
                 .id(post.getId())
                 .user(new UserSummaryDto(post.getUser()))
                 .content(post.getContent())
-                .images(post.getImageUrls())
+                .images(new ArrayList<>(post.getImageUrls()))
                 .comments(commentDtos)
                 .taggedProducts(taggedMap)
                 .build();
