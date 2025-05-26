@@ -136,6 +136,7 @@ public class PostingService {
     public List<Posting> getFollowingPostingsByUser(Long userId) {
         return postingRepository.findFollowingPostingsByUserId(userId);
     }
+    @Transactional
     // 프론트엔드 맞춤 다음 페이지가 있는지 확인하고 무한 스크롤
     public PostPageResponseDto getPostPreviews(Pageable pageable) {
         Page<Posting> page = postingRepository.findAll(pageable);
@@ -186,7 +187,7 @@ public class PostingService {
                 .taggedProducts(taggedMap)
                 .build();
     }
-
+    @Transactional
     public List<UploadImageResponseDto> uploadImages(MultipartFile[] images) {
         return Arrays.stream(images)
                 .map(image -> {
