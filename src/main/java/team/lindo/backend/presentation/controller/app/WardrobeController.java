@@ -14,6 +14,7 @@ import team.lindo.backend.application.wardrobe.dto.AddProductRequestDto;
 import team.lindo.backend.application.wardrobe.dto.DeleteProductResponseDto;
 import team.lindo.backend.application.wardrobe.dto.FetchClosetResponseDto;
 import team.lindo.backend.application.wardrobe.service.WardrobeService;
+import team.lindo.backend.common.util.SecurityUtil;
 
 @RestController
 @RequestMapping("/api/v1/app/closet")
@@ -32,20 +33,21 @@ public class WardrobeController {
 
     //옷장 옷 모두 보기 (옷장 기본)
     @GetMapping("/me")
-    public ResponseEntity<FetchClosetResponseDto> getMyCloset(
-            @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<FetchClosetResponseDto> getMyCloset() {
+        Long userId = SecurityUtil.getCurrentUserId();
 
-        FetchClosetResponseDto response = wardrobeService.fetchMyCloset(userDetails.getId());
+        FetchClosetResponseDto response = wardrobeService.fetchMyCloset(userId);
         return ResponseEntity.ok(response);
     }
 
     //  옷 추가
     @PostMapping("/me/product")
     public ResponseEntity<?> addProductToMyWardrobe(
-            @RequestBody AddProductRequestDto requestDto,
-            @AuthenticationPrincipal CustomUserDetails userDetails) {
+            @RequestBody AddProductRequestDto requestDto
+            ) {
+        Long userId = SecurityUtil.getCurrentUserId();
         try {
-            ProductDto response = wardrobeService.addProductByInfo(userDetails.getId(), requestDto);
+            ProductDto response = wardrobeService.addProductByInfo(userId, requestDto);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             log.error("상품 등록 중 오류 발생", e);
