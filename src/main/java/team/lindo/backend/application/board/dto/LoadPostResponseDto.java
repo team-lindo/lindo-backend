@@ -19,5 +19,6 @@ public class LoadPostResponseDto {
     private String content;
     private List<String> images;
     private List<CommentDto> comments;  // 선택 사항
+    private Long likeCount;
     private List<TaggedProductGroupDto> taggedProducts;
 }

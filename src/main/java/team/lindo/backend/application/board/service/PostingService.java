@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import team.lindo.backend.application.board.dto.*;
 import team.lindo.backend.application.board.entity.*;
+import team.lindo.backend.application.board.repository.Bookmark.BookmarkRepository;
 import team.lindo.backend.application.board.repository.PostImage.PostImageRepository;
+import team.lindo.backend.application.board.repository.like.LikeRepository;
 import team.lindo.backend.application.board.repository.posting.PostingRepository;
 import team.lindo.backend.application.board.repository.comment.CommentRepository;
 import team.lindo.backend.application.product.entity.Product;
@@ -31,6 +33,8 @@ public class PostingService {
     private final CommentRepository commentRepository;
     private final PostImageRepository postImageRepository;
     private final UserRepository userRepository;
+    private final BookmarkRepository bookmarkRepository;
+    private final LikeRepository likeRepository;
     private final S3Uploader s3Uploader;
 
     @Transactional
@@ -186,6 +190,8 @@ public class PostingService {
                 .map(e -> new TaggedProductGroupDto(e.getKey().toString(), e.getValue()))
                 .toList();
 
+        Long likeCount = likeRepository.countByPostingId(post.getId());
+
         return LoadPostResponseDto.builder()
                 .id(post.getId())
                 .user(new UserSummaryDto(post.getUser()))
@@ -193,6 +199,7 @@ public class PostingService {
                 .images(imageUrls)
                 .comments(commentDtos)
                 .taggedProducts(grouped)
+                .likeCount(likeCount)
                 .build();
     }
 
@@ -211,5 +218,16 @@ public class PostingService {
                     );
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<BookmarkedPostSummaryDto> getBookmarkedPosts(Long userId) {
+        List<Posting> bookmarked = bookmarkRepository.findBookmarkedPostingsByUserId(userId);
+        return bookmarked.stream()
+                .map(p -> new BookmarkedPostSummaryDto(
+                        p.getId(),
+                        p.getImageUrls().getFirst()  // 예: 이미지가 여러 개라면 대표 이미지 추출 로직 추가
+                ))
+                .toList();
     }
 }
