@@ -9,10 +9,7 @@ import team.lindo.backend.application.social.dto.LoadFollowingsResponseDto;
 import team.lindo.backend.application.social.service.FollowService;
 import team.lindo.backend.application.user.dto.*;
 import team.lindo.backend.application.user.service.UserService;
-import team.lindo.backend.util.SecurityUtil;
-
-import java.util.Collections;
-import java.util.Map;
+import team.lindo.backend.common.util.SecurityUtil;
 
 @RestController
 @RequestMapping("/api/v1/app/users")  //! 원래 "/api/v1/app/users" 였는데 이런 주소로 한 이유 있는지 형한테 물어보기

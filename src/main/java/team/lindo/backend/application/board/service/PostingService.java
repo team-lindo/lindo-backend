@@ -21,7 +21,7 @@ import team.lindo.backend.application.user.dto.UserSummaryDto;
 import team.lindo.backend.application.user.entity.User;
 import team.lindo.backend.application.user.repository.UserRepository;
 import team.lindo.backend.common.util.SecurityUtil;
-import team.lindo.backend.util.S3Uploader;
+import team.lindo.backend.common.util.S3Uploader;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -87,7 +87,7 @@ public class PostingService {
 
     // U
     @Transactional
-    public Posting update(Long postId, String newContent) {
+    public Posting updatePosting(Long postId, String newContent) {
         Posting posting = postingRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
         posting.updateContent(newContent);
@@ -157,7 +157,7 @@ public class PostingService {
                 .build();
     }
 
-    // 프론트 요청  특정 포스트를 조회할때 정보 가져오기
+    // 프론트 요청  특정 게시물 조회
     @Transactional
     public LoadPostResponseDto loadPost(Long postId) {
         Posting post = postingRepository.findById(postId)
@@ -202,7 +202,7 @@ public class PostingService {
                 .likeCount(likeCount)
                 .build();
     }
-
+    //게시글 생성 전 이미지 업로드
     public List<UploadImageResponseDto> uploadImages(MultipartFile[] images) {
         return Arrays.stream(images)
                 .map(image -> {
@@ -220,13 +220,14 @@ public class PostingService {
                 .collect(Collectors.toList());
     }
 
+    //사용자가 북마크한 게시물 조회
     @Transactional
     public List<BookmarkedPostSummaryDto> getBookmarkedPosts(Long userId) {
         List<Posting> bookmarked = bookmarkRepository.findBookmarkedPostingsByUserId(userId);
         return bookmarked.stream()
                 .map(p -> new BookmarkedPostSummaryDto(
                         p.getId(),
-                        p.getImageUrls().getFirst()  // 예: 이미지가 여러 개라면 대표 이미지 추출 로직 추가
+                        p.getImageUrls().getFirst()  // 이미지가 여러 개라면 대표 이미지 추출 로직 추가
                 ))
                 .toList();
     }

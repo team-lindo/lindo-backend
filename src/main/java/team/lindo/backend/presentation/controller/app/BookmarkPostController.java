@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import team.lindo.backend.application.board.dto.BookmarkedPostSummaryDto;
-import team.lindo.backend.application.board.service.BookmarkService;
 import team.lindo.backend.application.board.service.PostingService;
 import team.lindo.backend.application.user.security.CustomUserDetails;
 
