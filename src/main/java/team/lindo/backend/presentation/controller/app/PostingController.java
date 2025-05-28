@@ -46,10 +46,10 @@ public class PostingController {
     }
 
     @PatchMapping("/post/{postId}")
-    public ResponseEntity<UpdatePostResponseDto> updatePost(
+    public ResponseEntity<UpdatePostResponseDto> updatePosting(
             @PathVariable Long postId,
             @RequestBody UpdatePostingRequestDto request) {
-        Posting updated = postingService.update(postId, request.getContent());
+        Posting updated = postingService.updatePosting(postId, request.getContent());
         return ResponseEntity.ok(new UpdatePostResponseDto(updated));
     }
     @DeleteMapping("/post/{postId}")

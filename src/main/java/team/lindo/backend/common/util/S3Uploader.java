@@ -1,4 +1,4 @@
-package team.lindo.backend.util;
+package team.lindo.backend.common.util;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +13,6 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.net.URL;
 import java.util.UUID;
 
 @Component

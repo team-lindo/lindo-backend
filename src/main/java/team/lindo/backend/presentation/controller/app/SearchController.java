@@ -6,12 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import team.lindo.backend.application.product.dto.ProductSearchDto;
-import team.lindo.backend.application.product.service.ProductSearchService;
 import team.lindo.backend.application.search.dto.SearchResponseDto;
 import team.lindo.backend.application.search.service.SearchService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/app")

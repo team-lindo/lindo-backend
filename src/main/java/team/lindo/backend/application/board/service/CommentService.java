@@ -19,7 +19,7 @@ public class CommentService {
     private final UserRepository userRepository;
     private final PostingRepository postingRepository;
 
-    // 댓글 생성 (!GPT 확인하기)
+    // 댓글 생성
     @Transactional
     public Comment createComment(Long postingId, Long userId, String content) {
         Posting posting = postingRepository.findById(postingId)
@@ -38,6 +38,7 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
+    // 댓글 삭제
     @Transactional
     public Comment updateComment(Long commentId, String newContent) {
         Comment comment = commentRepository.findById(commentId)

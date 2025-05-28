@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import team.lindo.backend.application.social.dto.FollowResponseDto;
 import team.lindo.backend.application.social.dto.UnfollowResponseDto;
 import team.lindo.backend.application.social.service.FollowService;
-import team.lindo.backend.application.user.dto.UserSummaryDto;
 import team.lindo.backend.application.user.service.UserService;
 import team.lindo.backend.common.util.SecurityUtil;
 

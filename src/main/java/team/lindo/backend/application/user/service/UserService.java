@@ -1,33 +1,25 @@
 package team.lindo.backend.application.user.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.lindo.backend.application.board.dto.PostDto;
-import team.lindo.backend.application.board.entity.Posting;
 import team.lindo.backend.application.board.repository.posting.PostingRepository;
 import team.lindo.backend.application.common.exception.UserAlreadyExistsException;
-import team.lindo.backend.application.social.entity.Follow;
 import team.lindo.backend.application.social.repository.follow.FollowRepository;
 import team.lindo.backend.application.social.service.FollowService;
 import team.lindo.backend.application.user.dto.*;
-import team.lindo.backend.application.user.entity.QUser;
 import team.lindo.backend.application.user.entity.Role;
 import team.lindo.backend.application.user.entity.User;
 import team.lindo.backend.application.user.repository.UserRepository;
 import team.lindo.backend.application.wardrobe.entity.Wardrobe;
 import team.lindo.backend.application.wardrobe.repository.WardrobeRepository;
-import team.lindo.backend.util.JwtUtil;
+import team.lindo.backend.common.util.JwtUtil;
 
 import java.util.List;
-
-import static team.lindo.backend.application.user.entity.QUser.user;
 
 @Service
 @RequiredArgsConstructor

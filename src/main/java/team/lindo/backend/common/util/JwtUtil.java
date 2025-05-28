@@ -1,4 +1,4 @@
-package team.lindo.backend.util;
+package team.lindo.backend.common.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.Keys;
