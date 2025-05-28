@@ -60,7 +60,7 @@ public class PostingController {
     }
 
     //특정 개시물 상세 조회
-    @GetMapping("posts/{postId}")
+    @GetMapping("post/{postId}")
     public ResponseEntity<LoadPostResponseDto> loadPost(@PathVariable Long postId) {
         LoadPostResponseDto response = postingService.loadPost(postId);
         return ResponseEntity.ok(response);
