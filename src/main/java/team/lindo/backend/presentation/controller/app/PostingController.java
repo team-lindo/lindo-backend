@@ -73,7 +73,7 @@ public class PostingController {
     ) {
         Long userId = SecurityUtil.getCurrentUserId();
 
-        Comment comment = commentService.createComment(postId, userId, request.getContent(), null);
+        Comment comment = commentService.createComment(postId, userId, request.getContent());
 
         return ResponseEntity.ok(
                 AddCommentResponseDto.builder()
@@ -86,7 +86,7 @@ public class PostingController {
     @PostMapping("/post/{postId}/like")
     public ResponseEntity<PostDto> likePost(@PathVariable Long postId) {
         Long userId = SecurityUtil.getCurrentUserId(); // SecurityContext에서 ID 추출
-        PostDto response = likeService.addLike(postId, userId);
+        PostDto response = likeService.addLike(userId, postId);
         return ResponseEntity.ok(response);
     }
 
@@ -94,7 +94,7 @@ public class PostingController {
     @DeleteMapping("/post/{postId}/like")
     public ResponseEntity<String> unLikePost(@PathVariable Long postId) {
         Long userId = SecurityUtil.getCurrentUserId();
-        likeService.removeLike(postId, userId);
+        likeService.removeLike(userId, postId);
 
         return ResponseEntity.ok(postId.toString());
     }
@@ -112,7 +112,7 @@ public class PostingController {
     public ResponseEntity<String> unBookmark(
             @PathVariable Long postId) {
         Long userId = SecurityUtil.getCurrentUserId();
-        bookmarkService.removeBookmark(postId, userId);
+        bookmarkService.removeBookmark(userId, postId);
         return ResponseEntity.ok(postId.toString());
     }
 
