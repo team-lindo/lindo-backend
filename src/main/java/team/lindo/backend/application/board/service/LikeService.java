@@ -22,13 +22,13 @@ public class LikeService {
     @Transactional
     public PostDto addLike(Long userId, Long postingId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("User does not exist."));
         Posting posting = postingRepository.findById(postingId)
-                .orElseThrow(() -> new IllegalArgumentException("게시물이 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("Post does not exist."));
 
         likeRepository.findByUserIdAndPostingId(userId, postingId)
                 .ifPresent(l -> {
-                    throw new IllegalArgumentException("이미 좋아요를 누른 게시물입니다.");
+                    throw new IllegalArgumentException("This post has already been liked.");
                 });
 
         likeRepository.save(Like.builder()
@@ -42,7 +42,7 @@ public class LikeService {
     @Transactional
     public void removeLike(Long userId, Long postingId) {
         Like like = likeRepository.findByUserIdAndPostingId(userId, postingId)
-                .orElseThrow(() -> new IllegalArgumentException("좋아요를 누른 기록이 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("There is no record of pressing like."));
 
         likeRepository.delete(like);
     }

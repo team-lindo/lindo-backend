@@ -21,7 +21,7 @@ public class CommentService {
 
     // 댓글 생성 (!GPT 확인하기)
     @Transactional
-    public Comment createComment(Long postingId, Long userId, String content, Long parentCommentId) {
+    public Comment createComment(Long postingId, Long userId, String content) {
         Posting posting = postingRepository.findById(postingId)
                 .orElseThrow(() -> new IllegalArgumentException("게시물이 존재하지 않습니다."));
 
