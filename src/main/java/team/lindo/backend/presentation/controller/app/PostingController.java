@@ -60,7 +60,7 @@ public class PostingController {
     }
 
     //특정 개시물 상세 조회
-    @GetMapping("post/{postId}")
+    @GetMapping("posts/{postId}")
     public ResponseEntity<LoadPostResponseDto> loadPost(@PathVariable Long postId) {
         LoadPostResponseDto response = postingService.loadPost(postId);
         return ResponseEntity.ok(response);
@@ -69,10 +69,9 @@ public class PostingController {
     @PostMapping("/post/{postId}/comment")
     public ResponseEntity<AddCommentResponseDto> addComment(
             @PathVariable Long postId,
-            @RequestBody AddCommentRequestDto request,
-            @AuthenticationPrincipal CustomUserDetails userDetails
+            @RequestBody AddCommentRequestDto request
     ) {
-        Long userId = userDetails.getId();
+        Long userId = SecurityUtil.getCurrentUserId();
 
         Comment comment = commentService.createComment(postId, userId, request.getContent(), null);
 
@@ -85,22 +84,16 @@ public class PostingController {
     }
     // 게시물 좋아요 추가
     @PostMapping("/post/{postId}/like")
-    public ResponseEntity<PostDto> likePost(
-            @PathVariable Long postId,
-            @AuthenticationPrincipal CustomUserDetails userDetails
-    ) {
-        Long userId = userDetails.getId();
+    public ResponseEntity<PostDto> likePost(@PathVariable Long postId) {
+        Long userId = SecurityUtil.getCurrentUserId(); // SecurityContext에서 ID 추출
         PostDto response = likeService.addLike(postId, userId);
         return ResponseEntity.ok(response);
     }
 
     //게시물 좋아요 취소
     @DeleteMapping("/post/{postId}/like")
-    public ResponseEntity<String> unLikePost(
-            @PathVariable Long postId,
-            @AuthenticationPrincipal CustomUserDetails userDetails
-    ) {
-        Long userId = userDetails.getId();
+    public ResponseEntity<String> unLikePost(@PathVariable Long postId) {
+        Long userId = SecurityUtil.getCurrentUserId();
         likeService.removeLike(postId, userId);
 
         return ResponseEntity.ok(postId.toString());
@@ -108,18 +101,17 @@ public class PostingController {
 
     @PostMapping("/post/{postId}/bookmark")
     public ResponseEntity<PostDto> bookmark(
-            @PathVariable Long postId,
-            @AuthenticationPrincipal CustomUserDetails userDetails) {
+            @PathVariable Long postId) {
+        Long userId = SecurityUtil.getCurrentUserId();
         return ResponseEntity.ok(
-                bookmarkService.addBookmark(userDetails.getId(), postId)
+                bookmarkService.addBookmark(userId, postId)
         );
     }
 
     @DeleteMapping("/post/{postId}/bookmark")
     public ResponseEntity<String> unBookmark(
-            @PathVariable Long postId,
-            @AuthenticationPrincipal CustomUserDetails userDetails) {
-        Long userId = userDetails.getId();
+            @PathVariable Long postId) {
+        Long userId = SecurityUtil.getCurrentUserId();
         bookmarkService.removeBookmark(postId, userId);
         return ResponseEntity.ok(postId.toString());
     }
