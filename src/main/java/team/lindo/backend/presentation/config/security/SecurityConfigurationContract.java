@@ -39,7 +39,7 @@ public abstract class SecurityConfigurationContract {
 
     private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("https://lindo.co.kr", "http://localhost:3000", "https://lindo-frontend-b8ljlrowv-noopys-projects-35d4e576.vercel.app")); // origin 설정
+        corsConfiguration.setAllowedOrigins(List.of("https://lindo.co.kr", "http://localhost:3000", "https://lindo-frontend-git-branch6-noopys-projects-35d4e576.vercel.app")); // origin 설정
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")); // 허용할 HTTP method
         corsConfiguration.setAllowedHeaders(List.of("X-FILENAME", "X-Requested-With", "Content-Type", "Authorization")); // 허용할 HTTP header
         corsConfiguration.setAllowCredentials(true); // 쿠키를 주고 받을 수 있도록 설정
