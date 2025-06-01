@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import team.lindo.backend.application.board.dto.PostDto;
 import team.lindo.backend.application.board.repository.posting.PostingRepository;
 import team.lindo.backend.application.common.exception.UserAlreadyExistsException;
+import team.lindo.backend.application.social.dto.FollowingDto;
+import team.lindo.backend.application.social.entity.Follow;
 import team.lindo.backend.application.social.repository.follow.FollowRepository;
 import team.lindo.backend.application.social.service.FollowService;
 import team.lindo.backend.application.user.dto.*;
@@ -112,6 +114,12 @@ public class UserService {
         Long followersCount = followService.getFollowerCount(id);
         Long postsCount = postingRepository.countByUserId(id);
 
+        List<Follow> following = followRepository.findByFollowerId(id);
+
+        List<FollowingDto> followings = following.stream()
+                .map(f -> new FollowingDto(f.getFollowing().getId(), f.getFollowing().getNickname()))
+                .toList();
+
         List<PostDto> posts = postingRepository.findByUserId(id).stream()
                 .map(PostDto::new)
                 .toList();
@@ -123,6 +131,7 @@ public class UserService {
                 .followingsCount(followingsCount)
                 .followersCount(followersCount)
                 .postsCount(postsCount)
+                .followings(followings)
                 .posts(posts)
                 .build();
     }

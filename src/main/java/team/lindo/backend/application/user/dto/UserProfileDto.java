@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.lindo.backend.application.board.dto.PostDto;
+import team.lindo.backend.application.social.dto.FollowingDto;
 
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class UserProfileDto {
     private Long postsCount;
 
     private List<PostDto> posts;
+    private List <FollowingDto> followings;
+
 }
 
 
