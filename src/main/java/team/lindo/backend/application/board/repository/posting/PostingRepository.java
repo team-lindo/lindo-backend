@@ -23,4 +23,10 @@ public interface PostingRepository extends JpaRepository<Posting, Long>, Posting
 
     List<Posting> findByUserOrderByCreatedAtDesc(User user);
     Long countByUserId(Long userId);
+
+    @Query(value = "SELECT * FROM posting ORDER BY id DESC LIMIT :limit", nativeQuery = true)
+    List<Posting> findTopNOrderByIdDesc(@Param("limit") int limit);
+
+    @Query(value = "SELECT * FROM posting WHERE id < :lastId ORDER BY id DESC LIMIT :limit", nativeQuery = true)
+    List<Posting> findTopNByIdLessThanOrderByIdDesc(@Param("lastId") Long lastId, @Param("limit") int limit);
 }

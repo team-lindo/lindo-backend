@@ -119,11 +119,10 @@ public class PostingController {
     // 게시물 10개 보이고 내리면 10개씩 무한으로 보임
     @GetMapping("/posts")
     public ResponseEntity<PostPageResponseDto> getPosts(
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(required = false) Long lastId,
             @RequestParam(defaultValue = "10") int limit
     ) {
-        Pageable pageable = PageRequest.of(page, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
-        return ResponseEntity.ok(postingService.getPostPreviews(pageable));
+        return ResponseEntity.ok(postingService.getPostPreviewsByCursor(lastId, limit));
     }
 
    /* public ResponseEntity<List<PostingSummaryDto>> searchPostings(String keyword) {

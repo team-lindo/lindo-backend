@@ -145,15 +145,25 @@ public class PostingService {
         return postingRepository.findFollowingPostingsByUserId(userId);
     }
     // 프론트엔드 맞춤 다음 페이지가 있는지 확인하고 무한 스크롤
-    public PostPageResponseDto getPostPreviews(Pageable pageable) {
-        Page<Posting> page = postingRepository.findAll(pageable);
+    @Transactional
+    public PostPageResponseDto getPostPreviewsByCursor(Long lastId, int limit) {
+        List<Posting> posts;
 
-        List<PostDto> posts = page.getContent().stream()
+        if (lastId == null) {
+            posts = postingRepository.findTopNOrderByIdDesc(limit);
+        } else {
+            posts = postingRepository.findTopNByIdLessThanOrderByIdDesc(lastId, limit);
+        }
+
+        boolean hasMore = posts.size() == limit;
+
+        List<PostDto> postDtos = posts.stream()
                 .map(PostDto::new)
                 .toList();
+
         return PostPageResponseDto.builder()
-                .posts(posts)
-                .hasNext(page.hasNext())  // 다음 페이지가 있는지
+                .posts(postDtos)
+                .hasNext(hasMore)
                 .build();
     }
 
