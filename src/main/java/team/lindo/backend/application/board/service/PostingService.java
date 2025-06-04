@@ -145,6 +145,7 @@ public class PostingService {
         return postingRepository.findFollowingPostingsByUserId(userId);
     }
     // 프론트엔드 맞춤 다음 페이지가 있는지 확인하고 무한 스크롤
+    @Transactional
     public PostPageResponseDto getPostPreviews(Pageable pageable) {
         Page<Posting> page = postingRepository.findAll(pageable);
 
