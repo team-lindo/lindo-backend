@@ -157,12 +157,12 @@ public class PostingService {
 
         boolean hasMore = posts.size() == limit;
 
-        List<PostDto> postDtos = posts.stream()
+        List<PostDto> miniPosts = posts.stream()
                 .map(PostDto::new)
                 .toList();
 
         return PostPageResponseDto.builder()
-                .posts(postDtos)
+                .posts(miniPosts)
                 .hasNext(hasMore)
                 .build();
     }
