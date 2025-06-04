@@ -120,7 +120,7 @@ public class PostingController {
     @GetMapping("/posts")
     public ResponseEntity<PostPageResponseDto> getPosts(
             @RequestParam(required = false) Long lastId,
-            @RequestParam(defaultValue = "10") int limit
+            @RequestParam(defaultValue = "12") int limit
     ) {
         return ResponseEntity.ok(postingService.getPostPreviewsByCursor(lastId, limit));
     }
