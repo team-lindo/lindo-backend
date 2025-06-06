@@ -31,10 +31,13 @@ public class LikeService {
                     throw new IllegalArgumentException("This post has already been liked.");
                 });
 
-        likeRepository.save(Like.builder()
+        Like like = Like.builder()
                 .user(user)
-                .posting(posting)
-                .build());
+                .build();
+
+        posting.addLike(like);  // 양방향 관계 유지 (builder에서 .posting(posting) 해주던 걸 편의 매서드로)
+        likeRepository.save(like);
+
         return new PostDto(posting);
     }
 
@@ -44,7 +47,8 @@ public class LikeService {
         Like like = likeRepository.findByUserIdAndPostingId(userId, postingId)
                 .orElseThrow(() -> new IllegalArgumentException("There is no record of pressing like."));
 
-        likeRepository.delete(like);
+        // likeRepository.delete(like)는 remove 메서드만 호출하면 트랜잭션 commit 시점에 JPA가 자동으로 delete query 실행해줌
+        like.getPosting().removeLike(like);
     }
 
     // 특정 게시물의 좋아요 개수 조회

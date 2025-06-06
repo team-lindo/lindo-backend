@@ -30,10 +30,11 @@ public class CommentService {
 
 
         Comment comment = Comment.builder()
-                .posting(posting)
                 .user(user)
                 .content(content)
                 .build();
+
+        posting.addComment(comment);
 
         return commentRepository.save(comment);
     }
@@ -60,7 +61,8 @@ public class CommentService {
     public void deleteComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("댓글이 존재하지 않습니다."));
-        commentRepository.delete(comment);
+
+        comment.getPosting().removeComment(comment);  // JPA가 commentRepository.delete(comment); 대신 delete query 날려줌
     }
 
 

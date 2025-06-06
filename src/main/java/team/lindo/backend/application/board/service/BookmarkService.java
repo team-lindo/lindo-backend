@@ -33,7 +33,13 @@ public class BookmarkService {
                     throw new IllegalArgumentException("이미 북마크를 누른 게시물입니다.");
                 });
 
-        bookmarkRepository.save(new Bookmark(user, posting));
+        Bookmark bookmark = Bookmark.builder()
+                .user(user)
+                .build();
+
+        posting.addBookmark(bookmark);
+        bookmarkRepository.save(bookmark);
+
         return new PostDto(posting);
     }
 
@@ -43,6 +49,6 @@ public class BookmarkService {
         Bookmark bookmark = bookmarkRepository.findByUserIdAndPostingId(userId, postId)
                 .orElseThrow(() -> new IllegalArgumentException("북마크한 적이 없습니다."));
 
-        bookmarkRepository.delete(bookmark);
+        bookmark.getPosting().removeBookmark(bookmark);  // JPA가 bookmarkRepository.delete(bookmark); 대신 delete 쿼리 날려줌
     }
 }
