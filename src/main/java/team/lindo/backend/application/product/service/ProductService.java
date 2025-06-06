@@ -3,8 +3,12 @@ package team.lindo.backend.application.product.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.lindo.backend.application.product.dto.ProductInfoDto;
 import team.lindo.backend.application.product.entity.Product;
 import team.lindo.backend.application.product.repository.ProductRepository;
+import team.lindo.backend.application.wardrobe.dto.ProductDto;
+import team.lindo.backend.application.wardrobe.entity.Wardrobe;
+import team.lindo.backend.application.wardrobe.entity.WardrobeProduct;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +41,14 @@ public class ProductService {
         productRepository.deleteById(productId);
     }
 
+    //  옷 상세 조회
+    @Transactional(readOnly = true)
+    public ProductInfoDto getProductInfos(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다."));
+
+        return new ProductInfoDto(product);
+    }
     /**
      * 그 외 특정 브랜드의 제품 검색, 특정 금액대의 제품 검색 등등의 기능은 일부러 구현하지 않았음.
      * 코디 공유 사이트이기 때문에 사용자가 제품을 검색할 일이 없다고 생각했기 때문.
