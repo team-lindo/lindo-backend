@@ -10,6 +10,7 @@ import team.lindo.backend.application.product.entity.Product;
 import team.lindo.backend.application.user.entity.User;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -51,7 +52,14 @@ public class Posting extends BaseEntity {
     @Builder.Default
     private Set<String> hashtags = new HashSet<>();
 
-//    private List<Product> recommendations = new ArrayList<>();
+    @OneToMany(mappedBy = "posting", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "posting", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Bookmark> bookmarks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "posting", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Like> likes = new ArrayList<>();
 
     public void addPostImage(PostImage image) {
         this.postImages.add(image);
@@ -80,5 +88,35 @@ public class Posting extends BaseEntity {
                         .build());
             }
         }
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+        comment.setPosting(this);
+    }
+
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
+        comment.setPosting(null);
+    }
+
+    public void addBookmark(Bookmark bookmark) {
+        this.bookmarks.add(bookmark);
+        bookmark.setPosting(this);
+    }
+
+    public void removeBookmark(Bookmark bookmark) {
+        bookmarks.remove(bookmark);
+        bookmark.setPosting(null);
+    }
+
+    public void addLike(Like like) {
+        this.likes.add(like);
+        like.setPosting(this);
+    }
+
+    public void removeLike(Like like) {
+        likes.remove(like);
+        like.setPosting(null);
     }
 }

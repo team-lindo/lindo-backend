@@ -24,6 +24,7 @@ public class Bookmark extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "posting_id", nullable = false)
+    @Setter(AccessLevel.PROTECTED)
     private Posting posting;
 
     public Bookmark(User user, Posting posting) {
